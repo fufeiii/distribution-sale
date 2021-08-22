@@ -1,0 +1,14 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: ds-portal
+  profiles:
+    active: local
+  mvc:
+    locale-resolver: fixed
+    locale: zh_CN
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
