@@ -9,21 +9,22 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ds-common</artifactId>
-    <description>公共组件</description>
+    <artifactId>ds-repository</artifactId>
+    <description>实体和实体操作组件</description>
 
     <dependencies>
-        <!-- spring web -->
+
+        <!-- mysql驱动 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
-        <!-- hutool -->
+        <!-- mp -->
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-core</artifactId>
-            <version>${hutool.version}</version>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis.plus.version}</version>
         </dependency>
 
         <!-- lombok -->
@@ -31,7 +32,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-    </dependencies>
 
+    </dependencies>
 
 </project>

@@ -20,18 +20,10 @@
             <artifactId>ds-api</artifactId>
             <version>${parent.version}</version>
         </dependency>
-
-        <!-- ds-common -->
+        <!-- ds-service -->
         <dependency>
             <groupId>cn.fufeii</groupId>
-            <artifactId>ds-common</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
-
-        <!-- ds-repository -->
-        <dependency>
-            <groupId>cn.fufeii</groupId>
-            <artifactId>ds-dao</artifactId>
+            <artifactId>ds-service</artifactId>
             <version>${parent.version}</version>
         </dependency>
     </dependencies>

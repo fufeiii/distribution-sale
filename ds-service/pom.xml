@@ -9,29 +9,23 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ds-common</artifactId>
-    <description>公共组件</description>
+    <artifactId>ds-service</artifactId>
+    <description>dao的进一步封装</description>
+
 
     <dependencies>
-        <!-- spring web -->
+        <!-- ds-common -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>cn.fufeii</groupId>
+            <artifactId>ds-common</artifactId>
+            <version>${parent.version}</version>
         </dependency>
-
-        <!-- hutool -->
+        <!-- ds-repository -->
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-core</artifactId>
-            <version>${hutool.version}</version>
-        </dependency>
-
-        <!-- lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>cn.fufeii</groupId>
+            <artifactId>ds-repository</artifactId>
+            <version>${parent.version}</version>
         </dependency>
     </dependencies>
-
 
 </project>
