@@ -1,27 +1,43 @@
 server:
   port: 8080
 
+beetl:
+  suffix: html
+  templatesPath: templates
+
 spring:
   application:
     name: ds-admin
   profiles:
     active: local
   mvc:
+    # 国际化固定为中国
     locale-resolver: fixed
     locale: zh_CN
+    # 静态资源访问表达式
+    static-path-pattern: /static/**
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
+  resources:
+    # 静态资源地址
+    static-locations: classpath:/static/
   jackson:
     time-zone: GMT+8
-    date-format: yyyy-MM-dd HH:mm:ss
+    date-format: ${spring.mvc.format.date-time}
 
 mybatis-plus:
+  # 在每个jar包下的mapper文件下进行扫描
   mapper-locations: classpath*:mapper/*.xml
   configuration:
+    # 下划线转驼峰
     map-underscore-to-camel-case: true
+    # 开启懒加载
     lazy-loading-enabled: true
+    # 开启懒加载
     aggressive-lazy-loading: false
+    # 日志输出
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     banner: false
     db-config:
       id-type: assign_id
-      table-underline: true
