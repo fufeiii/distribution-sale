@@ -47,9 +47,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // FIXME 暂时为表单登录，后续改为基于JWT的认证方式
         http
                 .formLogin()
+
+                // 登录相关
                 .loginPage("/toLogin")
                 .loginProcessingUrl("/doLogin")
-                .defaultSuccessUrl("/index");
+                .defaultSuccessUrl("/index")
+
+                // 登出相关
+                .and()
+                .logout()
+                .logoutUrl("/logout");
 
 
         // 所有请求都需要登录
