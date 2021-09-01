@@ -5,7 +5,7 @@
 	},
 	"menu": {
 		"data": "/static/admin/data/menu.json",
-		"collaspe": true,
+		"collaspe": false,
 		"accordion": true,
 		"method": "GET",
 		"control": false,
@@ -15,6 +15,7 @@
 		"muiltTab": true,
 		"keepState": true,
 		"tabMax": 30,
+		"session": true,
 		"index": {
 			"id": "0",
 			"href": "/workspace/dashboard",
