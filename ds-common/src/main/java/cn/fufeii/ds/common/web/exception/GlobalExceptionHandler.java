@@ -1,6 +1,6 @@
-package cn.fufeii.ds.common.exception;
+package cn.fufeii.ds.common.web.exception;
 
-import cn.fufeii.ds.common.util.CommonResult;
+import cn.fufeii.ds.common.result.CommonResult;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

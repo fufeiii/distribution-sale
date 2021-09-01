@@ -1,9 +1,10 @@
-package cn.fufeii.ds.common.util;
+package cn.fufeii.ds.common.result;
 
 import lombok.Data;
 
 /**
- * CommonResult
+ * 公共结果
+ * 所有restful接口应该使用此类包装真实的数据
  *
  * @author FuFei
  * @date 2021/8/22
@@ -27,20 +28,23 @@ public class CommonResult<T> {
     }
 
     public static <T> CommonResult<T> success() {
-        return success(CommonEnum.SUCCESS.getCode(), null);
+        return success(CommonEnum.SUCCESS, null);
     }
 
     public static <T> CommonResult<T> success(T data) {
-        return success(CommonEnum.SUCCESS.getCode(), data);
+        return success(CommonEnum.SUCCESS, data);
     }
 
-    public static <T> CommonResult<T> success(int code, T data) {
-        CommonEnum success = CommonEnum.SUCCESS;
-        return new CommonResult<>(success.getCode(), success.getMsg(), data);
+    public static <T> CommonResult<T> success(ResultDefinition rd, T data) {
+        return new CommonResult<>(rd.getCode(), rd.getMsg(), data);
     }
 
     public static <T> CommonResult<T> fail(int code, String msg) {
         return new CommonResult<>(code, msg, null);
+    }
+
+    public static <T> CommonResult<T> fail(ResultDefinition rd) {
+        return fail(rd.getCode(), rd.getMsg());
     }
 
 }

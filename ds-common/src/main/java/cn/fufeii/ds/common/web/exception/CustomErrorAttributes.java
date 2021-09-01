@@ -1,11 +1,11 @@
-package cn.fufeii.ds.common.exception;
+package cn.fufeii.ds.common.web.exception;
 
 /**
  * @author FuFei
  * @date 2021/8/22
  */
 
-import cn.fufeii.ds.common.util.CommonResult;
+import cn.fufeii.ds.common.result.CommonResult;
 import cn.hutool.core.bean.BeanUtil;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
