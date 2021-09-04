@@ -8,6 +8,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  *
  * @author FuFei
  */
-public interface BaseRankParamService extends IService<RankParam> {
+public interface CrudRankParamService extends IService<RankParam> {
 
 }

@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Distribution Sale</title>
     <!-- 依 赖 样 式 -->
-    <link rel="stylesheet" href="/static/component/pear/css/pear.css"/>
+    <link rel="stylesheet" href="/component/pear/css/pear.css"/>
     <!-- 加 载 样 式-->
-    <link rel="stylesheet" href="/static/admin/css/load.css"/>
+    <link rel="stylesheet" href="/ds/css/load.css"/>
     <!-- 布 局 样 式 -->
-    <link rel="stylesheet" href="/static/admin/css/admin.css"/>
-    <link href="/static/favicon.ico" rel="icon" type="image/x-icon"/>
+    <link rel="stylesheet" href="/ds/css/admin.css"/>
+    <link href="/favicon.ico" rel="icon" type="image/x-icon"/>
 </head>
 <!-- 结 构 代 码 -->
 <body class="layui-layout-body pear-admin">
@@ -34,10 +34,11 @@
             <li class="layui-nav-item user">
                 <!-- 头 像 -->
                 <a href="javascript:;">
-                    <img src="/static/admin/images/avatar.jpg" class="layui-nav-img">
+                    <img src="/ds/images/avatar.jpg" class="layui-nav-img">
                 </a>
                 <!-- 功 能 菜 单 -->
                 <dl class="layui-nav-child">
+                    <!-- TODO 登录人员信息 -->
                     <dd><a user-menu-url="view/system/person.html" user-menu-id="5555" user-menu-title="基本资料">基本资料</a>
                     </dd>
                     <!-- FIXME 暂时为表单登出 -->
@@ -79,8 +80,8 @@
     <a href="#" class="layui-icon layui-icon-shrink-right"></a>
 </div>
 <!-- 依 赖 脚 本 -->
-<script src="/static/component/layui/layui.js"></script>
-<script src="/static/component/pear/pear.js"></script>
+<script src="/component/layui/layui.js"></script>
+<script src="/component/pear/pear.js"></script>
 <!-- 框 架 初 始 化 -->
 <script>
     layui.use(['admin', 'jquery', 'convert', 'popup'], function () {
@@ -89,10 +90,10 @@
         var convert = layui.convert;
         var popup = layui.popup;
 
-        admin.setAvatar("/static/admin/images/avatar.jpg", "超级管理员");
+        admin.setAvatar("/ds/images/avatar.jpg", "超级管理员");
 
         admin.setConfigType("json");
-        admin.setConfigPath("/static/config/pear.config.json");
+        admin.setConfigPath("/pear.config.json");
 
         admin.render();
 
@@ -105,11 +106,6 @@
             return true;
         })
 
-        // 初始化消息回调
-        admin.message();
-
-        // 实现消息回调 [消息列表点击事件]
-        // admin.message(function(id, title, context, form) {});
     })
 </script>
 </body>

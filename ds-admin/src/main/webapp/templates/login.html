@@ -4,16 +4,16 @@
     <meta charset="utf-8">
     <title>Login Page</title>
     <!-- 样 式 文 件 -->
-    <link rel="stylesheet" href="/static/component/pear/css/pear.css"/>
-    <link rel="stylesheet" href="/static/admin/css/other/login.css"/>
-    <link href="/static/favicon.ico" rel="icon" type="image/x-icon"/>
+    <link rel="stylesheet" href="/component/pear/css/pear.css"/>
+    <link rel="stylesheet" href="/ds/css/other/login.css"/>
+    <link href="/favicon.ico" rel="icon" type="image/x-icon"/>
 
 </head>
 <!-- 代 码 结 构 -->
-<body background="/static/admin/images/background.svg" style="background-size: cover;">
+<body background="/ds/images/background.svg" style="background-size: cover;">
 <form class="layui-form" method="post" action="/doLogin">
     <div class="layui-form-item">
-        <img class="logo" src="/static/admin/images/logo.png"/>
+        <img class="logo" src="/ds/images/logo.png"/>
         <div class="title">Distribution Sale</div>
         <div class="desc">
             基于微服务架构下的分销解决方案
@@ -40,8 +40,8 @@
     </div>
 </form>
 <!-- 资 源 引 入 -->
-<script src="/static/component/layui/layui.js"></script>
-<script src="/static/component/pear/pear.js"></script>
+<script src="/component/layui/layui.js"></script>
+<script src="/component/pear/pear.js"></script>
 <script>
     layui.use(['form', 'button', 'popup'], function () {
         let form = layui.form;

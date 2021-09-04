@@ -8,6 +8,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  *
  * @author FuFei
  */
-public interface BaseProfitEventService extends IService<ProfitEvent> {
+public interface CrudProfitEventService extends IService<ProfitEvent> {
 
 }

@@ -8,6 +8,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  *
  * @author FuFei
  */
-public interface BaseProfitRecordService extends IService<ProfitRecord> {
+public interface CrudProfitRecordService extends IService<ProfitRecord> {
 
 }

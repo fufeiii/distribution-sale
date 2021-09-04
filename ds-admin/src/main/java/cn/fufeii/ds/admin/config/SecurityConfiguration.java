@@ -2,11 +2,11 @@ package cn.fufeii.ds.admin.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * security配置
@@ -15,25 +15,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * @date 2021/8/28
  */
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin")
-                .password(bCryptPasswordEncoder().encode("admin"))
-                .authorities("ADMIN");
+    public PasswordEncoder bCryptPasswordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         // 静态资源不经过security
-        web.ignoring().mvcMatchers("/static/**");
+        web.ignoring().mvcMatchers("/ds/**", "/component/**", "/favicon.ico");
     }
 
     @Override

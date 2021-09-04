@@ -10,7 +10,7 @@ import lombok.Data;
  * @date 2021/8/22
  */
 @Data
-public class CommonResult<T> {
+public final class CommonResult<T> {
 
     private final int code;
 
@@ -35,7 +35,7 @@ public class CommonResult<T> {
         return success(CommonEnum.SUCCESS, data);
     }
 
-    public static <T> CommonResult<T> success(ResultDefinition rd, T data) {
+    public static <T> CommonResult<T> success(ResultEnumDefinition rd, T data) {
         return new CommonResult<>(rd.getCode(), rd.getMsg(), data);
     }
 
@@ -43,7 +43,7 @@ public class CommonResult<T> {
         return new CommonResult<>(code, msg, null);
     }
 
-    public static <T> CommonResult<T> fail(ResultDefinition rd) {
+    public static <T> CommonResult<T> fail(ResultEnumDefinition rd) {
         return fail(rd.getCode(), rd.getMsg());
     }
 

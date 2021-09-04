@@ -10,8 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author FuFei
  * @date 2021/8/22
  */
-@SpringBootApplication(scanBasePackages = "cn.fufeii.ds")
 @Slf4j
+@SpringBootApplication(scanBasePackages = "cn.fufeii.ds")
 public class DsAdminApplication {
 
     public static void main(String[] args) {

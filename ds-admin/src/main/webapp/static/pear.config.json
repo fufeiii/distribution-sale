@@ -1,10 +1,10 @@
 {
 	"logo": {
 		"title": "Distribution Sale",
-		"image": "/static/admin/images/logo.png"
+		"image": "/ds/images/logo.png"
 	},
 	"menu": {
-		"data": "/static/admin/data/menu.json",
+		"data": "/ds/data/menu.json",
 		"collaspe": false,
 		"accordion": true,
 		"method": "GET",
@@ -19,7 +19,7 @@
 		"index": {
 			"id": "0",
 			"href": "/workspace/dashboard",
-			"title": "仪表盘"
+			"title": "分销总览"
 		}
 	},
 	"theme": {
@@ -66,6 +66,6 @@
 		"autoHead": false
 	},
 	"header": {
-		"message": "/static/admin/data/message.json"
+		"message": ""
 	}
 }

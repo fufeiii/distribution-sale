@@ -2,7 +2,7 @@ package cn.fufeii.ds.service.entity.impl;
 
 import cn.fufeii.ds.repository.dao.AccountDao;
 import cn.fufeii.ds.repository.entity.Account;
-import cn.fufeii.ds.service.entity.BaseAccountService;
+import cn.fufeii.ds.service.entity.CrudAccountService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +12,6 @@ import org.springframework.stereotype.Service;
  * @author FuFei
  */
 @Service
-public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> implements BaseAccountService {
+public class CrudAccountServiceImpl extends ServiceImpl<AccountDao, Account> implements CrudAccountService {
 
 }

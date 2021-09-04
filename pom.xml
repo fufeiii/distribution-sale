@@ -26,6 +26,7 @@
         <hutool.version>5.7.9</hutool.version>
         <mybatis.plus.starter.version>3.4.3.2</mybatis.plus.starter.version>
         <beetl.starter.version>1.2.32.Beetl.RELEASE</beetl.starter.version>
+        <knife4j.starter.version>3.0.2</knife4j.starter.version>
     </properties>
 
     <dependencyManagement>

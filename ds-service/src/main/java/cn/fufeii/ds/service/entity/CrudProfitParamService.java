@@ -8,6 +8,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  *
  * @author FuFei
  */
-public interface BaseProfitParamService extends IService<ProfitParam> {
+public interface CrudProfitParamService extends IService<ProfitParam> {
 
 }

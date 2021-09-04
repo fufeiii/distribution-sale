@@ -8,6 +8,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  *
  * @author FuFei
  */
-public interface BaseMemberService extends IService<Member> {
+public interface CrudMemberService extends IService<Member> {
 
 }

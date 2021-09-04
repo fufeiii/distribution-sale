@@ -23,7 +23,7 @@ import java.util.Map;
  * @date 2021/8/22
  */
 @Component
-public class CustomErrorAttributes extends DefaultErrorAttributes {
+public class GlobalErrorAttributes extends DefaultErrorAttributes {
 
     @Override
     public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions attributeOptions) {

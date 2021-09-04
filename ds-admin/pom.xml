@@ -31,6 +31,12 @@
             <artifactId>beetl-framework-starter</artifactId>
             <version>${beetl.starter.version}</version>
         </dependency>
+        <!-- swagger3 -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>${knife4j.starter.version}</version>
+        </dependency>
     </dependencies>
 
 

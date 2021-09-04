@@ -8,6 +8,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  *
  * @author FuFei
  */
-public interface BaseWithdrawApplyService extends IService<WithdrawApply> {
+public interface CrudWithdrawApplyService extends IService<WithdrawApply> {
 
 }

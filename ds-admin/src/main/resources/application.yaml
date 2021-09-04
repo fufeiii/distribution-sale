@@ -4,6 +4,8 @@ server:
 beetl:
   suffix: html
   templatesPath: templates
+beetl-beetlsql:
+  dev: false
 
 spring:
   application:
@@ -14,8 +16,6 @@ spring:
     # 国际化固定为中国
     locale-resolver: fixed
     locale: zh_CN
-    # 静态资源访问表达式
-    static-path-pattern: /static/**
     format:
       date-time: yyyy-MM-dd HH:mm:ss
   resources:
@@ -24,6 +24,17 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: ${spring.mvc.format.date-time}
+  # FIXME 设置默认用户
+  security:
+    user:
+      name: admin
+      password: admin
+      roles: ADMIN
+
+# swagger相关配置
+knife4j:
+  enable: true
+
 
 mybatis-plus:
   # 在每个jar包下的mapper文件下进行扫描
@@ -37,6 +48,10 @@ mybatis-plus:
     aggressive-lazy-loading: false
     # 日志输出
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 一级缓存 集群环境建议关闭
+    local-cache-scope: session
+    # 二级缓存 集群建议不开启或或缓存到redis
+    cache-enabled: true
   global-config:
     banner: false
     db-config:

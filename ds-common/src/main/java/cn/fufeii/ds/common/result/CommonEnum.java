@@ -6,7 +6,7 @@ package cn.fufeii.ds.common.result;
  * @author FuFei
  * @date 2021/8/22
  */
-public enum CommonEnum implements ResultDefinition {
+public enum CommonEnum implements ResultEnumDefinition {
 
     /**
      * 成功
