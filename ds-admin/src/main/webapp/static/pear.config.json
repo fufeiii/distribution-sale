@@ -62,7 +62,7 @@
 		}
 	],
 	"other": {
-		"keepLoad": 1200,
+		"keepLoad": 200,
 		"autoHead": false
 	},
 	"header": {

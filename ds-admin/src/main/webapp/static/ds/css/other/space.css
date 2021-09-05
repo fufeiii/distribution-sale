@@ -1,0 +1,9 @@
+h1 {
+    margin-top: 200px;
+    color: #5FB878;
+}
+
+.layui-card-body {
+    text-align: center;
+    height: 500px;
+}

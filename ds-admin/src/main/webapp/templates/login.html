@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="utf-8">
-    <title>Login Page</title>
-    <!-- 样 式 文 件 -->
-    <link rel="stylesheet" href="/component/pear/css/pear.css"/>
-    <link rel="stylesheet" href="/ds/css/other/login.css"/>
-    <link href="/favicon.ico" rel="icon" type="image/x-icon"/>
-
-</head>
-<!-- 代 码 结 构 -->
-<body background="/ds/images/background.svg" style="background-size: cover;">
+@layout("/common/_container.html", {bodyAttr:"background=\"/ds/images/background.svg\" style=\"background-size: cover;\"", css: ["/ds/css/other/login.css"]}) {
 <form class="layui-form" method="post" action="/doLogin">
     <div class="layui-form-item">
         <img class="logo" src="/ds/images/logo.png"/>
@@ -39,9 +27,6 @@
         </button>
     </div>
 </form>
-<!-- 资 源 引 入 -->
-<script src="/component/layui/layui.js"></script>
-<script src="/component/pear/pear.js"></script>
 <script>
     layui.use(['form', 'button', 'popup'], function () {
         let form = layui.form;
@@ -52,5 +37,4 @@
         // });
     })
 </script>
-</body>
-</html>
+@}

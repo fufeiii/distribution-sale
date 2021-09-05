@@ -4,8 +4,8 @@ server:
 beetl:
   suffix: html
   templatesPath: templates
-beetl-beetlsql:
-  dev: false
+#beetl-beetlsql:
+#  dev: false
 
 spring:
   application:

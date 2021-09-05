@@ -1,28 +1,8 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="/component/pear/css/pear.css"/>
-    <link href="/favicon.ico" rel="icon" type="image/x-icon"/>
-    <style>
-        h1 {
-            margin-top: 200px;
-            color: #5FB878;
-        }
-
-        .layui-card-body {
-            text-align: center;
-            height: 500px;
-        }
-    </style>
-</head>
-<body class="pear-container">
+@layout("/common/_container.html", {bodyAttr: "class=\"pear-container\"", css: ["/ds/css/other/space.css"]}) {
 <div class="layui-card">
     <div class="layui-card-header"></div>
     <div class="layui-card-body">
         <h1><b>Space Page</b></h1>
     </div>
 </div>
-</body>
-</html>
+@}

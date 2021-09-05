@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-	<meta charset="utf-8">
-	<title>会员列表</title>
-	<link rel="stylesheet" href="/component/pear/css/pear.css"/>
-</head>
-<body class="pear-container">
+@layout("/common/_container.html", {bodyAttr:"class=\"pear-container\"", js:["/ds/js/member/member.js"]}) {
 <div class="layui-card">
 	<div class="layui-card-body">
 		<form class="layui-form" action="">
@@ -47,7 +40,6 @@
 		<table id="user-table" lay-filter="user-table"></table>
 	</div>
 </div>
-</body>
 
 <script type="text/html" id="user-toolbar">
 	<button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
@@ -91,8 +83,4 @@
 <script type="text/html" id="user-createTime">
 	{{layui.util.toDateString(d.createTime, 'yyyy-MM-dd')}}
 </script>
-
-<script src="/component/layui/layui.js"></script>
-<script src="/component/pear/pear.js"></script>
-<script src="/ds/js/member/member.js"></script>
-</html>
+@}
