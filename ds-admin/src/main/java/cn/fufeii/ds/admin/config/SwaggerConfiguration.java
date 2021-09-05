@@ -10,14 +10,16 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 /**
+ * swagger2 openApi3
+ *
  * @author FuFei
  * @date 2021/9/3
  */
 @Configuration
 public class SwaggerConfiguration {
 
-    @Bean(value = "defaultApi2")
-    public Docket defaultApi2() {
+    @Bean
+    public Docket docket() {
         return new Docket(DocumentationType.OAS_30)
                 .apiInfo(new ApiInfoBuilder()
                         .title("Ds-Admin Api Doc")
