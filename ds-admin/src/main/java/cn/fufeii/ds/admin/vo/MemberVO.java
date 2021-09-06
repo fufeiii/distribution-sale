@@ -1,5 +1,6 @@
 package cn.fufeii.ds.admin.vo;
 
+import cn.fufeii.ds.common.result.BasePage;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel
-public class MemberVO {
+public class MemberVO extends BasePage {
 
     @ApiModelProperty(value = "主键")
     private Long id;

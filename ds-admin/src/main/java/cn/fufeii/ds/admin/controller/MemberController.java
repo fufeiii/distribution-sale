@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * @author FuFei
  */
 @Controller
-@RequestMapping("/member")
+@RequestMapping("/admin/member")
 public class MemberController {
 
     @Autowired
@@ -41,10 +41,10 @@ public class MemberController {
      */
     @PostMapping("/page")
     @ResponseBody
-    public PageResult<MemberVO> page(@RequestBody MemberVO pageVO, @RequestParam Integer page, @RequestParam Integer size) {
+    public PageResult<MemberVO> page(@RequestBody MemberVO pageVO) {
         // 构造查询条件、分页条件和排序条件
         Wrapper<Member> query = Wrappers.lambdaQuery(BeanUtil.copyProperties(pageVO, Member.class));
-        Page<Member> pageParam = new Page<Member>(page, size).addOrder(OrderItem.desc("id"));
+        Page<Member> pageParam = new Page<Member>(pageVO.getPage(), pageVO.getSize()).addOrder(OrderItem.desc("id"));
         // 执行查询
         Page<Member> pageResult = memberService.getCrudMemberService().page(pageParam, query);
         // 拷贝结果

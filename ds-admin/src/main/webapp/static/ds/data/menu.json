@@ -12,7 +12,7 @@
         "icon": "layui-icon layui-icon-console",
         "type": 1,
         "openType": "_iframe",
-        "href": "/workspace/introduce"
+        "href": "/admin/workspace/introduce"
       },
       {
         "id": 12,
@@ -20,7 +20,7 @@
         "icon": "layui-icon layui-icon-console",
         "type": 1,
         "openType": "_iframe",
-        "href": "/workspace/dashboard"
+        "href": "/admin/workspace/dashboard"
       },
       {
         "id": 13,
@@ -45,7 +45,7 @@
         "icon": "layui-icon layui-icon-console",
         "type": 1,
         "openType": "_iframe",
-        "href": "/member"
+        "href": "/admin/member"
       },
       {
         "id": 22,
