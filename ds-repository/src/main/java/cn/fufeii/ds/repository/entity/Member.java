@@ -1,8 +1,6 @@
 package cn.fufeii.ds.repository.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.Version;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.util.Date;
@@ -25,72 +23,86 @@ public class Member {
     /**
      * 用户标识
      */
+    @TableField
     private String username;
 
     /**
      * 用户昵称
      */
+    @TableField
     private String nickname;
 
     /**
      * 用户头像
      */
+    @TableField
     private String avatar;
 
     /**
      * 第一层级父级标识
      */
+    @TableField
     private String firParent;
 
     /**
      * 第二层级父级标识
      */
+    @TableField
     private String secParent;
 
     /**
      * 第三层级父级标识
      */
+    @TableField
     private String thrParent;
 
     /**
      * 父级全路径
      */
+    @TableField
     private String parentPath;
 
     /**
      * 身份类型
      */
+    @TableField
     private Integer identityType;
 
     /**
-     * 用户段位
+     * 段位类型
      */
+    @TableField
     private Integer rankType;
 
     /**
      * 用户状态
      */
+    @TableField
     private Integer state;
 
     /**
      * 备注
      */
+    @TableField
     private String memo;
 
     /**
      * 乐观锁
      */
     @Version
+    @TableField
     private Integer version;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date updateDateTime;
 
     /**
      * 创建时间
      */
-    private Date createTime;
+    @TableField(fill = FieldFill.INSERT)
+    private Date createDateTime;
 
 }

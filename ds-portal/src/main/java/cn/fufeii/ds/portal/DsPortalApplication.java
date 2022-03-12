@@ -1,4 +1,4 @@
-package cn.fufeii.ds.admin;
+package cn.fufeii.ds.portal;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +19,10 @@ import java.util.Optional;
  */
 @Slf4j
 @SpringBootApplication(scanBasePackages = "cn.fufeii.ds")
-public class DsAdminApplication {
+public class DsPortalApplication {
 
     public static void main(String[] args) {
-        ConfigurableEnvironment environment = SpringApplication.run(DsAdminApplication.class).getEnvironment();
+        ConfigurableEnvironment environment = SpringApplication.run(DsPortalApplication.class).getEnvironment();
         logApplicationStartup(environment);
     }
 

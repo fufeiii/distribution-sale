@@ -6,22 +6,19 @@
 
     <groupId>cn.fufeii</groupId>
     <artifactId>distribution-sale</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>ds-admin</module>
-        <module>ds-api</module>
-        <module>ds-common</module>
         <module>ds-portal</module>
+        <module>ds-common</module>
         <module>ds-repository</module>
-        <module>ds-sdk</module>
-        <module>ds-service</module>
     </modules>
     <packaging>pom</packaging>
     <description>微服务架构下的分销中心</description>
 
     <properties>
-        <alibaba.cloud.version>2.2.6.RELEASE</alibaba.cloud.version>
-        <spring.cloud.version>Hoxton.SR9</spring.cloud.version>
+        <alibaba.cloud.version>2.2.7.RELEASE</alibaba.cloud.version>
+        <spring.cloud.version>Hoxton.SR12</spring.cloud.version>
         <spring.boot.version>2.3.12.RELEASE</spring.boot.version>
         <hutool.version>5.7.9</hutool.version>
         <mybatis.plus.starter.version>3.4.3.2</mybatis.plus.starter.version>

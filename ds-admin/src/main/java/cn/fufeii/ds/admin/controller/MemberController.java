@@ -1,21 +1,17 @@
 package cn.fufeii.ds.admin.controller;
 
+import cn.fufeii.ds.admin.model.vo.request.MemberRequest;
+import cn.fufeii.ds.admin.model.vo.response.MemberResponse;
 import cn.fufeii.ds.admin.service.MemberService;
-import cn.fufeii.ds.admin.vo.MemberVO;
 import cn.fufeii.ds.common.result.CommonResult;
 import cn.fufeii.ds.common.result.PageResult;
 import cn.fufeii.ds.repository.entity.Member;
-import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 会员信息 Controller
@@ -41,25 +37,17 @@ public class MemberController {
      */
     @PostMapping("/page")
     @ResponseBody
-    public PageResult<MemberVO> page(@RequestBody MemberVO pageVO) {
-        // 构造查询条件、分页条件和排序条件
-        Wrapper<Member> query = Wrappers.lambdaQuery(BeanUtil.copyProperties(pageVO, Member.class));
-        Page<Member> pageParam = new Page<Member>(pageVO.getPage(), pageVO.getSize()).addOrder(OrderItem.desc("id"));
-        // 执行查询
-        Page<Member> pageResult = memberService.getCrudMemberService().page(pageParam, query);
-        // 拷贝结果
-        List<MemberVO> list = pageResult.getRecords().stream().map(it -> BeanUtil.copyProperties(it, MemberVO.class)).collect(Collectors.toList());
-        return PageResult.of(pageResult.getTotal(), list);
+    public PageResult<MemberResponse> page(@RequestBody MemberRequest pageParam, @RequestParam Integer page, @RequestParam Integer size) {
+        IPage<MemberResponse> pageResult = memberService.page(pageParam, new Page<Member>(page, size).addOrder(OrderItem.desc("id")));
+        return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
     }
 
     /**
      * 查询详情
      */
     @GetMapping("/get/{id}")
-    @ResponseBody
-    public CommonResult<MemberVO> get(@PathVariable Long id) {
-        Member entity = memberService.getCrudMemberService().getById(id);
-        return CommonResult.success(BeanUtil.copyProperties(entity, MemberVO.class));
+    public CommonResult<MemberResponse> get(@PathVariable Long id) {
+        return CommonResult.success(memberService.get(id));
     }
 
 }

@@ -1,7 +1,10 @@
-layui.use(['table', 'form', 'layer', 'http'], function () {
+layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
     let table = layui.table;
     let form = layui.form;
     let layer = layui.layer;
+    let $ = layui.$;
+    let http = layui.http;
+    let popup = layui.popup;
 
     /**
      * 页面实体对象
@@ -34,6 +37,7 @@ layui.use(['table', 'form', 'layer', 'http'], function () {
         ];
     }
 
+
     /**
      * 搜索操作
      */
@@ -54,21 +58,22 @@ layui.use(['table', 'form', 'layer', 'http'], function () {
     /**
      * 移除操作
      */
-    Member.onRemove = function (data) {
-
-    }
-
-    /**
-     * 打开新增窗口
-     */
-    Member.openAddDlg = function (data) {
-
-    }
-
-    /**
-     * 打开编辑窗口
-     */
-    Member.openEditDlg = function (data) {
+    Member.onRemove = function (id) {
+        layer.confirm('确认删除吗', {icon: 3, title: '提示'}, function (index) {
+            http.ajax({url: '/admin/member/delete/' + id, method: 'DELETE'})
+                .done(function (data) {
+                    if (data.code === 0) {
+                        popup.success('操作成功');
+                    } else {
+                        popup.failure(data.msg);
+                    }
+                })
+                .fail(function (data) {
+                    console.log(data)
+                    popup.failure('服务器错误');
+                });
+            layer.close(index);
+        });
 
     }
 
@@ -104,9 +109,9 @@ layui.use(['table', 'form', 'layer', 'http'], function () {
      */
     table.on('tool(' + Member.tableId + ')', function (obj) {
         if (obj.event === 'remove') {
-            Member.onRemove(obj);
+            Member.onRemove(obj.data.id);
         } else if (obj.event === 'edit') {
-            Member.openEditDlg(obj);
+            Member.openEditDlg(obj.data.id);
         }
     });
 
@@ -114,9 +119,10 @@ layui.use(['table', 'form', 'layer', 'http'], function () {
     /**
      * 搜索按钮点击事件
      */
-    form.on('submit(memberQueryFormSubmit)', function (data) {
+    form.on('submit(*   )', function (data) {
         Member.onSearch(data);
         return false;
     });
 
-})
+
+});

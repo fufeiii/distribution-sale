@@ -1,0 +1,6 @@
+spring:
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/ds?characterEncoding=UTF-8&useSSL=false&useUnicode=true&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false
+    username: root
+    password: 123456

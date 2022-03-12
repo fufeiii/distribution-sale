@@ -2,13 +2,34 @@ server:
   port: 8081
 
 spring:
+
   application:
     name: ds-portal
+
   profiles:
     active: local
+
   mvc:
     locale-resolver: fixed
     locale: zh_CN
+
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+
+  task:
+    execution:
+      shutdown:
+        await-termination: true
+        await-termination-period: 2m
+      pool:
+        allow-core-thread-timeout: false
+        core-size: 8
+        max-size: 16
+        keep-alive: 1m
+        queue-capacity: 2048
+
+  liquibase:
+    change-log: classpath:/liquibase/changelog-master.xml
+    database-change-log-lock-table: liquibase_changelog_lock
+    database-change-log-table: liquibase_changelog

@@ -1,5 +1,7 @@
 package cn.fufeii.ds.repository.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -24,31 +26,37 @@ public class ProfitRecord {
     /**
      * 事件主键
      */
-    private Long eventId;
+    @TableField
+    private Long profitEventId;
 
     /**
      * 账户类型
      */
+    @TableField
     private Integer accountType;
 
     /**
      * 获利会员主键
      */
+    @TableField
     private Long impactMemberId;
 
     /**
      * 获利数
      */
+    @TableField
     private Long incomeAmount;
 
     /**
      * 备注
      */
+    @TableField
     private String memo;
 
     /**
      * 创建时间
      */
-    private Date createTime;
+    @TableField(fill = FieldFill.INSERT)
+    private Date createDateTime;
 
 }

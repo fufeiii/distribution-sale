@@ -5,7 +5,7 @@
     <parent>
         <artifactId>distribution-sale</artifactId>
         <groupId>cn.fufeii</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -14,16 +14,27 @@
     <description>admin管理后台</description>
 
     <dependencies>
-        <!-- ds-service -->
+        <!-- ds-common -->
         <dependency>
             <groupId>cn.fufeii</groupId>
-            <artifactId>ds-service</artifactId>
+            <artifactId>ds-common</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <!-- ds-repository -->
+        <dependency>
+            <groupId>cn.fufeii</groupId>
+            <artifactId>ds-repository</artifactId>
             <version>${parent.version}</version>
         </dependency>
         <!-- spring-security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <!-- spring-web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <!-- beetl -->
         <dependency>
@@ -36,6 +47,12 @@
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
             <version>${knife4j.starter.version}</version>
+        </dependency>
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

@@ -37,11 +37,12 @@ layui.define(['jquery', 'layer'], function (exports) {
     $.extend(http.ajax, {
         defaultOpts: {
             dataType: 'json',
-            type: 'POST',
+            method: 'POST',
             contentType: 'application/json',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
-            }
+            },
+            customHandleError: true
         },
 
         defaultError: {

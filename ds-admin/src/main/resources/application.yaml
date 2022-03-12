@@ -10,20 +10,25 @@ beetl:
 spring:
   application:
     name: ds-admin
+
   profiles:
     active: local
+
   mvc:
     # 国际化固定为中国
     locale-resolver: fixed
     locale: zh_CN
     format:
       date-time: yyyy-MM-dd HH:mm:ss
+
   resources:
     # 静态资源地址
     static-locations: classpath:/static/
+
   jackson:
     time-zone: GMT+8
     date-format: ${spring.mvc.format.date-time}
+
   # FIXME 设置默认用户
   security:
     user:
@@ -35,16 +40,11 @@ spring:
 knife4j:
   enable: true
 
-
 mybatis-plus:
   # 在每个jar包下的mapper文件下进行扫描
-  mapper-locations: classpath*:mapper/*.xml
+  mapper-locations: classpath*:/mapper/*.xml
   configuration:
-    # 下划线转驼峰
-    map-underscore-to-camel-case: true
-    # 开启懒加载
     lazy-loading-enabled: true
-    # 开启懒加载
     aggressive-lazy-loading: false
     # 日志输出
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -54,5 +54,3 @@ mybatis-plus:
     cache-enabled: true
   global-config:
     banner: false
-    db-config:
-      id-type: assign_id

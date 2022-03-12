@@ -1,7 +1,7 @@
 @layout("/common/_container.html", {bodyAttr:"class=\"pear-container\"", js:["/ds/js/member/member.js"]}) {
 <div class="layui-card">
     <div class="layui-card-body">
-        <form class="layui-form" lay-filter="memberQueryForm">
+        <form class="layui-form" lay-filter="*">
             <div class="layui-form-item">
                 <div class="layui-form-item layui-inline">
                     <label class="layui-form-label">用户名</label>
@@ -16,7 +16,8 @@
                     </div>
                 </div>
                 <div class="layui-form-item layui-inline">
-                    <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="memberQueryFormSubmit" ><i class="layui-icon layui-icon-search"></i>
+                    <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="*" lay-submit><i
+                            class="layui-icon layui-icon-search"></i>
                         搜索
                     </button>
                     <button type="reset" class="pear-btn pear-btn-md"><i class="layui-icon layui-icon-refresh"></i>

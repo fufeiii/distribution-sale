@@ -31,7 +31,7 @@ public final class PageResult<T> {
         this.data = data;
     }
 
-    public static <T> PageResult<T> of(long total, Collection<T> data) {
+    public static <T> PageResult<T> success(long total, Collection<T> data) {
         return new PageResult<>(total, data);
     }
 

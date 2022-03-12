@@ -1,8 +1,6 @@
 package cn.fufeii.ds.repository.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.Version;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.util.Date;
@@ -25,57 +23,68 @@ public class ProfitParam {
     /**
      * 账户类型
      */
+    @TableField
     private Integer accountType;
 
     /**
      * 分润类型
      */
+    @TableField
     private Integer profitType;
 
     /**
      * 计算方式
      */
+    @TableField
     private Integer calculateMode;
 
     /**
      * 分润等级
      */
+    @TableField
     private Integer profitLevel;
 
     /**
      * 分润比例
      */
+    @TableField
     private Integer profitRatio;
 
     /**
      * 用户类型
      */
-    private Integer memberType;
+    @TableField
+    private Integer memberIdentityType;
 
     /**
      * 用户段位
      */
-    private Integer memberRank;
+    @TableField
+    private Integer memberRankType;
 
     /**
      * 状态
      */
+    @TableField
     private Integer state;
 
     /**
      * 乐观锁
      */
     @Version
+    @TableField
     private Integer version;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date updateDateTime;
 
     /**
      * 创建时间
      */
-    private Date createTime;
+    @TableField(fill = FieldFill.INSERT)
+    private Date createDateTime;
 
 }
