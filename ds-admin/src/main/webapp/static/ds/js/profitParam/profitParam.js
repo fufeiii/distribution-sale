@@ -142,6 +142,7 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
     table.render({
         elem: '#' + ProfitParam.tableId,
         skin: 'line',
+        size: 'lg',
         url: '/admin/profit-param/page',
         method: 'POST',
         page: true,

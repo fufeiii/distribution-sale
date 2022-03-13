@@ -13,10 +13,17 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ExceptionEnum implements ResultDefinition {
 
-    /**
-     * 成功
-     */
-    SUCCESS(0, "成功");
+    SUCCESS(0, "成功"),
+
+    /* ========================= 客户端异常枚举 ========================= */
+    CLIENT_ERROR(4000, "客户端错误"),
+
+    /* ========================= 服务端异常枚举 ========================= */
+    SERVER_ERROR(4000, "客户端错误"),
+
+
+    /* ========================= 管理台异常枚举 ========================= */
+    ADMIN_ERROR(6000, "管理台错误");
 
 
     private final int code;

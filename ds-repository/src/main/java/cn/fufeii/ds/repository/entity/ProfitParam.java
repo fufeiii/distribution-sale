@@ -1,5 +1,6 @@
 package cn.fufeii.ds.repository.entity;
 
+import cn.fufeii.ds.common.enumerate.biz.*;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
@@ -24,25 +25,25 @@ public class ProfitParam {
      * 账户类型
      */
     @TableField
-    private Integer accountType;
+    private AccountTypeEnum accountType;
 
     /**
      * 分润类型
      */
     @TableField
-    private Integer profitType;
+    private ProfitTypeEnum profitType;
 
     /**
      * 计算方式
      */
     @TableField
-    private Integer calculateMode;
+    private CalculateModeEnum calculateMode;
 
     /**
      * 分润等级
      */
     @TableField
-    private Integer profitLevel;
+    private ProfitLevelEnum profitLevel;
 
     /**
      * 分润比例
@@ -54,25 +55,25 @@ public class ProfitParam {
      * 用户类型
      */
     @TableField
-    private Integer memberIdentityType;
+    private MemberIdentityTypeEnum memberIdentityType;
 
     /**
      * 用户段位
      */
     @TableField
-    private Integer memberRankType;
+    private MemberRankTypeEnum memberRankType;
 
     /**
      * 状态
      */
     @TableField
-    private Integer state;
+    private StateEnum state;
 
     /**
      * 乐观锁
      */
     @Version
-    @TableField
+    @TableField(fill = FieldFill.INSERT)
     private Integer version;
 
     /**

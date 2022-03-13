@@ -1,10 +1,12 @@
 package cn.fufeii.ds.admin.model.vo.request;
 
+import cn.fufeii.ds.common.enumerate.biz.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.Date;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * 分润参数 Request
@@ -15,86 +17,46 @@ import java.util.Date;
 @ApiModel
 public class ProfitParamRequest {
 
-    /**
-     * 页码
-     */
-    private Integer page;
+    @ApiModelProperty(value = "页码")
+    private Integer page = 1;
 
-    /**
-     * 页数
-     */
-    private Integer size;
+    @ApiModelProperty(value = "页数")
+    private Integer size = 10;
 
-    /**
-     * 主键
-     */
-    @ApiModelProperty(value = "主键")
+    @ApiModelProperty(value = "主键（修改时必传）")
     private Long id;
 
-    /**
-     * 账户类型
-     */
+    @NotNull
     @ApiModelProperty(value = "账户类型")
-    private Integer accountType;
+    private AccountTypeEnum accountType;
 
-    /**
-     * 分润类型
-     */
+    @NotNull
     @ApiModelProperty(value = "分润类型")
-    private Integer profitType;
+    private ProfitTypeEnum profitType;
 
-    /**
-     * 计算方式
-     */
+    @NotNull
     @ApiModelProperty(value = "计算方式")
-    private Integer calculateMode;
+    private CalculateModeEnum calculateMode;
 
-    /**
-     * 分润等级
-     */
+    @NotNull
     @ApiModelProperty(value = "分润等级")
-    private Integer profitLevel;
+    private ProfitLevelEnum profitLevel;
 
-    /**
-     * 分润比例
-     */
+    @NotNull
+    @Min(1)
     @ApiModelProperty(value = "分润比例")
     private Integer profitRatio;
 
-    /**
-     * 用户类型
-     */
+    @NotNull
     @ApiModelProperty(value = "用户类型")
-    private Integer memberIdentityType;
+    private MemberIdentityTypeEnum memberIdentityType;
 
-    /**
-     * 用户段位
-     */
+    @NotNull
     @ApiModelProperty(value = "用户段位")
-    private Integer memberRankType;
+    private MemberRankTypeEnum memberRankType;
 
-    /**
-     * 状态
-     */
+    @NotNull
     @ApiModelProperty(value = "状态")
-    private Integer state;
-
-    /**
-     * 乐观锁
-     */
-    @ApiModelProperty(value = "乐观锁")
-    private Integer version;
-
-    /**
-     * 更新时间
-     */
-    @ApiModelProperty(value = "更新时间")
-    private Date updateDateTime;
-
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value = "创建时间")
-    private Date createDateTime;
+    private StateEnum state;
 
 }

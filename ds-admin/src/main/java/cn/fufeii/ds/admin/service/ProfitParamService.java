@@ -27,16 +27,22 @@ public class ProfitParamService {
      * 分页查询
      */
     public IPage<ProfitParamResponse> page(ProfitParamRequest pageParam, IPage<ProfitParam> pageable) {
-        Wrapper<ProfitParam> queryWrapper = Wrappers.lambdaQuery();
+        Wrapper<ProfitParam> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, ProfitParam.class));
         IPage<ProfitParam> selectPage = crudProfitParamService.selectPage(queryWrapper, pageable);
         // 组装response对象返回
-        IPage<ProfitParamResponse> respPage = selectPage.convert(it -> {
-            ProfitParamResponse profitParamResponse = new ProfitParamResponse();
-            // 建议使用setter，字段类型问题能在编译期发现
-            BeanCopierUtil.copy(it, profitParamResponse);
-            return profitParamResponse;
+        return selectPage.convert(it -> {
+            ProfitParamResponse response = new ProfitParamResponse();
+            response.setId(it.getId());
+            response.setAccountType(it.getAccountType().getMessage());
+            response.setProfitType(it.getProfitType().getMessage());
+            response.setCalculateMode(it.getCalculateMode().getMessage());
+            response.setProfitLevel(it.getProfitLevel().getMessage());
+            response.setProfitRatio(it.getProfitRatio());
+            response.setMemberIdentityType(it.getMemberIdentityType().getMessage());
+            response.setMemberRankType(it.getMemberRankType().getMessage());
+            response.setState(it.getState().getMessage());
+            return response;
         });
-        return respPage;
     }
 
     /**
@@ -44,10 +50,17 @@ public class ProfitParamService {
      */
     public ProfitParamResponse get(Long id) {
         ProfitParam profitParam = crudProfitParamService.selectById(id);
-        ProfitParamResponse profitParamResp = new ProfitParamResponse();
-        // 建议使用setter，字段类型问题能在编译期发现
-        BeanCopierUtil.copy(profitParam, profitParamResp);
-        return profitParamResp;
+        ProfitParamResponse response = new ProfitParamResponse();
+        response.setId(profitParam.getId());
+        response.setAccountType(profitParam.getAccountType().name());
+        response.setProfitType(profitParam.getProfitType().name());
+        response.setCalculateMode(profitParam.getCalculateMode().name());
+        response.setProfitLevel(profitParam.getProfitLevel().name());
+        response.setProfitRatio(profitParam.getProfitRatio());
+        response.setMemberIdentityType(profitParam.getMemberIdentityType().name());
+        response.setMemberRankType(profitParam.getMemberRankType().name());
+        response.setState(profitParam.getState().name());
+        return response;
     }
 
     /**

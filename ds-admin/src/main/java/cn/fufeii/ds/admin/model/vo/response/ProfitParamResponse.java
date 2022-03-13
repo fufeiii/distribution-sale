@@ -4,8 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.Date;
-
 /**
  * 分润参数 Response
  *
@@ -15,76 +13,31 @@ import java.util.Date;
 @ApiModel
 public class ProfitParamResponse {
 
-    /**
-     * 主键
-     */
     @ApiModelProperty(value = "主键")
     private Long id;
 
-    /**
-     * 账户类型
-     */
     @ApiModelProperty(value = "账户类型")
-    private Integer accountType;
+    private String accountType;
 
-    /**
-     * 分润类型
-     */
     @ApiModelProperty(value = "分润类型")
-    private Integer profitType;
+    private String profitType;
 
-    /**
-     * 计算方式
-     */
     @ApiModelProperty(value = "计算方式")
-    private Integer calculateMode;
+    private String calculateMode;
 
-    /**
-     * 分润等级
-     */
     @ApiModelProperty(value = "分润等级")
-    private Integer profitLevel;
+    private String profitLevel;
 
-    /**
-     * 分润比例
-     */
     @ApiModelProperty(value = "分润比例")
     private Integer profitRatio;
 
-    /**
-     * 用户类型
-     */
     @ApiModelProperty(value = "用户类型")
-    private Integer memberIdentityType;
+    private String memberIdentityType;
 
-    /**
-     * 用户段位
-     */
     @ApiModelProperty(value = "用户段位")
-    private Integer memberRankType;
+    private String memberRankType;
 
-    /**
-     * 状态
-     */
     @ApiModelProperty(value = "状态")
-    private Integer state;
-
-    /**
-     * 乐观锁
-     */
-    @ApiModelProperty(value = "乐观锁")
-    private Integer version;
-
-    /**
-     * 更新时间
-     */
-    @ApiModelProperty(value = "更新时间")
-    private Date updateDateTime;
-
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value = "创建时间")
-    private Date createDateTime;
+    private String state;
 
 }

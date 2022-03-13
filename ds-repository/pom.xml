@@ -13,21 +13,24 @@
     <description>实体和实体操作组件</description>
 
     <dependencies>
-
-        <!-- mysql驱动 -->
+        <!-- common -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
+            <groupId>cn.fufeii</groupId>
+            <artifactId>ds-common</artifactId>
+            <version>${parent.version}</version>
         </dependency>
-
-        <!-- mp -->
+        <!-- mysql驱动 -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>${mybatis.plus.starter.version}</version>
         </dependency>
-
+        <!-- mp -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
         <!-- lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>

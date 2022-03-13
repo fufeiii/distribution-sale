@@ -14,13 +14,7 @@
 
 
     <dependencies>
-        <!-- ds-common -->
-        <dependency>
-            <groupId>cn.fufeii</groupId>
-            <artifactId>ds-common</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
-        <!-- ds-repository -->
+        <!-- ds-repository-common -->
         <dependency>
             <groupId>cn.fufeii</groupId>
             <artifactId>ds-repository</artifactId>

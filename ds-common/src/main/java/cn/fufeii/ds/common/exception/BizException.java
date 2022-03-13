@@ -1,0 +1,31 @@
+package cn.fufeii.ds.common.exception;
+
+import cn.fufeii.ds.common.enumerate.ResultDefinition;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+/**
+ * 业务异常
+ *
+ * @author FuFei
+ * @date 2022/3/13
+ */
+@Getter
+@Setter
+@NoArgsConstructor
+public class BizException extends RuntimeException {
+
+    private Integer code;
+
+    public BizException(ResultDefinition resultDefinition) {
+        super(resultDefinition.getMsg());
+        code = resultDefinition.getCode();
+    }
+
+    public BizException(Integer code, String msg) {
+        super(msg);
+        this.code = code;
+    }
+
+}

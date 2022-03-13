@@ -19,14 +19,17 @@
             <artifactId>hutool-core</artifactId>
             <version>${hutool.version}</version>
         </dependency>
+        <!-- bean-copier -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
+        <!-- bean-copier -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
         </dependency>
+        <!-- mp-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-annotation</artifactId>
@@ -38,6 +41,11 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
             <optional>true</optional>
+        </dependency>
+        <!-- sl4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
     </dependencies>
 

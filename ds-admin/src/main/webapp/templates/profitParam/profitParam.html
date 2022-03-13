@@ -1,28 +1,96 @@
 @layout("/common/container.html", {bodyAttr:"class=\"pear-container\"", js:["/ds/js/profitParam/profitParam.js"]}) {
 <div class="layui-card">
     <div class="layui-card-body">
-        <form class="layui-form" lay-filter="*">
+        <form class="layui-form" lay-filter="profitParamQueryForm">
             <div class="layui-form-item">
-                <div class="layui-form-item layui-inline">
-                    <label class="layui-form-label">用户名</label>
+                <div class="layui-inline">
+                    <label class="layui-form-label">账户类型</label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" name="username" placeholder="" type="text">
+                        <select name="accountType">
+                            <option value="">请选择</option>
+                            @for(at in ate){
+                            <option value="${at.key}">${at.value}</option>
+                            @}
+                        </select>
                     </div>
                 </div>
-                <div class="layui-form-item layui-inline">
-                    <label class="layui-form-label">用户昵称</label>
+                <div class="layui-inline">
+                    <label class="layui-form-label">分润类型</label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" name="nickname" placeholder="" type="text">
+                        <select name="profitType">
+                            <option value="">请选择</option>
+                            @for(pt in pte){
+                            <option value="${pt.key}">${pt.value}</option>
+                            @}
+                        </select>
                     </div>
                 </div>
-                <div class="layui-form-item layui-inline">
-                    <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="*" lay-submit><i
-                            class="layui-icon layui-icon-search"></i>
-                        搜索
-                    </button>
-                    <button class="pear-btn pear-btn-md" type="reset"><i class="layui-icon layui-icon-refresh"></i>
-                        重置
-                    </button>
+                <div class="layui-inline">
+                    <label class="layui-form-label">计算模型</label>
+                    <div class="layui-input-inline">
+                        <select name="calculateMode">
+                            <option value="">请选择</option>
+                            @for(cm in cme){
+                            <option value="${cm.key}">${cm.value}</option>
+                            @}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">分润等级</label>
+                    <div class="layui-input-inline">
+                        <select name="profitLevel">
+                            <option value="">请选择</option>
+                            @for(pl in ple){
+                            <option value="${pl.key}">${pl.value}</option>
+                            @}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户身份</label>
+                    <div class="layui-input-inline">
+                        <select name="memberIdentityType">
+                            <option value="">请选择</option>
+                            @for(mt in mte){
+                            <option value="${mt.key}">${mt.value}</option>
+                            @}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户段位</label>
+                    <div class="layui-input-inline">
+                        <select name="memberRankType">
+                            <option value="">请选择</option>
+                            @for(mr in mre){
+                            <option value="${mr.key}">${mr.value}</option>
+                            @}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">状&emsp;&emsp;态</label>
+                    <div class="layui-input-inline">
+                        <select name="state">
+                            <option value="">请选择</option>
+                            @for(s in se){
+                            <option value="${s.key}">${s.value}</option>
+                            @}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-inline">
+                        <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="*" lay-submit><i
+                                class="layui-icon layui-icon-search"></i>
+                            搜索
+                        </button>
+                        <button class="pear-btn pear-btn-md" type="reset"><i class="layui-icon layui-icon-refresh"></i>
+                            重置
+                        </button>
+                    </div>
                 </div>
             </div>
         </form>

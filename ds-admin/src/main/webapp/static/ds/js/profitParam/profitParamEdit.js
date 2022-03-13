@@ -4,15 +4,6 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
     let form = layui.form;
     let popup = layui.popup;
 
-    // // 监听分润类型（邀请分润只能选择固定分润）
-    // form.on('select(profitType)', function(data){
-    //     let isInv = data.value === 'INVITE';
-    //     if (isInv) {
-    //         form.val("distProfitParamForm", {
-    //
-    //         });
-    //     }
-    // });
     //获取详情信息，填充表单
     http.ajax({url: '/admin/profit-param/get/' + http.getQueryVariable('id'), method: 'GET'})
         .done(function (data) {
