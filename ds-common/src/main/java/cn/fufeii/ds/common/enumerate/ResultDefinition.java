@@ -1,4 +1,4 @@
-package cn.fufeii.ds.common.result;
+package cn.fufeii.ds.common.enumerate;
 
 /**
  * 结果枚举定义
@@ -8,19 +8,19 @@ package cn.fufeii.ds.common.result;
  * @author FuFei
  * @date 2021/9/2
  */
-public interface ResultEnumDefinition {
+public interface ResultDefinition {
 
     /**
      * 获取响应码
      *
-     * @return -
+     * @return *
      */
     int getCode();
 
     /**
      * 获取响应消息
      *
-     * @return -
+     * @return *
      */
     String getMsg();
 

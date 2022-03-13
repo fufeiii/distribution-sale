@@ -1,5 +1,7 @@
 package cn.fufeii.ds.common.result;
 
+import cn.fufeii.ds.common.enumerate.ExceptionEnum;
+import cn.fufeii.ds.common.enumerate.ResultDefinition;
 import lombok.Data;
 
 /**
@@ -21,21 +23,21 @@ public final class CommonResult<T> {
     private final boolean success;
 
     private CommonResult(int code, String msg, T data) {
-        this.success = code == CommonEnum.SUCCESS.getCode();
+        this.success = code == ExceptionEnum.SUCCESS.getCode();
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
     public static <T> CommonResult<T> success() {
-        return success(CommonEnum.SUCCESS, null);
+        return success(ExceptionEnum.SUCCESS, null);
     }
 
     public static <T> CommonResult<T> success(T data) {
-        return success(CommonEnum.SUCCESS, data);
+        return success(ExceptionEnum.SUCCESS, data);
     }
 
-    public static <T> CommonResult<T> success(ResultEnumDefinition rd, T data) {
+    public static <T> CommonResult<T> success(ResultDefinition rd, T data) {
         return new CommonResult<>(rd.getCode(), rd.getMsg(), data);
     }
 
@@ -43,7 +45,7 @@ public final class CommonResult<T> {
         return new CommonResult<>(code, msg, null);
     }
 
-    public static <T> CommonResult<T> fail(ResultEnumDefinition rd) {
+    public static <T> CommonResult<T> fail(ResultDefinition rd) {
         return fail(rd.getCode(), rd.getMsg());
     }
 

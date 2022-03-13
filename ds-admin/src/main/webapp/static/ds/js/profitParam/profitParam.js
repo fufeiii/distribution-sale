@@ -9,37 +9,49 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
     /**
      * 页面实体对象
      */
-    let Member = {
-        tableId: 'memberTable'
+    let ProfitParam = {
+        tableId: 'profitParamTable'
     }
 
     /**
      * 初始化表列
      */
-    Member.initCols = function () {
+    ProfitParam.initCols = function () {
         return [
             [
                 {
-                    type: 'checkbox'
-                },
-                {
-                    title: '用户名',
-                    field: 'username',
+                    title: '账户类型',
+                    field: 'accountType',
                     align: 'center'
                 },
                 {
-                    title: '昵称',
-                    field: 'nickname',
+                    title: '分润类型',
+                    field: 'profitType',
                     align: 'center'
                 },
                 {
-                    title: '身份类型',
-                    field: 'identityType',
+                    title: '计算方式',
+                    field: 'calculateMode',
                     align: 'center'
                 },
                 {
-                    title: '段位类型',
-                    field: 'rankType',
+                    title: '分润等级',
+                    field: 'profitLevel',
+                    align: 'center'
+                },
+                {
+                    title: '分润比列',
+                    field: 'profitRatio',
+                    align: 'center'
+                },
+                {
+                    title: '用户身份类型',
+                    field: 'memberIdentityType',
+                    align: 'center'
+                },
+                {
+                    title: '用户段位类型',
+                    field: 'memberRankType',
                     align: 'center'
                 },
                 {
@@ -61,29 +73,56 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
     /**
      * 搜索操作
      */
-    Member.onSearch = function () {
-        let query = form.val('memberQueryForm');
+    ProfitParam.onSearch = function () {
+        let query = form.val('profitParamQueryForm');
         Object.keys(query).forEach(function (key) {
             let value = query[key];
             if (value === '') {
                 query[key] = null;
             }
         });
-        table.reload(Member.tableId, {
+        table.reload(ProfitParam.tableId, {
             where: query,
             page: {curr: 1}
         });
     }
 
     /**
+     * 弹出添加对话框
+     */
+    ProfitParam.openAddDlg = function () {
+        layer.open({
+            type: 2,
+            title: '添加分润参数',
+            shade: 0.3,
+            area: ['500px', '610px'],
+            content: '/admin/profit-param/add?tableId=' + ProfitParam.tableId,
+        });
+    };
+
+    /**
+     * 弹出编辑对话框
+     */
+    ProfitParam.openEditDlg = function (id) {
+        layer.open({
+            type: 2,
+            title: '编辑分润参数',
+            shade: 0.3,
+            area: ['500px', '610px'],
+            content: '/admin/profit-param/edit?tableId=' + ProfitParam.tableId + '&id=' + id,
+        });
+    };
+
+    /**
      * 移除操作
      */
-    Member.onRemove = function (id) {
+    ProfitParam.onRemove = function (id) {
         layer.confirm('确认删除吗', {icon: 3, title: '提示'}, function (index) {
-            http.ajax({url: '/admin/member/delete/' + id, method: 'DELETE'})
+            http.ajax({url: '/admin/profit-param/remove/' + id, method: 'DELETE'})
                 .done(function (data) {
                     if (data.code === 0) {
                         popup.success('操作成功');
+                        ProfitParam.onSearch();
                     } else {
                         popup.failure(data.msg);
                     }
@@ -97,20 +136,19 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
 
     }
 
-
     /**
      * 表格渲染配置
      */
     table.render({
-        elem: '#' + Member.tableId,
+        elem: '#' + ProfitParam.tableId,
         skin: 'line',
-        url: '/admin/member/page',
+        url: '/admin/profit-param/page',
         method: 'POST',
         page: true,
         contentType: 'application/json',
         request: {pageName: 'page', limitName: 'size'},
         response: {countName: 'total'},
-        cols: Member.initCols(),
+        cols: ProfitParam.initCols(),
         toolbar: '#toolbar',
         defaultToolbar: ['filter', 'print', 'exports']
     });
@@ -118,20 +156,20 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
     /**
      * 监听表格上方按钮 toolbar
      */
-    table.on('toolbar(' + Member.tableId + ')', function (obj) {
+    table.on('toolbar(' + ProfitParam.tableId + ')', function (obj) {
         if (obj.event === 'add') {
-            Member.openAddDlg();
+            ProfitParam.openAddDlg();
         }
     });
 
     /**
      * 监听数据行末尾按钮 rowBar
      */
-    table.on('tool(' + Member.tableId + ')', function (obj) {
+    table.on('tool(' + ProfitParam.tableId + ')', function (obj) {
         if (obj.event === 'remove') {
-            Member.onRemove(obj.data.id);
+            ProfitParam.onRemove(obj.data.id);
         } else if (obj.event === 'edit') {
-            Member.openEditDlg(obj.data.id);
+            ProfitParam.openEditDlg(obj.data.id);
         }
     });
 
@@ -140,7 +178,7 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
      * 搜索按钮点击事件
      */
     form.on('submit(*)', function (data) {
-        Member.onSearch(data);
+        ProfitParam.onSearch(data);
         return false;
     });
 

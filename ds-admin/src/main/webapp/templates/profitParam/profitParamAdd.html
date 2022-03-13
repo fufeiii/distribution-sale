@@ -1,0 +1,105 @@
+@layout("/common/container.html", {js:["/ds/js/profitParam/profitParamAdd.js"]}) {
+<form action="" class="layui-form">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="layui-form-item">
+                <blockquote class="layui-elem-quote">
+                    注：计算模式 [百分比] 仅支持 分润类型为 [商品交易] 的场景。
+                </blockquote>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">账户类型</label>
+                <div class="layui-input-block">
+                    <select lay-verify="required" name="accountType">
+                        @for(at in ate){
+                        <option value="${at.name}">${at.message}</option>
+                        @}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">计算方式</label>
+                <div class="layui-input-block">
+                    <select lay-verify="required" name="calculateMode">
+                        @for(cm in cme){
+                        <option value="${cm.name}">${cm.message}</option>
+                        @}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">分润系数</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" id="profitRatio" lay-verType="tips" lay-verify="required|number"
+                           name="profitRatio"
+                           placeholder="请输入分润系数" value="1"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">状态</label>
+                <div class="layui-input-block">
+                    <select id="state" lay-verify="required" name="state">
+                        @for(s in se){
+                        <option value="${s.name}">${s.message}</option>
+                        @}
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">分润类型</label>
+                <div class="layui-input-block">
+                    <select id="profitType" lay-verify="required" name="profitType">
+                        @for(te in pte){
+                        <option value="${te.name}">${te.message}</option>
+                        @}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">分润等级</label>
+                <div class="layui-input-block">
+                    <select id="profitLevel" lay-verify="required" name="profitLevel">
+                        @for(pl in ple){
+                        <option value="${pl.name}">${pl.message}</option>
+                        @}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">用户段位</label>
+                <div class="layui-input-block">
+                    <select id="memberRank" lay-verify="required" name="memberRank">
+                        @for(re in mre){
+                        <option value="${re.name}">${re.message}</option>
+                        @}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">用户类型</label>
+                <div class="layui-input-block">
+                    <select id="memberType" lay-verify="required" name="memberType">
+                        @for(te in mte){
+                        <option value="${te.name}">${te.message}</option>
+                        @}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom">
+        <div class="button-container">
+            <button class="pear-btn pear-btn-primary pear-btn-sm" lay-filter="btnSubmit" lay-submit="" type="submit">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button class="pear-btn pear-btn-sm" type="reset">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+@}

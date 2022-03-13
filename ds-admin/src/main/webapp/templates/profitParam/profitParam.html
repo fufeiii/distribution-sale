@@ -1,4 +1,4 @@
-@layout("/common/container.html", {bodyAttr:"class=\"pear-container\"", js:["/ds/js/member/member.js"]}) {
+@layout("/common/container.html", {bodyAttr:"class=\"pear-container\"", js:["/ds/js/profitParam/profitParam.js"]}) {
 <div class="layui-card">
     <div class="layui-card-body">
         <form class="layui-form" lay-filter="*">
@@ -6,13 +6,13 @@
                 <div class="layui-form-item layui-inline">
                     <label class="layui-form-label">用户名</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="username" placeholder="" class="layui-input">
+                        <input class="layui-input" name="username" placeholder="" type="text">
                     </div>
                 </div>
                 <div class="layui-form-item layui-inline">
                     <label class="layui-form-label">用户昵称</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="nickname" placeholder="" class="layui-input">
+                        <input class="layui-input" name="nickname" placeholder="" type="text">
                     </div>
                 </div>
                 <div class="layui-form-item layui-inline">
@@ -20,7 +20,7 @@
                             class="layui-icon layui-icon-search"></i>
                         搜索
                     </button>
-                    <button type="reset" class="pear-btn pear-btn-md"><i class="layui-icon layui-icon-refresh"></i>
+                    <button class="pear-btn pear-btn-md" type="reset"><i class="layui-icon layui-icon-refresh"></i>
                         重置
                     </button>
                 </div>
@@ -30,18 +30,20 @@
 </div>
 <div class="layui-card">
     <div class="layui-card-body">
-        <table id="memberTable" lay-filter="memberTable"></table>
+        <table id="profitParamTable" lay-filter="profitParamTable"></table>
     </div>
 </div>
 
-<script type="text/html" id="toolbar">
+<script id="toolbar" type="text/html">
     <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add"><i class="layui-icon layui-icon-add-1"></i>
         新增
     </button>
 </script>
 
-<script type="text/html" id="rowBar">
-    <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
-    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+<script id="rowBar" type="text/html">
+    <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
+    </button>
+    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
+    </button>
 </script>
 @}

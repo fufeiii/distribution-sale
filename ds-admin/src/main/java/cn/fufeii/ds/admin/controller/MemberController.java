@@ -26,7 +26,7 @@ public class MemberController {
     private MemberService memberService;
 
 
-    @GetMapping
+    @GetMapping("/")
     public String index() {
         return "/member/member.html";
     }
@@ -37,8 +37,8 @@ public class MemberController {
      */
     @PostMapping("/page")
     @ResponseBody
-    public PageResult<MemberResponse> page(@RequestBody MemberRequest pageParam, @RequestParam Integer page, @RequestParam Integer size) {
-        IPage<MemberResponse> pageResult = memberService.page(pageParam, new Page<Member>(page, size).addOrder(OrderItem.desc("id")));
+    public PageResult<MemberResponse> page(@RequestBody MemberRequest pageParam) {
+        IPage<MemberResponse> pageResult = memberService.page(pageParam, new Page<Member>(pageParam.getPage(), pageParam.getSize()).addOrder(OrderItem.desc("id")));
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
     }
 
