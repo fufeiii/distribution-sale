@@ -1,13 +1,14 @@
 package cn.fufeii.ds.admin.controller;
 
-import cn.fufeii.ds.admin.model.vo.request.ProfitParamQueryRequest;
-import cn.fufeii.ds.admin.model.vo.request.ProfitParamUpsertRequest;
-import cn.fufeii.ds.admin.model.vo.response.ProfitParamResponse;
-import cn.fufeii.ds.admin.service.ProfitParamService;
-import cn.fufeii.ds.common.enumerate.biz.*;
+import cn.fufeii.ds.admin.model.vo.request.RankParamQueryRequest;
+import cn.fufeii.ds.admin.model.vo.request.RankParamUpsertRequest;
+import cn.fufeii.ds.admin.model.vo.response.RankParamResponse;
+import cn.fufeii.ds.admin.service.RankParamService;
+import cn.fufeii.ds.common.enumerate.biz.MemberRankTypeEnum;
+import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.result.CommonResult;
 import cn.fufeii.ds.common.result.PageResult;
-import cn.fufeii.ds.repository.entity.ProfitParam;
+import cn.fufeii.ds.repository.entity.RankParam;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -18,34 +19,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 分润参数 Controller
+ * 段位参数 Controller
  *
  * @author FuFei
  */
-@Api("分润参数")
+@Api("段位参数")
 @Controller
-@RequestMapping("/admin/profit-param")
-public class ProfitParamController {
+@RequestMapping("/admin/rank-param")
+public class RankParamController {
 
     @Autowired
-    private ProfitParamService profitParamService;
+    private RankParamService rankParamService;
 
     /**
      * 封装固定的参数
      */
     private void injectionParam(Model model) {
-        // 遍历 账户类型 枚举
-        model.addAttribute("ate", AccountTypeEnum.getKeyValuePairList());
-        // 遍历 分润类型 枚举
-        model.addAttribute("pte", ProfitTypeEnum.getKeyValuePairList());
-        // 遍历 分润计算方式 枚举
-        model.addAttribute("cme", CalculateModeEnum.getKeyValuePairList());
-        // 分销等级 暂时先这样模拟一下
-        model.addAttribute("ple", ProfitLevelEnum.getKeyValuePairList());
         // 遍历 用户段位 枚举
         model.addAttribute("mre", MemberRankTypeEnum.getKeyValuePairList());
-        // 遍历 用户身份 枚举
-        model.addAttribute("mte", MemberIdentityTypeEnum.getKeyValuePairList());
         // 遍历 状态 枚举
         model.addAttribute("se", StateEnum.getKeyValuePairList());
     }
@@ -54,7 +45,7 @@ public class ProfitParamController {
     @GetMapping("/")
     public String index(Model model) {
         this.injectionParam(model);
-        return "/profitParam/profitParam.html";
+        return "/rankParam/rankParam.html";
     }
 
     /**
@@ -63,7 +54,7 @@ public class ProfitParamController {
     @GetMapping("/add")
     public String addPage(Model model) {
         this.injectionParam(model);
-        return "/profitParam/profitParamAdd.html";
+        return "/rankParam/rankParamAdd.html";
     }
 
     /**
@@ -72,7 +63,7 @@ public class ProfitParamController {
     @GetMapping("/edit")
     public String edit(Model model) {
         this.injectionParam(model);
-        return "/profitParam/profitParamEdit.html";
+        return "/rankParam/rankParamEdit.html";
     }
 
     /**
@@ -80,8 +71,8 @@ public class ProfitParamController {
      */
     @PostMapping("/page")
     @ResponseBody
-    public PageResult<ProfitParamResponse> page(@RequestBody ProfitParamQueryRequest pageParam) {
-        IPage<ProfitParamResponse> pageResult = profitParamService.page(pageParam, new Page<ProfitParam>(pageParam.getPage(), pageParam.getSize()).addOrder(OrderItem.desc("id")));
+    public PageResult<RankParamResponse> page(@RequestBody RankParamQueryRequest pageParam) {
+        IPage<RankParamResponse> pageResult = rankParamService.page(pageParam, new Page<RankParam>(pageParam.getPage(), pageParam.getSize()).addOrder(OrderItem.desc("id")));
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
     }
 
@@ -90,8 +81,8 @@ public class ProfitParamController {
      */
     @GetMapping("/get/{id}")
     @ResponseBody
-    public CommonResult<ProfitParamResponse> get(@PathVariable Long id) {
-        return CommonResult.success(profitParamService.get(id));
+    public CommonResult<RankParamResponse> get(@PathVariable Long id) {
+        return CommonResult.success(rankParamService.get(id));
     }
 
     /**
@@ -99,8 +90,8 @@ public class ProfitParamController {
      */
     @PostMapping("/add")
     @ResponseBody
-    public CommonResult<Void> add(@RequestBody ProfitParamUpsertRequest addParam) {
-        profitParamService.add(addParam);
+    public CommonResult<Void> add(@RequestBody RankParamUpsertRequest addParam) {
+        rankParamService.add(addParam);
         return CommonResult.success();
     }
 
@@ -109,8 +100,8 @@ public class ProfitParamController {
      */
     @PutMapping("/modify")
     @ResponseBody
-    public CommonResult<Void> modify(@RequestBody ProfitParamUpsertRequest modifyParam) {
-        profitParamService.modify(modifyParam);
+    public CommonResult<Void> modify(@RequestBody RankParamUpsertRequest modifyParam) {
+        rankParamService.modify(modifyParam);
         return CommonResult.success();
     }
 
@@ -120,7 +111,7 @@ public class ProfitParamController {
     @DeleteMapping("/remove/{id}")
     @ResponseBody
     public CommonResult<Void> remove(@PathVariable Long id) {
-        profitParamService.remove(id);
+        rankParamService.remove(id);
         return CommonResult.success();
     }
 }

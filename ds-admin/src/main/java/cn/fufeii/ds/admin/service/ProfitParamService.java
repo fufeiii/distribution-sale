@@ -1,6 +1,7 @@
 package cn.fufeii.ds.admin.service;
 
-import cn.fufeii.ds.admin.model.vo.request.ProfitParamRequest;
+import cn.fufeii.ds.admin.model.vo.request.ProfitParamQueryRequest;
+import cn.fufeii.ds.admin.model.vo.request.ProfitParamUpsertRequest;
 import cn.fufeii.ds.admin.model.vo.response.ProfitParamResponse;
 import cn.fufeii.ds.common.util.BeanCopierUtil;
 import cn.fufeii.ds.repository.crud.CrudProfitParamService;
@@ -26,7 +27,7 @@ public class ProfitParamService {
     /**
      * 分页查询
      */
-    public IPage<ProfitParamResponse> page(ProfitParamRequest pageParam, IPage<ProfitParam> pageable) {
+    public IPage<ProfitParamResponse> page(ProfitParamQueryRequest pageParam, IPage<ProfitParam> pageable) {
         Wrapper<ProfitParam> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, ProfitParam.class));
         IPage<ProfitParam> selectPage = crudProfitParamService.selectPage(queryWrapper, pageable);
         // 组装response对象返回
@@ -41,6 +42,8 @@ public class ProfitParamService {
             response.setMemberIdentityType(it.getMemberIdentityType().getMessage());
             response.setMemberRankType(it.getMemberRankType().getMessage());
             response.setState(it.getState().getMessage());
+            response.setCreateDateTime(it.getCreateDateTime());
+            response.setUpdateDateTime(it.getUpdateDateTime());
             return response;
         });
     }
@@ -60,13 +63,15 @@ public class ProfitParamService {
         response.setMemberIdentityType(profitParam.getMemberIdentityType().name());
         response.setMemberRankType(profitParam.getMemberRankType().name());
         response.setState(profitParam.getState().name());
+        response.setCreateDateTime(profitParam.getCreateDateTime());
+        response.setUpdateDateTime(profitParam.getUpdateDateTime());
         return response;
     }
 
     /**
      * 保存
      */
-    public void add(ProfitParamRequest addParam) {
+    public void add(ProfitParamUpsertRequest addParam) {
         ProfitParam profitParam = new ProfitParam();
         // 建议使用setter，字段类型问题能在编译期发现
         BeanCopierUtil.copy(addParam, profitParam);
@@ -76,7 +81,7 @@ public class ProfitParamService {
     /**
      * 更新
      */
-    public void modify(ProfitParamRequest modifyParam) {
+    public void modify(ProfitParamUpsertRequest modifyParam) {
         ProfitParam profitParam = new ProfitParam();
         // 建议使用setter，字段类型问题能在编译期发现
         BeanCopierUtil.copy(modifyParam, profitParam);

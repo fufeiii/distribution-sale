@@ -1,5 +1,7 @@
 package cn.fufeii.ds.repository.entity;
 
+import cn.fufeii.ds.common.enumerate.biz.MemberRankTypeEnum;
+import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
@@ -24,7 +26,7 @@ public class RankParam {
      * 用户段位类型
      */
     @TableField
-    private Integer memberRankType;
+    private MemberRankTypeEnum memberRankType;
 
     /**
      * 开始积分
@@ -42,13 +44,13 @@ public class RankParam {
      * 状态
      */
     @TableField
-    private Integer state;
+    private StateEnum state;
 
     /**
      * 乐观锁
      */
     @Version
-    @TableField
+    @TableField(fill = FieldFill.INSERT)
     private Integer version;
 
     /**

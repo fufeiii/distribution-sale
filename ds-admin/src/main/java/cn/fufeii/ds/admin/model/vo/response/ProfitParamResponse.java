@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 分润参数 Response
  *
@@ -39,5 +41,11 @@ public class ProfitParamResponse {
 
     @ApiModelProperty(value = "状态")
     private String state;
+
+    @ApiModelProperty(value = "更新时间")
+    private Date updateDateTime;
+
+    @ApiModelProperty(value = "创建时间")
+    private Date createDateTime;
 
 }

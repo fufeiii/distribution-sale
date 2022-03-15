@@ -15,13 +15,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel
-public class ProfitParamRequest {
-
-    @ApiModelProperty(value = "页码")
-    private Integer page = 1;
-
-    @ApiModelProperty(value = "页数")
-    private Integer size = 10;
+public class ProfitParamUpsertRequest {
 
     @ApiModelProperty(value = "主键（修改时必传）")
     private Long id;

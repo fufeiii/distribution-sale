@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="false">
-    <!-- 设置常规组件库的日志级别 -->
-    <!--    <logger name="io.netty" level="INFO"/>-->
-    <!--    <logger name="springfox" level="INFO"/>-->
-    <!--    <logger name="org.jboss" level="WARN"/>-->
-    <!--    <logger name="org.apache" level="WARN"/>-->
-    <!--    <logger name="org.quartz" level="INFO"/>-->
-    <!--    <logger name="com.netflix" level="INFO"/>-->
-    <!--    <logger name="org.redisson" level="INFO"/>-->
-    <!--    <logger name="org.hibernate" level="WARN"/>-->
-    <!--    <logger name="com.alibaba.druid" level="WARN"/>-->
-    <!--    <logger name="com.alibaba.nacos" level="WARN"/>-->
-    <!--    <logger name="com.alibaba.cloud" level="WARN"/>-->
-    <!--    <logger name="org.springframework" level="WARN"/>-->
-    <!--日志格式应用spring boot默认的格式，也可以自己更改-->
+
+<!--日志格式应用spring boot默认的格式，也可以自己更改-->
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <!--定义日志存放的位置，默认存放在项目启动的相对路径的目录-->
     <springProperty scope="context" name="LOG_PATH" source="log.path" defaultValue="./applog"/>
