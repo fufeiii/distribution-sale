@@ -133,7 +133,6 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
                 });
             layer.close(index);
         });
-
     }
 
     /**
@@ -178,7 +177,7 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
     /**
      * 搜索按钮点击事件
      */
-    form.on('submit(*)', function (data) {
+    form.on('submit(profitParamQueryFormBtn)', function (data) {
         ProfitParam.onSearch(data);
         return false;
     });

@@ -88,10 +88,10 @@ public class RankParamController {
     /**
      * 新增
      */
-    @PostMapping("/add")
+    @PostMapping("/create")
     @ResponseBody
-    public CommonResult<Void> add(@RequestBody RankParamUpsertRequest addParam) {
-        rankParamService.add(addParam);
+    public CommonResult<Void> create(@RequestBody RankParamUpsertRequest createParam) {
+        rankParamService.create(createParam);
         return CommonResult.success();
     }
 

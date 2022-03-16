@@ -97,10 +97,10 @@ public class ProfitParamController {
     /**
      * 新增
      */
-    @PostMapping("/add")
+    @PostMapping("/create")
     @ResponseBody
-    public CommonResult<Void> add(@RequestBody ProfitParamUpsertRequest addParam) {
-        profitParamService.add(addParam);
+    public CommonResult<Void> create(@RequestBody ProfitParamUpsertRequest createParam) {
+        profitParamService.create(createParam);
         return CommonResult.success();
     }
 

@@ -37,7 +37,6 @@ public class RankParamService {
             response.setMemberRankType(it.getMemberRankType().getMessage());
             response.setBeginIntegral(it.getBeginIntegral());
             response.setEndIntegral(it.getEndIntegral());
-            response.setState(it.getState().getMessage());
             response.setCreateDateTime(it.getCreateDateTime());
             response.setUpdateDateTime(it.getUpdateDateTime());
             return response;
@@ -54,7 +53,6 @@ public class RankParamService {
         response.setMemberRankType(rankParam.getMemberRankType().name());
         response.setBeginIntegral(rankParam.getBeginIntegral());
         response.setEndIntegral(rankParam.getEndIntegral());
-        response.setState(rankParam.getState().name());
         response.setCreateDateTime(rankParam.getCreateDateTime());
         response.setUpdateDateTime(rankParam.getUpdateDateTime());
         return response;
@@ -63,7 +61,7 @@ public class RankParamService {
     /**
      * 保存
      */
-    public void add(RankParamUpsertRequest addParam) {
+    public void create(RankParamUpsertRequest addParam) {
         RankParam rankParam = new RankParam();
         // 建议使用setter，字段类型问题能在编译期发现
         BeanCopierUtil.copy(addParam, rankParam);

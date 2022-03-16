@@ -1,51 +1,11 @@
 @layout("/common/container.html", {bodyAttr:"class=\"pear-container\"", js:["/ds/js/rankParam/rankParam.js"]}) {
 <div class="layui-card">
     <div class="layui-card-body">
-        <form class="layui-form" lay-filter="rankParamQueryForm">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">状&emsp;&emsp;态</label>
-                    <div class="layui-input-inline">
-                        <select name="state">
-                            <option value="">请选择</option>
-                            @for(s in se){
-                            <option value="${s.key}">${s.value}</option>
-                            @}
-                        </select>
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label"></label>
-                    <div class="layui-input-inline">
-                        <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="*" lay-submit><i
-                                class="layui-icon layui-icon-search"></i>
-                            搜索
-                        </button>
-                        <button class="pear-btn pear-btn-md" type="reset"><i class="layui-icon layui-icon-refresh"></i>
-                            重置
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<div class="layui-card">
-    <div class="layui-card-body">
         <table id="rankParamTable" lay-filter="rankParamTable"></table>
     </div>
 </div>
-
-<script id="toolbar" type="text/html">
-    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add"><i class="layui-icon layui-icon-add-1"></i>
-        新增
-    </button>
-</script>
-
 <script id="rowBar" type="text/html">
     <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
-    </button>
-    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
     </button>
 </script>
 @}

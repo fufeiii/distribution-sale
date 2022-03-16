@@ -5,7 +5,7 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
     let popup = layui.popup;
 
     //获取详情信息，填充表单
-    http.ajax({url: '/admin/profit-param/get/' + http.getQueryVariable('id'), method: 'GET'})
+    http.ajax({url: '/admin/rank-param/get/' + http.getQueryVariable('id'), method: 'GET'})
         .done(function (data) {
             if (data.code === 0) {
                 form.val(http.getQueryVariable('tableId'), data.data);
@@ -20,14 +20,7 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
-        let calculateMode = data.field.calculateMode;
-        let profitType = data.field.profitType;
-        if (calculateMode === 'PERCENTAGE' && profitType !== 'TRADE') {
-            popup.warming("计算模式 [百分比] 仅支持 分润类型为 [商品交易] 的场景");
-            return false;
-        }
-        console.log(data.field)
-        http.ajax({url: '/admin/profit-param/edit', method: 'PUT', data: JSON.stringify(data.field)})
+        http.ajax({url: '/admin/rank-param/modify', method: 'PUT', data: JSON.stringify(data.field)})
             .done(function (data) {
                 if (data.code === 0) {
                     popup.success('编辑成功');

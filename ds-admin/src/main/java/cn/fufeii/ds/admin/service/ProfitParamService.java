@@ -71,10 +71,10 @@ public class ProfitParamService {
     /**
      * 保存
      */
-    public void add(ProfitParamUpsertRequest addParam) {
+    public void create(ProfitParamUpsertRequest createParam) {
         ProfitParam profitParam = new ProfitParam();
         // 建议使用setter，字段类型问题能在编译期发现
-        BeanCopierUtil.copy(addParam, profitParam);
+        BeanCopierUtil.copy(createParam, profitParam);
         crudProfitParamService.insertOrUpdate(profitParam);
     }
 

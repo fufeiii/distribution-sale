@@ -7,7 +7,7 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
         console.log(data.field)
-        http.ajax({url: '/admin/profit-param/add', method: 'POST', data: JSON.stringify(data.field)})
+        http.ajax({url: '/admin/profit-param/create', method: 'POST', data: JSON.stringify(data.field)})
             .done(function (data) {
                 if (data.code === 0) {
                     popup.success('添加成功');
