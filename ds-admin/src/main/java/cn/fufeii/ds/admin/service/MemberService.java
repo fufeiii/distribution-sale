@@ -27,16 +27,20 @@ public class MemberService {
      * 分页查询
      */
     public IPage<MemberResponse> page(MemberRequest pageParam, IPage<Member> pageable) {
-        Wrapper<Member> queryWrapper = Wrappers.lambdaQuery();
+        Wrapper<Member> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, Member.class));
         IPage<Member> selectPage = crudMemberService.selectPage(queryWrapper, pageable);
         // 组装response对象返回
-        IPage<MemberResponse> respPage = selectPage.convert(it -> {
+        return selectPage.convert(it -> {
             MemberResponse memberResponse = new MemberResponse();
-            // 建议使用setter，字段类型问题能在编译期发现
-            BeanCopierUtil.copy(it, memberResponse);
+            memberResponse.setId(it.getId());
+            memberResponse.setAvatar(it.getAvatar());
+            memberResponse.setUsername(it.getUsername());
+            memberResponse.setNickname(it.getNickname());
+            memberResponse.setIdentityType(it.getIdentityType().getMessage());
+            memberResponse.setRankType(it.getRankType().getMessage());
+            memberResponse.setState(it.getState().getMessage());
             return memberResponse;
         });
-        return respPage;
     }
 
     /**

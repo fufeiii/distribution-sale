@@ -1,5 +1,8 @@
 package cn.fufeii.ds.repository.entity;
 
+import cn.fufeii.ds.common.enumerate.biz.MemberIdentityTypeEnum;
+import cn.fufeii.ds.common.enumerate.biz.MemberRankTypeEnum;
+import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
@@ -66,19 +69,19 @@ public class Member {
      * 身份类型
      */
     @TableField
-    private Integer identityType;
+    private MemberIdentityTypeEnum identityType;
 
     /**
      * 段位类型
      */
     @TableField
-    private Integer rankType;
+    private MemberRankTypeEnum rankType;
 
     /**
      * 用户状态
      */
     @TableField
-    private Integer state;
+    private StateEnum state;
 
     /**
      * 备注
@@ -90,7 +93,7 @@ public class Member {
      * 乐观锁
      */
     @Version
-    @TableField
+    @TableField(fill = FieldFill.INSERT)
     private Integer version;
 
     /**

@@ -96,7 +96,7 @@ layui.use(['table', 'layer', 'http'], function () {
     /**
      * 搜索按钮点击事件
      */
-    form.on('submit(rankParamQueryFormBtn)', function (data) {
+    form.on('submit(rankParamQueryFormSubmit)', function (data) {
         RankParam.onSearch(data);
         return false;
     });

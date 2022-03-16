@@ -31,6 +31,11 @@ public class MemberController {
         return "/member/member.html";
     }
 
+    @GetMapping("/detail")
+    public String detail() {
+        return "/member/memberDetail.html";
+    }
+
 
     /**
      * 分页查询

@@ -2,7 +2,6 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
     let table = layui.table;
     let form = layui.form;
     let layer = layui.layer;
-    let $ = layui.$;
     let http = layui.http;
     let popup = layui.popup;
 
@@ -177,7 +176,7 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
     /**
      * 搜索按钮点击事件
      */
-    form.on('submit(profitParamQueryFormBtn)', function (data) {
+    form.on('submit(profitParamQueryFormSubmit)', function (data) {
         ProfitParam.onSearch(data);
         return false;
     });

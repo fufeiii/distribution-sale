@@ -2,9 +2,6 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
     let table = layui.table;
     let form = layui.form;
     let layer = layui.layer;
-    let $ = layui.$;
-    let http = layui.http;
-    let popup = layui.popup;
 
     /**
      * 页面实体对象
@@ -20,7 +17,9 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
         return [
             [
                 {
-                    type: 'checkbox'
+                    title: '头像',
+                    field: 'avatar',
+                    align: 'center'
                 },
                 {
                     title: '用户名',
@@ -57,7 +56,6 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
         ];
     }
 
-
     /**
      * 搜索操作
      */
@@ -75,27 +73,19 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
         });
     }
 
-    /**
-     * 移除操作
-     */
-    Member.onRemove = function (id) {
-        layer.confirm('确认删除吗', {icon: 3, title: '提示'}, function (index) {
-            http.ajax({url: '/admin/member/delete/' + id, method: 'DELETE'})
-                .done(function (data) {
-                    if (data.code === 0) {
-                        popup.success('操作成功');
-                    } else {
-                        popup.failure(data.msg);
-                    }
-                })
-                .fail(function (data) {
-                    console.log(data)
-                    popup.failure('服务器错误');
-                });
-            layer.close(index);
-        });
 
-    }
+    /**
+     * 新增
+     */
+    Member.openDetailDlg = function () {
+        layer.open({
+            type: 2,
+            title: '会员详情',
+            shade: 0.3,
+            area: ['500px', '610px'],
+            content: '/admin/member/detail?tableId=' + Member.tableId,
+        });
+    };
 
 
     /**
@@ -104,6 +94,7 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
     table.render({
         elem: '#' + Member.tableId,
         skin: 'line',
+        size: 'lg',
         url: '/admin/member/page',
         method: 'POST',
         page: true,
@@ -119,27 +110,15 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
      * 监听表格上方按钮 toolbar
      */
     table.on('toolbar(' + Member.tableId + ')', function (obj) {
-        if (obj.event === 'add') {
-            Member.openAddDlg();
+        if (obj.event === 'detail') {
+            Member.openDetailDlg();
         }
     });
-
-    /**
-     * 监听数据行末尾按钮 rowBar
-     */
-    table.on('tool(' + Member.tableId + ')', function (obj) {
-        if (obj.event === 'remove') {
-            Member.onRemove(obj.data.id);
-        } else if (obj.event === 'edit') {
-            Member.openEditDlg(obj.data.id);
-        }
-    });
-
 
     /**
      * 搜索按钮点击事件
      */
-    form.on('submit(*)', function (data) {
+    form.on('submit(memberQueryFormSubmit)', function (data) {
         Member.onSearch(data);
         return false;
     });
