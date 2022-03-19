@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 用户身份标识的枚举
+ * 会员身份标识的枚举
  *
  * @author Fu Fei
  * @date 2020/7/11
@@ -20,17 +20,17 @@ import java.util.stream.Collectors;
 public enum MemberIdentityTypeEnum {
 
     /**
-     * 普通用户
+     * 普通会员
      */
-    GENERAL(1, "普通用户"),
+    GENERAL(1, "普通会员"),
     /**
-     * 高级用户
+     * 高级会员
      */
-    ADVANCE(2, "高级用户"),
+    ADVANCE(2, "高级会员"),
     /**
-     * 专业用户
+     * 专业会员
      */
-    PROFESSION(3, "专业用户");
+    PROFESSION(3, "专业会员");
 
     @EnumValue
     private final Integer code;

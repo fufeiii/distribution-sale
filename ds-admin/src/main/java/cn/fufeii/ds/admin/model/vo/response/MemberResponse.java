@@ -18,13 +18,13 @@ public class MemberResponse {
     @ApiModelProperty(value = "主键")
     private Long id;
 
-    @ApiModelProperty(value = "用户标识")
+    @ApiModelProperty(value = "会员标识")
     private String username;
 
-    @ApiModelProperty(value = "用户昵称")
+    @ApiModelProperty(value = "会员昵称")
     private String nickname;
 
-    @ApiModelProperty(value = "用户头像")
+    @ApiModelProperty(value = "会员头像")
     private String avatar;
 
     @ApiModelProperty(value = "第一层级父级标识")
@@ -45,7 +45,7 @@ public class MemberResponse {
     @ApiModelProperty(value = "段位类型")
     private String rankType;
 
-    @ApiModelProperty(value = "用户状态")
+    @ApiModelProperty(value = "会员状态")
     private String state;
 
     @ApiModelProperty(value = "创建时间")

@@ -1,5 +1,6 @@
 package cn.fufeii.ds.repository.entity;
 
+import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -27,25 +28,25 @@ public class ProfitEvent {
      * 分润类型
      */
     @TableField
-    private Integer profitType;
+    private ProfitTypeEnum profitType;
 
     /**
      * 事件触发人
      */
     @TableField
-    private String triggerMemberUsername;
+    private Long triggerMemberId;
 
     /**
-     * 事件编号，交易分润时为商户订单编号
+     * 事件编号
      */
     @TableField
     private String eventNumber;
 
     /**
-     * 事件金额，目前仅交易分润记录订单金额
+     * 事件金额
      */
     @TableField
-    private Long eventPrice;
+    private Integer eventAmount;
 
     /**
      * 备注
@@ -54,7 +55,7 @@ public class ProfitEvent {
     private String memo;
 
     /**
-     * 创建事件
+     * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
     private Date createDateTime;

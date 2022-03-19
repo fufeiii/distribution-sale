@@ -42,11 +42,11 @@ public class ProfitParamUpsertRequest {
     private Integer profitRatio;
 
     @NotNull
-    @ApiModelProperty(value = "用户类型")
+    @ApiModelProperty(value = "会员类型")
     private MemberIdentityTypeEnum memberIdentityType;
 
     @NotNull
-    @ApiModelProperty(value = "用户段位")
+    @ApiModelProperty(value = "会员段位")
     private MemberRankTypeEnum memberRankType;
 
     @NotNull

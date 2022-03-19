@@ -52,13 +52,13 @@ public class ProfitParam {
     private Integer profitRatio;
 
     /**
-     * 用户类型
+     * 会员类型
      */
     @TableField
     private MemberIdentityTypeEnum memberIdentityType;
 
     /**
-     * 用户段位
+     * 会员段位
      */
     @TableField
     private MemberRankTypeEnum memberRankType;

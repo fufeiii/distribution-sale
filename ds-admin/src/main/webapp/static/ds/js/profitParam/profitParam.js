@@ -44,12 +44,12 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
                     align: 'center'
                 },
                 {
-                    title: '用户身份类型',
+                    title: '会员身份类型',
                     field: 'memberIdentityType',
                     align: 'center'
                 },
                 {
-                    title: '用户段位类型',
+                    title: '会员段位类型',
                     field: 'memberRankType',
                     align: 'center'
                 },

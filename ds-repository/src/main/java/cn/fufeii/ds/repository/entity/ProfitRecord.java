@@ -1,5 +1,6 @@
 package cn.fufeii.ds.repository.entity;
 
+import cn.fufeii.ds.common.enumerate.biz.AccountTypeEnum;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -33,7 +34,7 @@ public class ProfitRecord {
      * 账户类型
      */
     @TableField
-    private Integer accountType;
+    private AccountTypeEnum accountType;
 
     /**
      * 获利会员主键
@@ -45,7 +46,7 @@ public class ProfitRecord {
      * 获利数
      */
     @TableField
-    private Long incomeAmount;
+    private Integer incomeCount;
 
     /**
      * 备注

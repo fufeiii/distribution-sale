@@ -22,7 +22,7 @@ public class RankParam {
     private Long id;
 
     /**
-     * 用户段位类型
+     * 会员段位类型
      */
     @TableField
     private MemberRankTypeEnum memberRankType;

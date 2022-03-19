@@ -19,7 +19,7 @@ public class AccountQueryRequest {
     @ApiModelProperty(value = "页数")
     private Integer size = 10;
 
-    @ApiModelProperty(value = "用户主键")
+    @ApiModelProperty(value = "会员主键")
     private Long memberId;
 
 }

@@ -26,7 +26,7 @@ public class AccountRecord {
     private Long id;
 
     /**
-     * 用户主键
+     * 会员主键
      */
     @TableField
     private Long memberId;

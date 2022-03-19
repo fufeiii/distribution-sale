@@ -1,5 +1,6 @@
 package cn.fufeii.ds.repository.entity;
 
+import cn.fufeii.ds.common.enumerate.biz.WithdrawStateEnum;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
@@ -21,7 +22,7 @@ public class WithdrawApply {
     private Long id;
 
     /**
-     * 用户主键
+     * 会员主键
      */
     @TableField
     private Long memberId;
@@ -45,28 +46,34 @@ public class WithdrawApply {
     private Long feeAmount;
 
     /**
+     * 状态
+     */
+    @TableField
+    private WithdrawStateEnum withdrawState;
+
+    /**
+     * 提现描述
+     */
+    @TableField
+    private String withdrawDesc;
+
+    /**
      * 审批时间
      */
     @TableField
     private Date approvalTime;
 
     /**
-     * 状态
+     * 审批描述
      */
     @TableField
-    private Integer state;
-
-    /**
-     * 备注
-     */
-    @TableField
-    private String memo;
+    private String approvalDesc;
 
     /**
      * 乐观锁
      */
     @Version
-    @TableField
+    @TableField(fill = FieldFill.INSERT)
     private Integer version;
 
     /**

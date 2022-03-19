@@ -42,9 +42,9 @@ public class ProfitParamController {
         model.addAttribute("cme", CalculateModeEnum.getKeyValuePairList());
         // 分销等级 暂时先这样模拟一下
         model.addAttribute("ple", ProfitLevelEnum.getKeyValuePairList());
-        // 遍历 用户段位 枚举
+        // 遍历 会员段位 枚举
         model.addAttribute("mre", MemberRankTypeEnum.getKeyValuePairList());
-        // 遍历 用户身份 枚举
+        // 遍历 会员身份 枚举
         model.addAttribute("mte", MemberIdentityTypeEnum.getKeyValuePairList());
         // 遍历 状态 枚举
         model.addAttribute("se", StateEnum.getKeyValuePairList());

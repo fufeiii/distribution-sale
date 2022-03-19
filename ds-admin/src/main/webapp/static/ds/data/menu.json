@@ -8,14 +8,6 @@
     "children": [
       {
         "id": 11,
-        "title": "项目介绍",
-        "icon": "layui-icon layui-icon-console",
-        "type": 1,
-        "openType": "_iframe",
-        "href": "/admin/workspace/introduce"
-      },
-      {
-        "id": 12,
         "title": "分销总览",
         "icon": "layui-icon layui-icon-console",
         "type": 1,
@@ -23,12 +15,12 @@
         "href": "/admin/workspace/dashboard"
       },
       {
-        "id": 13,
+        "id": 12,
         "title": "运营统计",
         "icon": "layui-icon layui-icon-console",
         "type": 1,
         "openType": "_iframe",
-        "href": "http://www.bing.com"
+        "href": "/admin/workspace/statistics"
       }
     ]
   },
@@ -119,7 +111,7 @@
         "icon": "layui-icon layui-icon-console",
         "type": 1,
         "openType": "_iframe",
-        "href": "/admin/profit-withdraw/"
+        "href": "/admin/withdraw-apply/"
       }
     ]
   }

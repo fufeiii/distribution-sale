@@ -19,10 +19,10 @@ public class MemberQueryRequest {
     @ApiModelProperty(value = "页数")
     private Integer size = 10;
 
-    @ApiModelProperty(value = "用户标识")
+    @ApiModelProperty(value = "会员标识")
     private String username;
 
-    @ApiModelProperty(value = "用户昵称")
+    @ApiModelProperty(value = "会员昵称")
     private String nickname;
 
 }

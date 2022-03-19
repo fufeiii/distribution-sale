@@ -24,19 +24,19 @@ public class Member {
     private Long id;
 
     /**
-     * 用户标识
+     * 会员标识
      */
     @TableField
     private String username;
 
     /**
-     * 用户昵称
+     * 会员昵称
      */
     @TableField
     private String nickname;
 
     /**
-     * 用户头像
+     * 会员头像
      */
     @TableField
     private String avatar;
@@ -78,7 +78,7 @@ public class Member {
     private MemberRankTypeEnum rankType;
 
     /**
-     * 用户状态
+     * 会员状态
      */
     @TableField
     private StateEnum state;

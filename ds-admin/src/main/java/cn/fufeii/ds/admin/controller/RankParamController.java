@@ -35,7 +35,7 @@ public class RankParamController {
      * 封装固定的参数
      */
     private void injectionParam(Model model) {
-        // 遍历 用户段位 枚举
+        // 遍历 会员段位 枚举
         model.addAttribute("mre", MemberRankTypeEnum.getKeyValuePairList());
         // 遍历 状态 枚举
         model.addAttribute("se", StateEnum.getKeyValuePairList());

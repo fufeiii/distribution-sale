@@ -18,7 +18,7 @@ public class AccountRecordResponse {
     @ApiModelProperty(value = "主键")
     private Long id;
 
-    @ApiModelProperty(value = "用户主键")
+    @ApiModelProperty(value = "会员主键")
     private Long memberId;
 
     @ApiModelProperty(value = "账户主键")

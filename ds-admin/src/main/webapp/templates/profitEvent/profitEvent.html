@@ -1,17 +1,16 @@
-@layout("/common/container.html", {bodyAttr:"class=\"pear-container\"", js:["/ds/js/accountRecord/accountRecord.js"]}) {
+@layout("/common/container.html", {bodyAttr:"class=\"pear-container\"", js:["/ds/js/profitEvent/profitEvent.js"]}) {
 <div class="layui-card">
     <div class="layui-card-body">
-        <form class="layui-form" lay-filter="accountRecordQueryForm">
+        <form class="layui-form" lay-filter="profitEventQueryForm">
             <div class="layui-form-item">
                 <div class="layui-form-item layui-inline">
                     <label class="layui-form-label">会员主键</label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" name="memberId" placeholder="">
+                        <input class="layui-input" name="triggerMemberId" placeholder="">
                     </div>
                 </div>
                 <div class="layui-form-item layui-inline">
-                    <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="accountRecordQueryFormSubmit"
-                            lay-submit>
+                    <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="memberQueryFormSubmit" lay-submit>
                         <i class="layui-icon layui-icon-search"></i>
                         搜索
                     </button>
@@ -25,7 +24,7 @@
 </div>
 <div class="layui-card">
     <div class="layui-card-body">
-        <table id="accountRecordTable" lay-filter="accountRecordTable"></table>
+        <table id="profitEventTable" lay-filter="profitEventTable"></table>
     </div>
 </div>
 @}

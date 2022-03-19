@@ -17,7 +17,7 @@ layui.use(['table', 'layer', 'http'], function () {
         return [
             [
                 {
-                    title: '用户段位类型',
+                    title: '会员段位类型',
                     field: 'memberRankType',
                     align: 'center'
                 },

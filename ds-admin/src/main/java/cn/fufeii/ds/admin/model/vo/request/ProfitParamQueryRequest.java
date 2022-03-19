@@ -32,10 +32,10 @@ public class ProfitParamQueryRequest {
     @ApiModelProperty(value = "分润等级")
     private ProfitLevelEnum profitLevel;
 
-    @ApiModelProperty(value = "用户类型")
+    @ApiModelProperty(value = "会员类型")
     private MemberIdentityTypeEnum memberIdentityType;
 
-    @ApiModelProperty(value = "用户段位")
+    @ApiModelProperty(value = "会员段位")
     private MemberRankTypeEnum memberRankType;
 
     @ApiModelProperty(value = "状态")

@@ -1,32 +1,27 @@
-@layout("/common/container.html", {bodyAttr:"class=\"pear-container\"", js:["/ds/js/member/member.js"]}) {
-<style>
-    .tb-img-circle {
-        border-radius: 90%;
-        height: 100%;
-    }
-</style>
+@layout("/common/container.html", {bodyAttr:"class=\"pear-container\"", js:["/ds/js/withdrawApply/withdrawApply.js"]}) {
 <div class="layui-card">
     <div class="layui-card-body">
-        <form class="layui-form" lay-filter="memberQueryForm">
+        <form class="layui-form" lay-filter="withdrawApplyQueryForm">
             <div class="layui-form-item">
                 <div class="layui-form-item layui-inline">
                     <label class="layui-form-label">会员名</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="username" placeholder="" class="layui-input">
+                        <input class="layui-input" name="username" placeholder="" type="text">
                     </div>
                 </div>
                 <div class="layui-form-item layui-inline">
                     <label class="layui-form-label">会员昵称</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="nickname" placeholder="" class="layui-input">
+                        <input class="layui-input" name="nickname" placeholder="" type="text">
                     </div>
                 </div>
                 <div class="layui-form-item layui-inline">
-                    <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="memberQueryFormSubmit" lay-submit>
+                    <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="withdrawApplyQueryFormSubmit"
+                            lay-submit>
                         <i class="layui-icon layui-icon-search"></i>
                         搜索
                     </button>
-                    <button type="reset" class="pear-btn pear-btn-md"><i class="layui-icon layui-icon-refresh"></i>
+                    <button class="pear-btn pear-btn-md" type="reset"><i class="layui-icon layui-icon-refresh"></i>
                         重置
                     </button>
                 </div>
@@ -36,7 +31,7 @@
 </div>
 <div class="layui-card">
     <div class="layui-card-body">
-        <table id="memberTable" lay-filter="memberTable"></table>
+        <table id="withdrawApplyTable" lay-filter="withdrawApplyTable"></table>
     </div>
 </div>
 @}

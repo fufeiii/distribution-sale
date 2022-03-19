@@ -33,10 +33,10 @@ public class ProfitParamResponse {
     @ApiModelProperty(value = "分润比例")
     private Integer profitRatio;
 
-    @ApiModelProperty(value = "用户类型")
+    @ApiModelProperty(value = "会员类型")
     private String memberIdentityType;
 
-    @ApiModelProperty(value = "用户段位")
+    @ApiModelProperty(value = "会员段位")
     private String memberRankType;
 
     @ApiModelProperty(value = "状态")

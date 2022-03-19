@@ -5,13 +5,13 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 账户变动 Request
+ * 分销事件 Request
  *
  * @author FuFei
  */
 @Data
 @ApiModel
-public class AccountRecordQueryRequest {
+public class ProfitEventQueryRequest {
 
     @ApiModelProperty(value = "页码")
     private Integer page = 1;
@@ -19,7 +19,7 @@ public class AccountRecordQueryRequest {
     @ApiModelProperty(value = "页数")
     private Integer size = 10;
 
-    @ApiModelProperty(value = "会员主键")
-    private Long memberId;
+    @ApiModelProperty(value = "事件触发会员主键")
+    private Long triggerMemberId;
 
 }

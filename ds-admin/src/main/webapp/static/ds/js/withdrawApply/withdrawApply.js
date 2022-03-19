@@ -5,59 +5,54 @@ layui.use(['table', 'form'], function () {
     /**
      * 页面实体对象
      */
-    let Member = {
-        tableId: 'memberTable'
+    let WithdrawApply = {
+        tableId: 'withdrawApplyTable'
     }
 
     /**
      * 初始化表列
      */
-    Member.initCols = function () {
+    WithdrawApply.initCols = function () {
         return [
             [
                 {
-                    title: '头像', templet: function (d) {
-                        return '<img class="tb-img-circle" alt=""  src="' + d.avatar + '" />';
-                    }, align: 'center', width: 90, unresize: true
-                },
-                {
-                    title: '会员名',
-                    field: 'username',
+                    title: '会员主键',
+                    field: 'memberId',
                     align: 'center'
                 },
                 {
-                    title: '昵称',
-                    field: 'nickname',
+                    title: '提现编号',
+                    field: 'withdrawNumber',
                     align: 'center'
                 },
                 {
-                    title: '一级邀请人',
-                    field: 'firParent',
+                    title: '提现金额',
+                    field: 'withdrawAmount',
                     align: 'center'
                 },
                 {
-                    title: '二级邀请人',
-                    field: 'secParent',
+                    title: '手续费',
+                    field: 'feeAmount',
                     align: 'center'
                 },
                 {
-                    title: '三级邀请人',
-                    field: 'thrParent',
+                    title: '提现描述',
+                    field: 'withdrawDesc',
                     align: 'center'
                 },
                 {
-                    title: '身份类型',
-                    field: 'identityType',
+                    title: '审批时间',
+                    field: 'approvalTime',
                     align: 'center'
                 },
                 {
-                    title: '段位类型',
-                    field: 'rankType',
+                    title: '审批描述',
+                    field: 'approvalDesc',
                     align: 'center'
                 },
                 {
-                    title: '状态',
-                    field: 'state',
+                    title: '提现状态',
+                    field: 'withdrawState',
                     align: 'center'
                 },
                 {
@@ -72,15 +67,15 @@ layui.use(['table', 'form'], function () {
     /**
      * 搜索操作
      */
-    Member.onSearch = function () {
-        let query = form.val('memberQueryForm');
+    WithdrawApply.onSearch = function () {
+        let query = form.val('withdrawApplyQueryForm');
         Object.keys(query).forEach(function (key) {
             let value = query[key];
             if (value === '') {
                 query[key] = null;
             }
         });
-        table.reload(Member.tableId, {
+        table.reload(WithdrawApply.tableId, {
             where: query,
             page: {curr: 1}
         });
@@ -90,16 +85,16 @@ layui.use(['table', 'form'], function () {
      * 表格渲染配置
      */
     table.render({
-        elem: '#' + Member.tableId,
+        elem: '#' + WithdrawApply.tableId,
         skin: 'line',
         size: 'lg',
-        url: '/admin/member/page',
+        url: '/admin/withdraw-apply/page',
         method: 'POST',
         page: true,
         contentType: 'application/json',
         request: {pageName: 'page', limitName: 'size'},
         response: {countName: 'total'},
-        cols: Member.initCols(),
+        cols: WithdrawApply.initCols(),
         toolbar: '#toolbar',
         defaultToolbar: ['filter', 'print', 'exports']
     });
@@ -107,8 +102,8 @@ layui.use(['table', 'form'], function () {
     /**
      * 搜索按钮点击事件
      */
-    form.on('submit(memberQueryFormSubmit)', function (data) {
-        Member.onSearch(data);
+    form.on('submit(withdrawApplyQueryFormSubmit)', function (data) {
+        WithdrawApply.onSearch(data);
         return false;
     });
 

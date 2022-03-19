@@ -17,7 +17,7 @@ public class RankParamUpsertRequest {
     @ApiModelProperty(value = "主键（修改是必传）")
     private Long id;
 
-    @ApiModelProperty(value = "用户段位类型")
+    @ApiModelProperty(value = "会员段位类型")
     private MemberRankTypeEnum memberRankType;
 
     @ApiModelProperty(value = "开始积分")
