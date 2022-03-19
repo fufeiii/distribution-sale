@@ -1,4 +1,4 @@
-package cn.fufeii.ds.admin.config;
+package cn.fufeii.ds.portal.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ public class SwaggerConfig {
     public Docket docket() {
         return new Docket(DocumentationType.OAS_30)
                 .apiInfo(new ApiInfoBuilder()
-                        .title("Ds-Admin Api Doc")
+                        .title("Ds-Portal Api Doc")
                         .description("管理端接口文档")
                         .termsOfServiceUrl("https://fufeii.cn")
                         .contact(new Contact("fufei", "https://fufeii.com", "fufei.@mail.com"))
@@ -30,7 +30,7 @@ public class SwaggerConfig {
                         .build())
                 .groupName("管理后台")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("cn.fufeii.ds.admin.controller"))
+                .apis(RequestHandlerSelectors.basePackage("cn.fufeii.ds.portal.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

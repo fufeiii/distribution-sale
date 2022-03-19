@@ -19,7 +19,7 @@ public enum ExceptionEnum implements ResultDefinition {
     CLIENT_ERROR(4000, "客户端错误"),
 
     /* ========================= 服务端异常枚举 ========================= */
-    SERVER_ERROR(4000, "客户端错误"),
+    SERVER_ERROR(5000, "服务端错误"),
 
 
     /* ========================= 管理台异常枚举 ========================= */

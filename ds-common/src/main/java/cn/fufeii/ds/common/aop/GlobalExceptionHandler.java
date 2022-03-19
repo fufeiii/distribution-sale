@@ -1,4 +1,4 @@
-package cn.fufeii.ds.admin.config;
+package cn.fufeii.ds.common.aop;
 
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.exception.BizException;
@@ -28,24 +28,12 @@ public class GlobalExceptionHandler {
 
     private static final String LOG_CLIENT_TPL = "客户端请求异常：{}";
 
-    /**
-     * 请求参数缺失异常
-     */
-    @ExceptionHandler(MissingServletRequestParameterException.class)
-    @ResponseStatus(HttpStatus.OK)
-    public Object missingParam(MissingServletRequestParameterException exception) {
-        String parameterName = exception.getParameterName();
-        String parameterType = exception.getParameterType();
-        String reason = String.format("缺少参数[%s]，类型[%s]", parameterName, parameterType);
-        log.warn(LOG_CLIENT_TPL, reason);
-        return CommonResult.fail(ExceptionEnum.CLIENT_ERROR.getCode(), reason);
-    }
-
 
     /**
      * 拦截不支持媒体类型
      */
     @ExceptionHandler({
+            MissingServletRequestParameterException.class,
             HttpMediaTypeNotSupportedException.class,
             HttpRequestMethodNotSupportedException.class,
             HttpMessageNotReadableException.class
