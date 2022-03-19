@@ -5,64 +5,59 @@ layui.use(['table', 'form'], function () {
     /**
      * 页面实体对象
      */
-    let Member = {
-        tableId: 'memberTable'
+    let AccountRecord = {
+        tableId: 'accountRecordTable'
     }
 
     /**
      * 初始化表列
      */
-    Member.initCols = function () {
+    AccountRecord.initCols = function () {
         return [
             [
                 {
-                    title: '头像', templet: function (d) {
-                        return '<img class="tb-img-circle" alt=""  src="' + d.avatar + '" />';
-                    }, align: 'center', width: 90, unresize: true
-                },
-                {
-                    title: '用户名',
-                    field: 'username',
+                    title: '会员主键',
+                    field: 'memberId',
                     align: 'center'
                 },
                 {
-                    title: '昵称',
-                    field: 'nickname',
+                    title: '账户主键',
+                    field: 'accountId',
                     align: 'center'
                 },
                 {
-                    title: '一级邀请人',
-                    field: 'firParent',
+                    title: '账户类型',
+                    field: 'accountType',
                     align: 'center'
                 },
                 {
-                    title: '二级邀请人',
-                    field: 'secParent',
+                    title: '变动前金额',
+                    field: 'beforeChangeTotal',
                     align: 'center'
                 },
                 {
-                    title: '三级邀请人',
-                    field: 'thrParent',
+                    title: '变动后金额',
+                    field: 'afterChangeTotal',
                     align: 'center'
                 },
                 {
-                    title: '身份类型',
-                    field: 'identityType',
+                    title: '变动金额',
+                    field: 'changeAmount',
                     align: 'center'
                 },
                 {
-                    title: '段位类型',
-                    field: 'rankType',
+                    title: '变动类型',
+                    field: 'changeType',
                     align: 'center'
                 },
                 {
-                    title: '状态',
-                    field: 'state',
-                    align: 'center'
-                },
-                {
-                    title: '创建日期',
+                    title: '创建时间',
                     field: 'createDateTime',
+                    align: 'center'
+                },
+                {
+                    title: '关联变动主键',
+                    field: 'changeRecordId',
                     align: 'center'
                 }
             ]
@@ -72,15 +67,15 @@ layui.use(['table', 'form'], function () {
     /**
      * 搜索操作
      */
-    Member.onSearch = function () {
-        let query = form.val('memberQueryForm');
+    AccountRecord.onSearch = function () {
+        let query = form.val('accountRecordQueryForm');
         Object.keys(query).forEach(function (key) {
             let value = query[key];
             if (value === '') {
                 query[key] = null;
             }
         });
-        table.reload(Member.tableId, {
+        table.reload(AccountRecord.tableId, {
             where: query,
             page: {curr: 1}
         });
@@ -90,16 +85,16 @@ layui.use(['table', 'form'], function () {
      * 表格渲染配置
      */
     table.render({
-        elem: '#' + Member.tableId,
+        elem: '#' + AccountRecord.tableId,
         skin: 'line',
         size: 'lg',
-        url: '/admin/member/page',
+        url: '/admin/account-record/page',
         method: 'POST',
         page: true,
         contentType: 'application/json',
         request: {pageName: 'page', limitName: 'size'},
         response: {countName: 'total'},
-        cols: Member.initCols(),
+        cols: AccountRecord.initCols(),
         toolbar: '#toolbar',
         defaultToolbar: ['filter', 'print', 'exports']
     });
@@ -107,10 +102,9 @@ layui.use(['table', 'form'], function () {
     /**
      * 搜索按钮点击事件
      */
-    form.on('submit(memberQueryFormSubmit)', function (data) {
-        Member.onSearch(data);
+    form.on('submit(accountRecordQueryFormSubmit)', function (data) {
+        AccountRecord.onSearch(data);
         return false;
     });
-
 
 });

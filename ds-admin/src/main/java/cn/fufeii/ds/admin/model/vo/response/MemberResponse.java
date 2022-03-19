@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 会员信息 Response
  *
@@ -46,7 +48,7 @@ public class MemberResponse {
     @ApiModelProperty(value = "用户状态")
     private String state;
 
-    @ApiModelProperty(value = "备注")
-    private String memo;
+    @ApiModelProperty(value = "创建时间")
+    private Date createDateTime;
 
 }

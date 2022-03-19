@@ -84,12 +84,6 @@ public class Member {
     private StateEnum state;
 
     /**
-     * 备注
-     */
-    @TableField
-    private String memo;
-
-    /**
      * 乐观锁
      */
     @Version

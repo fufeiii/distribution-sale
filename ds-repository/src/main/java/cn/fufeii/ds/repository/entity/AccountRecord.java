@@ -1,5 +1,7 @@
 package cn.fufeii.ds.repository.entity;
 
+import cn.fufeii.ds.common.enumerate.biz.AccountTypeEnum;
+import cn.fufeii.ds.common.enumerate.biz.ChangeTypeEnum;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -39,43 +41,37 @@ public class AccountRecord {
      * 账户类型
      */
     @TableField
-    private Integer accountType;
+    private AccountTypeEnum accountType;
 
     /**
      * 变动前总数
      */
     @TableField
-    private Long beforeChangeTotal;
+    private Integer beforeChangeTotal;
 
     /**
      * 变动后总数
      */
     @TableField
-    private Long afterChangeTotal;
+    private Integer afterChangeTotal;
 
     /**
      * 变动数
      */
     @TableField
-    private Long changeAmount;
+    private Integer changeAmount;
 
     /**
      * 变动类型
      */
     @TableField
-    private Integer changeType;
+    private ChangeTypeEnum changeType;
 
     /**
      * 变动记录主键
      */
     @TableField
-    private Long profitRecordId;
-
-    /**
-     * 备注
-     */
-    @TableField
-    private String memo;
+    private Long changeRecordId;
 
     /**
      * 创建时间

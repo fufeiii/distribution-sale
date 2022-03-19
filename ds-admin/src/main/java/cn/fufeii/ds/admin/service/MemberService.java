@@ -1,6 +1,6 @@
 package cn.fufeii.ds.admin.service;
 
-import cn.fufeii.ds.admin.model.vo.request.MemberRequest;
+import cn.fufeii.ds.admin.model.vo.request.MemberQueryRequest;
 import cn.fufeii.ds.admin.model.vo.response.MemberResponse;
 import cn.fufeii.ds.common.util.BeanCopierUtil;
 import cn.fufeii.ds.repository.crud.CrudMemberService;
@@ -12,8 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * 会员信息 Service Impl
- * 业务实现
+ * 会员信息 Service
  *
  * @author FuFei
  */
@@ -26,33 +25,25 @@ public class MemberService {
     /**
      * 分页查询
      */
-    public IPage<MemberResponse> page(MemberRequest pageParam, IPage<Member> pageable) {
+    public IPage<MemberResponse> page(MemberQueryRequest pageParam, IPage<Member> pageable) {
         Wrapper<Member> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, Member.class));
         IPage<Member> selectPage = crudMemberService.selectPage(queryWrapper, pageable);
         // 组装response对象返回
         return selectPage.convert(it -> {
-            MemberResponse memberResponse = new MemberResponse();
-            memberResponse.setId(it.getId());
-            memberResponse.setAvatar(it.getAvatar());
-            memberResponse.setUsername(it.getUsername());
-            memberResponse.setNickname(it.getNickname());
-            memberResponse.setIdentityType(it.getIdentityType().getMessage());
-            memberResponse.setRankType(it.getRankType().getMessage());
-            memberResponse.setState(it.getState().getMessage());
-            return memberResponse;
+            MemberResponse response = new MemberResponse();
+            response.setId(it.getId());
+            response.setAvatar(it.getAvatar());
+            response.setUsername(it.getUsername());
+            response.setNickname(it.getNickname());
+            response.setFirParent(it.getFirParent());
+            response.setSecParent(it.getSecParent());
+            response.setThrParent(it.getThrParent());
+            response.setIdentityType(it.getIdentityType().getMessage());
+            response.setRankType(it.getRankType().getMessage());
+            response.setState(it.getState().getMessage());
+            response.setCreateDateTime(it.getCreateDateTime());
+            return response;
         });
     }
-
-    /**
-     * 获取
-     */
-    public MemberResponse get(Long id) {
-        Member member = crudMemberService.selectById(id);
-        MemberResponse memberResp = new MemberResponse();
-        // 建议使用setter，字段类型问题能在编译期发现
-        BeanCopierUtil.copy(member, memberResp);
-        return memberResp;
-    }
-
 
 }

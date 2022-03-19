@@ -30,55 +30,43 @@ public class Account {
      * 总金额
      */
     @TableField
-    private Long moneyTotal;
+    private Integer moneyTotal;
 
     /**
      * 可用金额
      */
     @TableField
-    private Long moneyAvailable;
+    private Integer moneyAvailable;
 
     /**
      * 冻结金额
      */
     @TableField
-    private Long moneyFrozen;
+    private Integer moneyFrozen;
 
     /**
      * 历史总积分
      */
     @TableField
-    private Integer integralTotalHistory;
+    private Integer pointsTotalHistory;
 
     /**
      * 总积分
      */
     @TableField
-    private Integer integralTotal;
+    private Integer pointsTotal;
 
     /**
      * 可用积分
      */
     @TableField
-    private Integer integralAvailable;
+    private Integer pointsAvailable;
 
     /**
      * 冻结积分
      */
     @TableField
-    private Integer integralFrozen;
-
-    /**
-     * 账户状态
-     */
-    @TableField
-    private Integer state;
-
-    /**
-     * 备注
-     */
-    @TableField
-    private String memo;
+    private Integer pointsFrozen;
 
     /**
      * 乐观锁

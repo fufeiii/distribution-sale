@@ -1,0 +1,31 @@
+@layout("/common/container.html", {bodyAttr:"class=\"pear-container\"", js:["/ds/js/account/account.js"]}) {
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form class="layui-form" lay-filter="accountQueryForm">
+            <div class="layui-form-item">
+                <div class="layui-form-item layui-inline">
+                    <label class="layui-form-label">用户主键</label>
+                    <div class="layui-input-inline">
+                        <input class="layui-input" name="memberId" placeholder="">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-inline">
+                    <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="memberQueryFormSubmit" lay-submit>
+                        <i
+                                class="layui-icon layui-icon-search"></i>
+                        搜索
+                    </button>
+                    <button class="pear-btn pear-btn-md" type="reset"><i class="layui-icon layui-icon-refresh"></i>
+                        重置
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table id="accountTable" lay-filter="accountTable"></table>
+    </div>
+</div>
+@}

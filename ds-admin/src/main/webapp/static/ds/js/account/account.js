@@ -5,64 +5,54 @@ layui.use(['table', 'form'], function () {
     /**
      * 页面实体对象
      */
-    let Member = {
-        tableId: 'memberTable'
+    let Account = {
+        tableId: 'accountTable'
     }
 
     /**
      * 初始化表列
      */
-    Member.initCols = function () {
+    Account.initCols = function () {
         return [
             [
                 {
-                    title: '头像', templet: function (d) {
-                        return '<img class="tb-img-circle" alt=""  src="' + d.avatar + '" />';
-                    }, align: 'center', width: 90, unresize: true
-                },
-                {
-                    title: '用户名',
-                    field: 'username',
+                    title: '会员主键',
+                    field: 'memberId',
                     align: 'center'
                 },
                 {
-                    title: '昵称',
-                    field: 'nickname',
+                    title: '总金额',
+                    field: 'moneyTotal',
                     align: 'center'
                 },
                 {
-                    title: '一级邀请人',
-                    field: 'firParent',
+                    title: '可用金额',
+                    field: 'moneyAvailable',
                     align: 'center'
                 },
                 {
-                    title: '二级邀请人',
-                    field: 'secParent',
+                    title: '冻结金额',
+                    field: 'moneyFrozen',
                     align: 'center'
                 },
                 {
-                    title: '三级邀请人',
-                    field: 'thrParent',
+                    title: '历史总积分',
+                    field: 'pointsTotalHistory',
                     align: 'center'
                 },
                 {
-                    title: '身份类型',
-                    field: 'identityType',
+                    title: '总积分',
+                    field: 'pointsTotal',
                     align: 'center'
                 },
                 {
-                    title: '段位类型',
-                    field: 'rankType',
+                    title: '可用积分',
+                    field: 'pointsAvailable',
                     align: 'center'
                 },
                 {
-                    title: '状态',
-                    field: 'state',
-                    align: 'center'
-                },
-                {
-                    title: '创建日期',
-                    field: 'createDateTime',
+                    title: '冻结积分',
+                    field: 'pointsFrozen',
                     align: 'center'
                 }
             ]
@@ -72,15 +62,15 @@ layui.use(['table', 'form'], function () {
     /**
      * 搜索操作
      */
-    Member.onSearch = function () {
-        let query = form.val('memberQueryForm');
+    Account.onSearch = function () {
+        let query = form.val('accountQueryForm');
         Object.keys(query).forEach(function (key) {
             let value = query[key];
             if (value === '') {
                 query[key] = null;
             }
         });
-        table.reload(Member.tableId, {
+        table.reload(Account.tableId, {
             where: query,
             page: {curr: 1}
         });
@@ -90,16 +80,16 @@ layui.use(['table', 'form'], function () {
      * 表格渲染配置
      */
     table.render({
-        elem: '#' + Member.tableId,
+        elem: '#' + Account.tableId,
         skin: 'line',
         size: 'lg',
-        url: '/admin/member/page',
+        url: '/admin/account/page',
         method: 'POST',
         page: true,
         contentType: 'application/json',
         request: {pageName: 'page', limitName: 'size'},
         response: {countName: 'total'},
-        cols: Member.initCols(),
+        cols: Account.initCols(),
         toolbar: '#toolbar',
         defaultToolbar: ['filter', 'print', 'exports']
     });
@@ -107,10 +97,9 @@ layui.use(['table', 'form'], function () {
     /**
      * 搜索按钮点击事件
      */
-    form.on('submit(memberQueryFormSubmit)', function (data) {
-        Member.onSearch(data);
+    form.on('submit(accountQueryFormSubmit)', function (data) {
+        Account.onSearch(data);
         return false;
     });
-
 
 });
