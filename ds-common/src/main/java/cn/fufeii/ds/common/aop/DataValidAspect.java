@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Order(15)
 @Aspect
 @Component
-public class ValidationAspect {
+public class DataValidAspect {
 
     private Logger logger(JoinPoint joinPoint) {
         return LoggerFactory.getLogger(joinPoint.getSignature().getDeclaringTypeName());
@@ -29,14 +29,14 @@ public class ValidationAspect {
     /**
      * 切类上的注解
      */
-    @Pointcut("@within(cn.fufeii.ds.common.anno.DataValid)")
+    @Pointcut("@within(cn.fufeii.ds.common.annotation.DataValid)")
     public void pointcut1() {
     }
 
     /**
      * 切方法上的注解
      */
-    @Pointcut("@annotation(cn.fufeii.ds.common.anno.DataValid)")
+    @Pointcut("@annotation(cn.fufeii.ds.common.annotation.DataValid)")
     public void pointcut2() {
     }
 

@@ -1,6 +1,6 @@
 package cn.fufeii.ds.portal.controller;
 
-import cn.fufeii.ds.common.anno.DataValid;
+import cn.fufeii.ds.common.annotation.DataValid;
 import cn.fufeii.ds.common.result.CommonResult;
 import cn.fufeii.ds.portal.model.api.request.MemberCreateRequest;
 import cn.fufeii.ds.portal.model.api.request.MemberTeamRequest;
@@ -30,7 +30,7 @@ public class MemberApiController {
 
     @PostMapping("/create")
     public CommonResult<MemberCreateResponse> create(MemberCreateRequest request) {
-        return CommonResult.success();
+        return CommonResult.success(memberService.create(request));
     }
 
     @PostMapping("/info")

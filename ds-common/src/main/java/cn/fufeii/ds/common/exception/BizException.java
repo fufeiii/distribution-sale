@@ -1,5 +1,6 @@
 package cn.fufeii.ds.common.exception;
 
+import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.ResultDefinition;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,10 @@ public class BizException extends RuntimeException {
     public BizException(Integer code, String msg) {
         super(msg);
         this.code = code;
+    }
+
+    public static BizException serverError(String msg) {
+        return new BizException(ExceptionEnum.SERVER_ERROR.getCode(), msg);
     }
 
 }

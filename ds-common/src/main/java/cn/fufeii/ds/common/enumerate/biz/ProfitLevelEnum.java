@@ -23,7 +23,7 @@ public enum ProfitLevelEnum {
     /**
      * 自身
      */
-    ZERO(1, "自身"),
+    SELF(1, "自身"),
 
     /**
      * 一级

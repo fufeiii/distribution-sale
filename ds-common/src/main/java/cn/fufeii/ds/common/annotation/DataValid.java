@@ -1,4 +1,4 @@
-package cn.fufeii.ds.common.anno;
+package cn.fufeii.ds.common.annotation;
 
 import java.lang.annotation.*;
 

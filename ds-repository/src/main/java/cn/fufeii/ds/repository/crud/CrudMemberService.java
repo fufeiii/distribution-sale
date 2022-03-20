@@ -4,6 +4,7 @@ import cn.fufeii.ds.repository.dao.MemberDao;
 import cn.fufeii.ds.repository.entity.Member;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -102,5 +103,10 @@ public class CrudMemberService {
     // ---------------------------- 下面基础CRUD的扩展 ----------------------------------- //
     // --------------------------------------------------------------------------------- //
 
+
+    public boolean existByUsername(String username) {
+        Long count = memberDao.selectCount(Wrappers.<Member>lambdaQuery().eq(Member::getUsername, username));
+        return count > 0;
+    }
 
 }

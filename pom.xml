@@ -24,6 +24,7 @@
         <mybatis.plus.starter.version>3.4.3.4</mybatis.plus.starter.version>
         <beetl.starter.version>1.2.32.Beetl.RELEASE</beetl.starter.version>
         <knife4j.starter.version>3.0.2</knife4j.starter.version>
+        <redisson.version>3.14.1</redisson.version>
     </properties>
 
     <dependencyManagement>

@@ -23,7 +23,7 @@ public enum ProfitTypeEnum {
     /**
      * 交易
      */
-    TRADE(1, "商品交易"),
+    MONEY(1, "货币交易"),
 
     /**
      * 邀请
@@ -33,7 +33,7 @@ public enum ProfitTypeEnum {
     /**
      * 升级
      */
-    RANK(3, "段位升级");
+    UPGRADE(3, "段位升级");
 
 
     @EnumValue
