@@ -10,6 +10,7 @@ import cn.fufeii.ds.portal.service.MemberService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,17 +30,17 @@ public class MemberApiController {
     private MemberService memberService;
 
     @PostMapping("/create")
-    public CommonResult<MemberCreateResponse> create(MemberCreateRequest request) {
+    public CommonResult<MemberCreateResponse> create(@RequestBody MemberCreateRequest request) {
         return CommonResult.success(memberService.create(request));
     }
 
     @PostMapping("/info")
-    public CommonResult<MemberCreateResponse> info(MemberCreateRequest request) {
+    public CommonResult<MemberCreateResponse> info(@RequestBody MemberCreateRequest request) {
         return CommonResult.success();
     }
 
     @PostMapping("/team")
-    public CommonResult<MemberTeamResponse> team(MemberTeamRequest request) {
+    public CommonResult<MemberTeamResponse> team(@RequestBody MemberTeamRequest request) {
         return CommonResult.success();
     }
 

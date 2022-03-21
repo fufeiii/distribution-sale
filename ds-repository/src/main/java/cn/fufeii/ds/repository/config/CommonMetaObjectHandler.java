@@ -22,11 +22,6 @@ public class CommonMetaObjectHandler implements MetaObjectHandler {
     private String createDateTimeFieldName = "createDateTime";
     private String updateDateTimeFieldName = "updateDateTime";
 
-    private static final String VERSION_FIELD_NAME = "version";
-    private static final String CREATE_DATE_TIME_FIELD_NAME = "createDateTime";
-    private static final String UPDATE_DATE_TIME_FIELD_NAME = "updateDateTime";
-    private static final int DEFAULT_VERSION = 0;
-
     @Override
     public void insertFill(MetaObject metaObject) {
         // 版本号

@@ -5,5 +5,9 @@ spring:
     username: root
     password: 123456
 
+  redis:
+    host: localhost
+    password: 123456
+
   liquibase:
     enabled: false

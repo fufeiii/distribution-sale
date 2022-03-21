@@ -7,7 +7,7 @@ spring:
     name: ds-portal
 
   profiles:
-    active: local
+    active: loc
 
   mvc:
     locale-resolver: fixed
@@ -32,3 +32,23 @@ spring:
     change-log: classpath:/liquibase/changelog-master.xml
     database-change-log-lock-table: liquibase_changelog_lock
     database-change-log-table: liquibase_changelog
+
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml
+  typeEnumsPackage: cn.fufeii.ds.common.enumerate.biz
+  configuration:
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+    # 二级缓存 关闭
+    cache-enabled: false
+  global-config:
+    banner: false
+
+
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    cn.fufeii.ds.repository.dao: debug
+    cn.fufeii.ds: debug
+

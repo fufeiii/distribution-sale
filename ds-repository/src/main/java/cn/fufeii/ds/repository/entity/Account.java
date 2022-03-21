@@ -72,7 +72,7 @@ public class Account {
      * 乐观锁
      */
     @Version
-    @TableField
+    @TableField(fill = FieldFill.INSERT)
     private Integer version;
 
     /**

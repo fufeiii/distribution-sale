@@ -54,12 +54,13 @@ public class MemberService {
         member.setUsername(request.getUsername());
         member.setNickname(request.getNickname());
         member.setAvatar(StrUtil.isBlank(request.getAvatar()) ? CharSequenceUtil.EMPTY : request.getAvatar());
+        member.setFirParent(CharSequenceUtil.EMPTY);
+        member.setSecParent(CharSequenceUtil.EMPTY);
+        member.setThrParent(CharSequenceUtil.EMPTY);
+        member.setParentPath(CharSequenceUtil.EMPTY);
         if (isJoinCreate) {
             // TODO 设置层级
-            member.setFirParent(null);
-            member.setSecParent(null);
-            member.setThrParent(null);
-            member.setParentPath(null);
+
         }
         member.setIdentityType(MemberIdentityTypeEnum.GENERAL);
         member.setRankType(MemberRankTypeEnum.BRONZE);

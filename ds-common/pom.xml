@@ -60,6 +60,11 @@
             <artifactId>mybatis-plus-annotation</artifactId>
             <version>${mybatis.plus.starter.version}</version>
         </dependency>
+        <!-- sl4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
         <!-- lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -67,11 +72,14 @@
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
-        <!-- sl4j -->
+        <!-- global-exception-handler -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
+
     </dependencies>
 
 
