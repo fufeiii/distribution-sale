@@ -26,40 +26,32 @@
   },
   {
     "id": 2,
-    "title": "会员中心",
+    "title": "商户管理",
     "icon": "layui-icon layui-icon-component",
     "type": 0,
     "href": "",
     "children": [
       {
         "id": 21,
-        "title": "会员管理",
+        "title": "平台中心",
+        "icon": "layui-icon layui-icon-console",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "/admin/platform/"
+      },
+      {
+        "id": 22,
+        "title": "会员中心",
         "icon": "layui-icon layui-icon-console",
         "type": 1,
         "openType": "_iframe",
         "href": "/admin/member/"
-      },
-      {
-        "id": 22,
-        "title": "账户管理",
-        "icon": "layui-icon layui-icon-console",
-        "type": 1,
-        "openType": "_iframe",
-        "href": "/admin/account/"
-      },
-      {
-        "id": 23,
-        "title": "账户变动",
-        "icon": "layui-icon layui-icon-console",
-        "type": 1,
-        "openType": "_iframe",
-        "href": "/admin/account-record/"
       }
     ]
   },
   {
     "id": 3,
-    "title": "分润中心",
+    "title": "分润管理",
     "icon": "layui-icon layui-icon-auz",
     "type": 0,
     "href": "",
@@ -84,7 +76,7 @@
   },
   {
     "id": 4,
-    "title": "分销中心",
+    "title": "分销管理",
     "icon": "layui-icon layui-icon-template-1",
     "type": 0,
     "href": "",
@@ -99,19 +91,28 @@
       },
       {
         "id": 42,
-        "title": "分销记录",
-        "icon": "layui-icon layui-icon-console",
-        "type": 1,
-        "openType": "_iframe",
-        "href": "/admin/profit-record/"
-      },
-      {
-        "id": 43,
         "title": "分销提现",
         "icon": "layui-icon layui-icon-console",
         "type": 1,
         "openType": "_iframe",
         "href": "/admin/withdraw-apply/"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "基础管理",
+    "icon": "layui-icon layui-icon-template-1",
+    "type": 0,
+    "href": "",
+    "children": [
+      {
+        "id": 51,
+        "title": "用户中心",
+        "icon": "layui-icon layui-icon-console",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "/admin/sys-user/"
       }
     ]
   }
