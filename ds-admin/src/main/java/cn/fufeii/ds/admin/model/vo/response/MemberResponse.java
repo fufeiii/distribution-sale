@@ -36,9 +36,6 @@ public class MemberResponse {
     @ApiModelProperty(value = "第三层级父级标识")
     private String thrParent;
 
-    @ApiModelProperty(value = "父级全路径")
-    private String parentPath;
-
     @ApiModelProperty(value = "身份类型")
     private String identityType;
 

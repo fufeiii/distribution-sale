@@ -104,6 +104,10 @@ public class CrudMemberService {
     // --------------------------------------------------------------------------------- //
 
 
+    public Optional<Member> selectByUsernameOpt(String username) {
+        return this.selectOneOpt(Wrappers.<Member>lambdaQuery().eq(Member::getUsername, username));
+    }
+
     public boolean existByUsername(String username) {
         Long count = memberDao.selectCount(Wrappers.<Member>lambdaQuery().eq(Member::getUsername, username));
         return count > 0;

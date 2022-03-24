@@ -23,14 +23,13 @@ public enum ExceptionEnum implements ResultDefinition {
 
 
     /* ========================= 管理台异常枚举 ========================= */
-    ADMIN_ERROR(6000, "管理台错误");
+    ADMIN_ERROR(6000, "管理台错误"),
+
+    /* ========================= 业务异常枚举 ========================= */
+    UNKNOWN_STRATEGY(7001, "未知的[%s]的分销策略");
 
 
     private final int code;
     private final String msg;
-
-    public static boolean isSuccess(int code) {
-        return SUCCESS.code == code;
-    }
 
 }

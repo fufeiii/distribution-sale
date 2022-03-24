@@ -3,6 +3,7 @@ package cn.fufeii.ds.portal.service;
 import cn.fufeii.ds.common.annotation.GlobalLock;
 import cn.fufeii.ds.common.enumerate.biz.MemberIdentityTypeEnum;
 import cn.fufeii.ds.common.enumerate.biz.MemberRankTypeEnum;
+import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.portal.model.api.request.MemberCreateRequest;
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * 会员 Service
@@ -43,10 +46,13 @@ public class MemberService {
         }
         // 如果被邀请加入的，则检查邀请人
         boolean isJoinCreate = CharSequenceUtil.isNotBlank(request.getInviteUsername());
+        Member inviteMember = null;
         if (isJoinCreate) {
-            if (crudMemberService.existByUsername(request.getInviteUsername())) {
-                throw BizException.serverError(String.format("邀请人[%s]已存在", request.getInviteUsername()));
+            Optional<Member> inviteMemberOpt = crudMemberService.selectByUsernameOpt(request.getInviteUsername());
+            if (!inviteMemberOpt.isPresent()) {
+                throw BizException.serverError(String.format("邀请人[%s]不存在", request.getInviteUsername()));
             }
+            inviteMember = inviteMemberOpt.get();
         }
 
         // 创建用户
@@ -57,10 +63,8 @@ public class MemberService {
         member.setFirParent(CharSequenceUtil.EMPTY);
         member.setSecParent(CharSequenceUtil.EMPTY);
         member.setThrParent(CharSequenceUtil.EMPTY);
-        member.setParentPath(CharSequenceUtil.EMPTY);
         if (isJoinCreate) {
-            // TODO 设置层级
-
+            this.setParentPath(member, inviteMember);
         }
         member.setIdentityType(MemberIdentityTypeEnum.GENERAL);
         member.setRankType(MemberRankTypeEnum.BRONZE);
@@ -82,13 +86,28 @@ public class MemberService {
 
         // 发布邀请事件
         if (isJoinCreate) {
-            applicationEventPublisher.publishEvent(new InviteEvent(memberId));
+            applicationEventPublisher.publishEvent(new InviteEvent(ProfitTypeEnum.INVITE, memberId));
         }
 
         // 返回
         MemberCreateResponse response = new MemberCreateResponse();
         response.setMemberId(memberId);
         return response;
+    }
+
+    /**
+     * 设置父级标识
+     */
+    private void setParentPath(Member member, Member inviteMember) {
+        member.setFirParent(inviteMember.getUsername());
+        String twoParent = inviteMember.getFirParent();
+        if (CharSequenceUtil.isNotBlank(twoParent)) {
+            member.setSecParent(twoParent);
+        }
+        String thrParent = inviteMember.getSecParent();
+        if (CharSequenceUtil.isNotBlank(thrParent)) {
+            member.setThrParent(thrParent);
+        }
     }
 
 

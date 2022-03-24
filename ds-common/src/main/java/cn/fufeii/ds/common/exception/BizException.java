@@ -19,8 +19,8 @@ public class BizException extends RuntimeException {
 
     private Integer code;
 
-    public BizException(ResultDefinition resultDefinition) {
-        super(resultDefinition.getMsg());
+    public BizException(ResultDefinition resultDefinition, String... params) {
+        super(resultDefinition.getFormatMsg(params));
         code = resultDefinition.getCode();
     }
 
@@ -31,6 +31,10 @@ public class BizException extends RuntimeException {
 
     public static BizException serverError(String msg) {
         return new BizException(ExceptionEnum.SERVER_ERROR.getCode(), msg);
+    }
+
+    public static BizException serverError(ExceptionEnum exceptionEnum, String... params) {
+        return new BizException(exceptionEnum, params);
     }
 
 }

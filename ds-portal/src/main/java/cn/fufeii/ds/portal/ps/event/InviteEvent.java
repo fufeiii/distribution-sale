@@ -1,6 +1,6 @@
 package cn.fufeii.ds.portal.ps.event;
 
-import org.springframework.context.ApplicationEvent;
+import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 
 /**
  * 邀请用户事件
@@ -8,10 +8,10 @@ import org.springframework.context.ApplicationEvent;
  * @author FuFei
  * @date 2022/3/20
  */
-public class InviteEvent extends ApplicationEvent {
+public class InviteEvent extends AbstractProfitEvent {
 
-    public InviteEvent(Object source) {
-        super(source);
+    public InviteEvent(ProfitTypeEnum profitType, Object source) {
+        super(profitType, source);
     }
 
 }

@@ -10,7 +10,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 分润事件
+ * 分销事件
  *
  * @author FuFei
  */
@@ -25,13 +25,25 @@ public class ProfitEvent {
     private Long id;
 
     /**
+     * 平台主键
+     */
+    @TableField
+    private Long platformId;
+
+    /**
+     * 平台名称
+     */
+    @TableField
+    private String platformUsername;
+
+    /**
      * 分润类型
      */
     @TableField
     private ProfitTypeEnum profitType;
 
     /**
-     * 事件触发人
+     * 事件触发会员主键
      */
     @TableField
     private Long triggerMemberId;

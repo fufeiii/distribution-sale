@@ -24,13 +24,25 @@ public class Member {
     private Long id;
 
     /**
+     * 平台主键
+     */
+    @TableField
+    private Long platformId;
+
+    /**
+     * 平台名称
+     */
+    @TableField
+    private String platformUsername;
+
+    /**
      * 会员标识
      */
     @TableField
     private String username;
 
     /**
-     * 会员昵称
+     * 会员名称
      */
     @TableField
     private String nickname;
@@ -60,12 +72,6 @@ public class Member {
     private String thrParent;
 
     /**
-     * 父级全路径
-     */
-    @TableField
-    private String parentPath;
-
-    /**
      * 身份类型
      */
     @TableField
@@ -78,7 +84,7 @@ public class Member {
     private MemberRankTypeEnum rankType;
 
     /**
-     * 会员状态
+     * 状态
      */
     @TableField
     private StateEnum state;

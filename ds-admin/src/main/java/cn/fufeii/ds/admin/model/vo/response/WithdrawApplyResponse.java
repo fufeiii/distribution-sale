@@ -25,10 +25,10 @@ public class WithdrawApplyResponse {
     private String withdrawNumber;
 
     @ApiModelProperty(value = "提现金额")
-    private Long withdrawAmount;
+    private Integer withdrawAmount;
 
     @ApiModelProperty(value = "手续费")
-    private Long feeAmount;
+    private Integer feeAmount;
 
     @ApiModelProperty(value = "状态")
     private String withdrawState;

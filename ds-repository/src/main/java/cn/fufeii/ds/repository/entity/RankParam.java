@@ -22,6 +22,18 @@ public class RankParam {
     private Long id;
 
     /**
+     * 平台主键
+     */
+    @TableField
+    private Long platformId;
+
+    /**
+     * 平台名称
+     */
+    @TableField
+    private String platformName;
+
+    /**
      * 会员段位类型
      */
     @TableField

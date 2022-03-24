@@ -1,19 +1,19 @@
 package cn.fufeii.ds.repository.entity;
 
-import cn.fufeii.ds.common.enumerate.biz.*;
+import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.util.Date;
 
 /**
- * 分润参数
+ * 平台
  *
  * @author FuFei
  */
 @Data
-@TableName(value = "ds_profit_param")
-public class ProfitParam {
+@TableName(value = "ds_platform")
+public class Platform {
 
     /**
      * 主键
@@ -22,52 +22,28 @@ public class ProfitParam {
     private Long id;
 
     /**
-     * 平台主键
+     * 平台标识
      */
     @TableField
-    private Long platformId;
+    private String username;
 
     /**
-     * 账户类型
+     * 平台名称
      */
     @TableField
-    private AccountTypeEnum accountType;
+    private String nickname;
 
     /**
-     * 分润类型
+     * 平台的webhook
      */
     @TableField
-    private ProfitTypeEnum profitType;
+    private String webhook;
 
     /**
-     * 计算方式
+     * 签名密钥
      */
     @TableField
-    private CalculateModeEnum calculateMode;
-
-    /**
-     * 分润等级
-     */
-    @TableField
-    private ProfitLevelEnum profitLevel;
-
-    /**
-     * 分润比例
-     */
-    @TableField
-    private Integer profitRatio;
-
-    /**
-     * 会员类型
-     */
-    @TableField
-    private MemberIdentityTypeEnum memberIdentityType;
-
-    /**
-     * 会员段位
-     */
-    @TableField
-    private MemberRankTypeEnum memberRankType;
+    private String sk;
 
     /**
      * 状态

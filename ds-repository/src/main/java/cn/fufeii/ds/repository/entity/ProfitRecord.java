@@ -10,7 +10,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 分润记录
+ * 分销记录
  *
  * @author FuFei
  */

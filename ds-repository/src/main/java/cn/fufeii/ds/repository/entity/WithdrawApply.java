@@ -22,10 +22,28 @@ public class WithdrawApply {
     private Long id;
 
     /**
+     * 平台主键
+     */
+    @TableField
+    private Long platformId;
+
+    /**
+     * 平台名称
+     */
+    @TableField
+    private String platformName;
+
+    /**
      * 会员主键
      */
     @TableField
     private Long memberId;
+
+    /**
+     * 会员名称
+     */
+    @TableField
+    private String memberName;
 
     /**
      * 提现单号
@@ -37,13 +55,13 @@ public class WithdrawApply {
      * 提现金额
      */
     @TableField
-    private Long withdrawAmount;
+    private Integer withdrawAmount;
 
     /**
      * 手续费
      */
     @TableField
-    private Long feeAmount;
+    private Integer feeAmount;
 
     /**
      * 状态
