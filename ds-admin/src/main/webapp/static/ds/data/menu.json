@@ -33,19 +33,19 @@
     "children": [
       {
         "id": 21,
-        "title": "平台中心",
-        "icon": "layui-icon layui-icon-console",
-        "type": 1,
-        "openType": "_iframe",
-        "href": "/view/platform/"
-      },
-      {
-        "id": 22,
         "title": "会员中心",
         "icon": "layui-icon layui-icon-console",
         "type": 1,
         "openType": "_iframe",
         "href": "/view/member/"
+      },
+      {
+        "id": 22,
+        "title": "平台中心",
+        "icon": "layui-icon layui-icon-console",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "/view/platform/"
       }
     ]
   },

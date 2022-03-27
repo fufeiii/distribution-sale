@@ -20,7 +20,7 @@
             <li class="layui-nav-item user">
                 <!-- 头 像 -->
                 <a href="javascript:;">
-                    <img class="layui-nav-img" src="">
+                    <img alt="" class="layui-nav-img" src="">
                 </a>
                 <!-- 功 能 菜 单 -->
                 <dl class="layui-nav-child">
@@ -72,11 +72,6 @@
         let popup = layui.popup;
         let easyHttp = layui.easyHttp;
 
-        admin.setAvatar("/ds/images/avatar.jpg", "超级管理员");
-        admin.setConfigType("json");
-        admin.setConfigPath("/ds/pear.config.json");
-        admin.render();
-
         // 登出逻辑
         admin.logout(function () {
             easyHttp.execute({url: '/admin/logout', method: 'POST', data: JSON.stringify({})}, function (resp) {
@@ -87,8 +82,20 @@
             });
             // 注销逻辑 返回 true / false
             return true;
-        })
+        });
+        // 配置文件
+        admin.setConfigType("json");
+        admin.setConfigPath("/ds/pear.config.json");
 
+        // 用户信息
+        easyHttp.execute({url: '/admin/sys-user/current', method: 'GET'}, function (resp) {
+            let avatar = resp.data.avatar;
+            if (!avatar) {
+                avatar = Constant.adminAvatar;
+            }
+            admin.setAvatar(avatar, resp.data.nickname);
+            admin.render();
+        });
     })
 </script>
 @}

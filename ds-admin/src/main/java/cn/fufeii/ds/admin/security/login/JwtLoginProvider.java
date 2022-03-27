@@ -42,7 +42,7 @@ public class JwtLoginProvider implements AuthenticationProvider {
             throw new BadCredentialsException("密码错误");
         }
 
-        return new UsernamePasswordAuthenticationToken(username, password, Collections.emptyList());
+        return new UsernamePasswordAuthenticationToken(sysUser, password, Collections.emptyList());
     }
 
     @Override

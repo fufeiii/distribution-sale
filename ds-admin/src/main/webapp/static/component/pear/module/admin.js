@@ -40,7 +40,8 @@ layui.define(['message', 'table', 'jquery', 'element', 'yaml', 'form', 'tab', 'm
 				var image = new Image();
 				image.src = url || "/static/admin/images/avatar.jpg";
 				image.onload = function () {
-					$(".layui-nav-img").attr("src", convert.imageToBase64(image));
+					let data = url.startsWith('/') ? convert.imageToBase64(image) : url;
+					$(".layui-nav-img").attr("src", data);
 				}
 				$(".layui-nav-img").parent().append(username);
 			}

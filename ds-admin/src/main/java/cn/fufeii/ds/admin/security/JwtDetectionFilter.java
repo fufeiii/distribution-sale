@@ -1,10 +1,12 @@
 package cn.fufeii.ds.admin.security;
 
 import cn.fufeii.ds.common.constant.DsConstant;
+import cn.fufeii.ds.repository.entity.SysUser;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.RegisteredPayload;
 import cn.hutool.jwt.signers.JWTSignerUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
@@ -31,7 +33,7 @@ import java.util.Collections;
  */
 @Slf4j
 public class JwtDetectionFilter extends OncePerRequestFilter {
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final byte[] signKeyByte;
 
     public JwtDetectionFilter(String signKey) {
@@ -68,8 +70,8 @@ public class JwtDetectionFilter extends OncePerRequestFilter {
 
         // 验证成功
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        String subject = jwt.getPayload(RegisteredPayload.SUBJECT).toString();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(subject, null, Collections.emptyList()));
+        String subjectStr = jwt.getPayload(RegisteredPayload.SUBJECT).toString();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(objectMapper.readValue(subjectStr, SysUser.class), null, Collections.emptyList()));
         SecurityContextHolder.setContext(securityContext);
 
         // 继续向下走
