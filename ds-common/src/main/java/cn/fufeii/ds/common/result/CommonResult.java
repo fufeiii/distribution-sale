@@ -45,8 +45,8 @@ public final class CommonResult<T> {
         return new CommonResult<>(code, msg, null);
     }
 
-    public static <T> CommonResult<T> fail(ResultDefinition rd) {
-        return fail(rd.getCode(), rd.getFormatMsg());
+    public static <T> CommonResult<T> fail(ResultDefinition rd, String... params) {
+        return fail(rd.getCode(), rd.getFormatMsg(params));
     }
 
 }

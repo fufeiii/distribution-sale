@@ -1,10 +1,10 @@
 @layout("/common/container.html", {bodyAttr:"background=\"/ds/images/background.svg\" style=\"background-size: cover;\"", css: ["/ds/css/other/login.css"]}) {
-<form class="layui-form" method="post" action="/doLogin">
+<form class="layui-form">
     <div class="layui-form-item">
         <img class="logo" src="/ds/images/logo.png"/>
         <div class="title">Distribution Sale</div>
         <div class="desc">
-            基于微服务架构下的分销解决方案
+            微服务架构下的分销解决方案
         </div>
     </div>
     <div class="layui-form-item">
@@ -20,7 +20,6 @@
     <!--    <div class="layui-form-item">-->
     <!--        <input type="checkbox" name="" title="记住密码" lay-skin="primary" checked>-->
     <!--    </div>-->
-    <!-- FIXME 暂时为表单登录 -->
     <div class="layui-form-item">
         <button type="submit" class="pear-btn pear-btn-success login" lay-submit lay-filter="*">
             登 入
@@ -28,13 +27,21 @@
     </div>
 </form>
 <script>
-    layui.use(['form', 'button', 'popup'], function () {
+    layui.use(['form', 'popup', 'easyHttp'], function () {
         let form = layui.form;
-        let button = layui.button;
         let popup = layui.popup;
+        let easyHttp = layui.easyHttp;
         // 登 录 提 交
-        // form.on('submit(*)', function (data) {
-        // });
+        form.on('submit(*)', function (data) {
+            easyHttp.execute({url: '/admin/login', method: 'POST', data: JSON.stringify(data.field)}, function (resp) {
+                JwtOperator.setJwt(resp.data)
+                popup.success('登录成功', function () {
+                    window.location.href = '/';
+                });
+            });
+            return false;
+        });
+
     })
 </script>
 @}

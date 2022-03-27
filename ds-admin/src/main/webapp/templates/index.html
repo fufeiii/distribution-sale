@@ -25,7 +25,7 @@
                 <!-- 功 能 菜 单 -->
                 <dl class="layui-nav-child">
                     <!-- TODO 登录人员信息 -->
-                    <dd><a user-menu-url="view/system/person.html" user-menu-id="5555" user-menu-title="基本资料">基本资料</a>
+                    <!--                    <dd><a user-menu-url="view/system/person.html" user-menu-id="5555" user-menu-title="基本资料">基本资料</a>-->
                     </dd>
                     <!-- FIXME 暂时为表单登出 -->
                     <dd><a href="/logout" class="logout">注销登录</a></dd>
@@ -67,17 +67,14 @@
 </div>
 <!-- 框 架 初 始 化 -->
 <script>
-    layui.use(['admin', 'jquery', 'convert', 'popup'], function () {
-        var admin = layui.admin;
-        var $ = layui.jquery;
-        var convert = layui.convert;
-        var popup = layui.popup;
+    layui.use(['admin', 'http', 'popup'], function () {
+        let admin = layui.admin;
+        let popup = layui.popup;
+        let http = layui.http;
 
         admin.setAvatar("/ds/images/avatar.jpg", "超级管理员");
-
         admin.setConfigType("json");
-        admin.setConfigPath("/pear.config.json");
-
+        admin.setConfigPath("/ds/pear.config.json");
         admin.render();
 
         // 登出逻辑

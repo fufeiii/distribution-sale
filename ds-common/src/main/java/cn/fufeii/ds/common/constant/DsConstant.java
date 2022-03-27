@@ -12,4 +12,7 @@ public final class DsConstant {
     public static final String REDIS_NAMESPACE = "ds";
     public static final String GL_NAMESPACE = "gl";
 
+    public static final String HEADER_AUTHORIZATION = "Authorization";
+    public static final String HEADER_AUTHORIZATION_PREFIX = "Bearer ";
+
 }

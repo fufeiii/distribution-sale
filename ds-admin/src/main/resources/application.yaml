@@ -27,29 +27,29 @@ spring:
     time-zone: GMT+8
     date-format: ${spring.mvc.format.date-time}
 
-  # FIXME 设置默认用户
-  security:
-    user:
-      name: admin
-      password: admin
-      roles: ADMIN
-
 # swagger相关配置
 knife4j:
   enable: true
 
+# mp
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*.xml
   typeEnumsPackage: cn.fufeii.ds.common.enumerate.biz
   configuration:
     lazy-loading-enabled: true
     aggressive-lazy-loading: false
-    # 二级缓存 关闭
     cache-enabled: false
   global-config:
     banner: false
 
+# 日志
 logging:
   config: classpath:logback-spring.xml
   level:
     cn.fufeii.ds: debug
+
+  # admin配置
+ds:
+  admin:
+    jwt-sign-key: ab012345678901234567890123456789
+    jwt-sign-ttl: 12h

@@ -1,0 +1,20 @@
+{
+  "groups": [
+    {
+      "name": "ds.admin"
+    }
+  ],
+  "properties": [
+    {
+      "name": "ds.admin.jwt-sign-key",
+      "type": "java.lang.String",
+      "sourceType": "cn.fufeii.ds.admin.config.property.DsAdminProperties"
+    },
+    {
+      "name": "ds.admin.jwt-sign-ttl",
+      "type": "java.time.Duration",
+      "sourceType": "cn.fufeii.ds.admin.config.property.DsAdminProperties",
+      "defaultValue": "1h"
+    }
+  ]
+}

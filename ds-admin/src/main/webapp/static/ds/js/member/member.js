@@ -17,7 +17,11 @@ layui.use(['table', 'form'], function () {
             [
                 {
                     title: '头像', templet: function (d) {
-                        return '<img class="tb-img-circle" alt=""  src="' + d.avatar + '" />';
+                        let img = d.avatar;
+                        if (!img) {
+                            img = Constant.memberAvatar;
+                        }
+                        return '<img class="tb-img-circle" alt=""  src="' + img + '" />';
                     }, align: 'center', width: 90, unresize: true
                 },
                 {

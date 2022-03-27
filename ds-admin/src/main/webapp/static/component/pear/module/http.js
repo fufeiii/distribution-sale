@@ -17,6 +17,7 @@ layui.define(['jquery', 'layer'], function (exports) {
 
             xhr.setRequestHeader("Pragma", "no-cache");
             xhr.setRequestHeader("Cache-Control", "no-cache");
+            xhr.setRequestHeader("Expires", "Sat, 01 Jan 2000 00:00:00 GMT");
         };
 
         options.success = undefined;
@@ -37,7 +38,7 @@ layui.define(['jquery', 'layer'], function (exports) {
     $.extend(http.ajax, {
         defaultOpts: {
             dataType: 'json',
-            method: 'POST',
+            type: 'POST',
             contentType: 'application/json',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
@@ -112,7 +113,7 @@ layui.define(['jquery', 'layer'], function (exports) {
         },
 
         handleErrorResponse: function (jqXHR, userOptions, $dfd) {
-            if (userOptions.customHandleError !== false) {
+            if (!userOptions.customHandleError) {
                 switch (jqXHR.status) {
                     case 401:
                         http.ajax.showErrorAndRedirectUrl(http.ajax.defaultError401, http.appPath);
@@ -124,6 +125,7 @@ layui.define(['jquery', 'layer'], function (exports) {
                         http.ajax.showError(http.ajax.defaultError404);
                         break;
                     default:
+                        http.ajax.showError(http.ajax.defaultError);
                         break;
                 }
             }
@@ -174,18 +176,6 @@ layui.define(['jquery', 'layer'], function (exports) {
     $(document).ajaxSend(function (event, request, settings) {
         return http.ajax.ajaxSendHandler(event, request, settings);
     });
-
-    http.getQueryVariable = function (variable) {
-        var query = window.location.search.substring(1);
-        var vars = query.split("&");
-        for (var i = 0; i < vars.length; i++) {
-            var pair = vars[i].split("=");
-            if (pair[0] === variable) {
-                return pair[1];
-            }
-        }
-        return '';
-    }
 
     exports('http', http);
 });

@@ -1,5 +1,6 @@
 package cn.fufeii.ds.portal.stgy.impl;
 
+import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,4 +9,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class InviteProfitStrategy extends AbstractProfitStrategy {
+    @Override
+    public boolean match(ProfitTypeEnum profitType) {
+        return false;
+    }
+
+    @Override
+    public void profit() {
+
+    }
 }
