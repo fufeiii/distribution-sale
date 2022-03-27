@@ -51,15 +51,13 @@ layui.use(['jquery'], function () {
     // 设置全局的检查事件
     $(document).ajaxSend(function (event, jqXHR, ajaxOptions) {
         if (ajaxOptions.url !== JwtVerify.loginUrl) {
-            console.log(1);
             // 不是登录接口的时候发现jwt有问题就跳转登录
             let ok = JwtVerify.verify();
             if (!ok) {
-                JwtOperator.deleteJwt();
+                JwtOperator.clearJwt();
                 JwtVerify.toLoginPage();
                 return;
             }
-            console.log(2);
             // 校验正常，不存在token时则加上
             let jwt = JwtOperator.getJwt();
             if (jwt && ajaxOptions.headers !== undefined && ajaxOptions.headers[JwtOperator.headerName] === undefined) {

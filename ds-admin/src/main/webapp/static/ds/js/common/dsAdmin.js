@@ -12,7 +12,7 @@ let JwtOperator = {
     setJwt: function (jwt) {
         localStorage.setItem(this.lsName, jwt);
     },
-    deleteJwt: function () {
+    clearJwt: function () {
         localStorage.removeItem(this.lsName);
     }
 };

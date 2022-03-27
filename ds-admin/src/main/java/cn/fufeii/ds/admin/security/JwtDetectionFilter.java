@@ -49,7 +49,7 @@ public class JwtDetectionFilter extends OncePerRequestFilter {
         }
 
         // 替换jwt规范种的Bearer，不遵守规范的情况也不影响。。
-        authorization = authorization.replace(DsConstant.HEADER_AUTHORIZATION_PREFIX, CharSequenceUtil.EMPTY);
+        authorization = authorization.replaceFirst(DsConstant.HEADER_AUTHORIZATION_PREFIX, CharSequenceUtil.EMPTY);
         JWT jwt;
         try {
             jwt = JWT.of(authorization).setSigner(JWTSignerUtil.hs256(signKeyByte));

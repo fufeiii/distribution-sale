@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-;
 
 /**
  * 处理{@link org.springframework.security.web.access.ExceptionTranslationFilter}过滤器后面的过滤器产生的以下异常
@@ -31,7 +30,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        // 打印日志，一般到这里都是ExceptionTranslationFilter发现权限不足或者认证有问题
+        // 一般到这里都是发现权限不足或者认证有问题，所以不需要再次认证了
         log.warn("请求:[{} {}], 异常:[{}]", request.getMethod(), request.getServletPath(), authException.getMessage());
         // 响应
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

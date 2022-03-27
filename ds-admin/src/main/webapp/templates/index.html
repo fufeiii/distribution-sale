@@ -20,7 +20,7 @@
             <li class="layui-nav-item user">
                 <!-- 头 像 -->
                 <a href="javascript:;">
-                    <img src="/ds/images/avatar.jpg" class="layui-nav-img">
+                    <img class="layui-nav-img" src="">
                 </a>
                 <!-- 功 能 菜 单 -->
                 <dl class="layui-nav-child">
@@ -28,7 +28,7 @@
                     <!--                    <dd><a user-menu-url="view/system/person.html" user-menu-id="5555" user-menu-title="基本资料">基本资料</a>-->
                     </dd>
                     <!-- FIXME 暂时为表单登出 -->
-                    <dd><a href="/logout" class="logout">注销登录</a></dd>
+                    <dd><a class="logout" href="javascript:;">注销登录</a></dd>
                 </dl>
             </li>
             <!-- 主 题 配 置 -->
@@ -67,10 +67,10 @@
 </div>
 <!-- 框 架 初 始 化 -->
 <script>
-    layui.use(['admin', 'http', 'popup'], function () {
+    layui.use(['admin', 'easyHttp', 'popup'], function () {
         let admin = layui.admin;
         let popup = layui.popup;
-        let http = layui.http;
+        let easyHttp = layui.easyHttp;
 
         admin.setAvatar("/ds/images/avatar.jpg", "超级管理员");
         admin.setConfigType("json");
@@ -79,9 +79,12 @@
 
         // 登出逻辑
         admin.logout(function () {
-            popup.success("注销成功", function () {
-                location.href = "login.html";
-            })
+            easyHttp.execute({url: '/admin/logout', method: 'POST', data: JSON.stringify({})}, function (resp) {
+                JwtOperator.clearJwt();
+                popup.success('注销成功', function () {
+                    window.location.href = '/';
+                });
+            });
             // 注销逻辑 返回 true / false
             return true;
         })

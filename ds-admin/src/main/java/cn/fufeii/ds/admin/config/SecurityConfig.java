@@ -2,7 +2,14 @@ package cn.fufeii.ds.admin.config;
 
 import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
 import cn.fufeii.ds.admin.config.property.DsAdminProperties;
-import cn.fufeii.ds.admin.security.*;
+import cn.fufeii.ds.admin.security.JwtAuthenticationEntryPoint;
+import cn.fufeii.ds.admin.security.JwtDetectionFilter;
+import cn.fufeii.ds.admin.security.login.JwtLoginFilter;
+import cn.fufeii.ds.admin.security.login.JwtLoginFilterHandler;
+import cn.fufeii.ds.admin.security.login.JwtLoginProvider;
+import cn.fufeii.ds.admin.security.logout.JwtLogoutFilter;
+import cn.fufeii.ds.admin.security.logout.JwtLogoutHandler;
+import cn.fufeii.ds.admin.security.logout.NullLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +32,9 @@ import java.util.List;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private JwtAuthenticationProvider jwtAuthenticationProvider;
+    private JwtLoginProvider jwtLoginProvider;
+    @Autowired
+    private JwtLogoutHandler jwtLogoutHandler;
     @Autowired
     private DsAdminProperties dsAdminProperties;
 
@@ -47,13 +57,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 其他请求都需要经过认证
                 .anyRequest().authenticated();
 
-        // 添加jwt验证过滤器到UsernamePasswordAuthenticationFilter后面
-        httpSecurity.addFilterAfter(this.jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-        // 添加jwt检测过滤器到ExceptionTranslationFilter后面，这样抛出异常可以被JwtAuthenticationEntryPoint处理
+        // 添加jwt登录过滤器
+        httpSecurity.addFilterAfter(this.getJwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        // 添加jwt检测过滤器
         httpSecurity.addFilterAfter(new JwtDetectionFilter(jwtSignKey), ExceptionTranslationFilter.class);
+        // 添加jwt登出过滤器
+        httpSecurity.addFilterAfter(new JwtLogoutFilter(new NullLogoutSuccessHandler(), jwtLogoutHandler), LogoutFilter.class);
 
         // 添加Provider到AuthenticationProvider列表中
-        httpSecurity.authenticationProvider(jwtAuthenticationProvider);
+        httpSecurity.authenticationProvider(jwtLoginProvider);
 
         // 若直到FilterSecurityInterceptor（最后一个filter）没有认证成功或其权限不足，
         // 则会抛出AuthenticationException或者AccessDeniedException，这时交由JwtAuthenticationEntryPoint处理
@@ -75,13 +87,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    private JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter phoneAuthenticationFilter = new JwtAuthenticationFilter();
+    private JwtLoginFilter getJwtAuthenticationFilter() throws Exception {
+        JwtLoginFilter phoneAuthenticationFilter = new JwtLoginFilter();
         // 配置filter验证成功逻辑
         phoneAuthenticationFilter.setAuthenticationSuccessHandler(
-                new JwtAuthenticationHandler.SuccessHandler(dsAdminProperties.getJwtSignKey(), dsAdminProperties.getJwtSignTtl().toMillis()));
+                new JwtLoginFilterHandler.SuccessHandler(dsAdminProperties.getJwtSignKey(), dsAdminProperties.getJwtSignTtl().toMillis()));
         // 配置filter验证失败逻辑
-        phoneAuthenticationFilter.setAuthenticationFailureHandler(new JwtAuthenticationHandler.FailureHandler());
+        phoneAuthenticationFilter.setAuthenticationFailureHandler(new JwtLoginFilterHandler.FailureHandler());
         // 为此filter设置am管理（am才真正持有AuthenticationProvider集合）
         phoneAuthenticationFilter.setAuthenticationManager(super.authenticationManager());
         return phoneAuthenticationFilter;
@@ -89,12 +101,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private String[] getAnonymousRequestPattern() {
         List<String> anonymousRequestPath = new ArrayList<>();
-        // 登录请求
+        // 登录/登出
         anonymousRequestPath.add(DsAdminConstant.LOGIN_URL);
         // 前端页面
         anonymousRequestPath.add(DsAdminConstant.ROOT_PATH);
         anonymousRequestPath.add(DsAdminConstant.VIEW_PATH_PREFIX + "/**");
-        return anonymousRequestPath.toArray(new String[3]);
+        return anonymousRequestPath.toArray(new String[0]);
     }
 
 }

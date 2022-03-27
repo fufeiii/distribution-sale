@@ -1,4 +1,4 @@
-package cn.fufeii.ds.admin.security;
+package cn.fufeii.ds.admin.security.login;
 
 import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
 import cn.hutool.core.io.IoUtil;
@@ -16,15 +16,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * jwt过滤器
+ * jwt登录过滤器
  *
  * @author FuFei
  * @date 2022/3/25
  */
-public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public JwtAuthenticationFilter() {
+    public JwtLoginFilter() {
         super(new AntPathRequestMatcher(DsAdminConstant.LOGIN_URL, HttpMethod.POST.name()));
     }
 

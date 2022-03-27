@@ -8,10 +8,8 @@ layui.define(['http', 'popup'], function (exports) {
         http.ajax(ajaxOptions)
             .done(function (data) {
                 if (data.code === 0) {
-                    popup.success('添加成功');
                     successCallback && successCallback(data);
                 } else {
-                    popup.failure(data.msg);
                     failureCallback && failureCallback(data);
                 }
             })

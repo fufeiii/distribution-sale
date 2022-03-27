@@ -1,4 +1,4 @@
-package cn.fufeii.ds.admin.security;
+package cn.fufeii.ds.admin.security.login;
 
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.result.CommonResult;
@@ -25,7 +25,7 @@ import java.util.Date;
  * @author FuFei
  * @date 2022/3/25
  */
-public class JwtAuthenticationHandler {
+public class JwtLoginFilterHandler {
 
     @Slf4j
     public static class FailureHandler implements AuthenticationFailureHandler {

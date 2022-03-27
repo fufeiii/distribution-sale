@@ -25,7 +25,8 @@ public enum ExceptionEnum implements ResultDefinition {
     /* ========================= 管理台异常枚举 ========================= */
     ADMIN_ERROR(6000, "管理台错误"),
     LOGIN_ERROR(6001, "登录错误：%s"),
-    JWT_ERROR(6001, "jwt错误"),
+    JWT_ERROR(6002, "jwt错误"),
+    LOGOUT_ERROR(6003, "登出错误：%s"),
 
     /* ========================= 业务异常枚举 ========================= */
     UNKNOWN_STRATEGY(7001, "未知的[%s]的分销策略");

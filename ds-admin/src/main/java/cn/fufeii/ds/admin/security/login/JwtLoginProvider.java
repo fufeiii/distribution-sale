@@ -1,4 +1,4 @@
-package cn.fufeii.ds.admin.security;
+package cn.fufeii.ds.admin.security.login;
 
 import cn.fufeii.ds.repository.crud.CrudSysUserService;
 import cn.fufeii.ds.repository.entity.SysUser;
@@ -21,7 +21,7 @@ import java.util.Collections;
  * @date 2022/3/25
  */
 @Component
-public class JwtAuthenticationProvider implements AuthenticationProvider {
+public class JwtLoginProvider implements AuthenticationProvider {
     @Autowired
     private CrudSysUserService crudSysUserService;
 
