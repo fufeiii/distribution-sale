@@ -2,6 +2,8 @@ package cn.fufeii.ds.admin.security.login;
 
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.result.CommonResult;
+import cn.fufeii.ds.common.util.ObjectMapperUtil;
+import cn.fufeii.ds.common.util.ResponseUtil;
 import cn.fufeii.ds.repository.entity.SysUser;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.signers.JWTSignerUtil;
@@ -44,7 +46,6 @@ public class JwtLoginFilterHandler {
 
     @Slf4j
     public static class SuccessHandler implements AuthenticationSuccessHandler {
-        private final ObjectMapper objectMapper = new ObjectMapper();
         private final byte[] signKeyByte;
         private final long ttl;
 
@@ -67,17 +68,15 @@ public class JwtLoginFilterHandler {
 
             Date now = new Date();
             // 签发jwt
-            String jwtToken = JWT.create()
-                    .setSubject(objectMapper.writeValueAsString(subject))
+            String jwtStr = JWT.create()
+                    .setSubject(ObjectMapperUtil.toJsonString(subject))
                     .setNotBefore(now)
                     .setIssuedAt(now)
                     .setExpiresAt(new Date(now.getTime() + ttl))
                     .setSigner(JWTSignerUtil.hs256(signKeyByte))
                     .sign();
             // 响应
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            response.getWriter().write(objectMapper.writeValueAsString(CommonResult.success(jwtToken)));
+            ResponseUtil.write(response, CommonResult.success(jwtStr));
         }
 
     }

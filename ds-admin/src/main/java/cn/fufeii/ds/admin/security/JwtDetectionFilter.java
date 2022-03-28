@@ -1,18 +1,26 @@
 package cn.fufeii.ds.admin.security;
 
+import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
+import cn.fufeii.ds.admin.config.property.DsAdminProperties;
 import cn.fufeii.ds.common.constant.DsConstant;
+import cn.fufeii.ds.common.util.ObjectMapperUtil;
 import cn.fufeii.ds.repository.entity.SysUser;
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.util.CharUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.RegisteredPayload;
 import cn.hutool.jwt.signers.JWTSignerUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -32,31 +40,33 @@ import java.util.Collections;
  * @date 2022/3/26
  */
 @Slf4j
+@Component
 public class JwtDetectionFilter extends OncePerRequestFilter {
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final byte[] signKeyByte;
+    @Autowired
+    private RedissonClient redissonClient;
 
-    public JwtDetectionFilter(String signKey) {
-        this.signKeyByte = signKey.getBytes(StandardCharsets.UTF_8);
+    public JwtDetectionFilter(DsAdminProperties dsAdminProperties) {
+        this.signKeyByte = dsAdminProperties.getJwtSignKey().getBytes(StandardCharsets.UTF_8);
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 只校验token存在的情况，不存在时由FilterSecurityInterceptor去校验匿名用户的合法性
-        String authorization = request.getHeader(DsConstant.HEADER_AUTHORIZATION);
-        if (authorization == null || authorization.trim().isEmpty()) {
+        String jwtStr = request.getHeader(DsConstant.HEADER_AUTHORIZATION);
+        if (jwtStr == null || jwtStr.trim().isEmpty()) {
             // 继续向下走
             filterChain.doFilter(request, response);
             return;
         }
 
         // 替换jwt规范种的Bearer，不遵守规范的情况也不影响。。
-        authorization = authorization.replaceFirst(DsConstant.HEADER_AUTHORIZATION_PREFIX, CharSequenceUtil.EMPTY);
+        jwtStr = jwtStr.replaceFirst(DsConstant.HEADER_AUTHORIZATION_PREFIX, CharSequenceUtil.EMPTY);
         JWT jwt;
         try {
-            jwt = JWT.of(authorization).setSigner(JWTSignerUtil.hs256(signKeyByte));
+            jwt = JWT.of(jwtStr).setSigner(JWTSignerUtil.hs256(signKeyByte));
         } catch (Exception exception) {
-            log.warn("jwt解析错误，内容为[{}]，异常信息[{}]", authorization, exception.getMessage());
+            log.warn("jwt解析错误，内容为[{}]，异常信息[{}]", jwtStr, exception.getMessage());
             throw new BadCredentialsException("jwt解析错误", exception);
         }
 
@@ -68,10 +78,16 @@ public class JwtDetectionFilter extends OncePerRequestFilter {
             throw new CredentialsExpiredException("jwt已失效");
         }
 
+        String signature = StrUtil.split(jwtStr, CharUtil.DOT).get(2);
+        boolean exists = redissonClient.getBucket(DsAdminConstant.REDIS_JWT_PREFIX + signature).isExists();
+        if (exists) {
+            throw new DisabledException("jwt已被注销");
+        }
+
         // 验证成功
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         String subjectStr = jwt.getPayload(RegisteredPayload.SUBJECT).toString();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(objectMapper.readValue(subjectStr, SysUser.class), null, Collections.emptyList()));
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(ObjectMapperUtil.toObject(subjectStr, SysUser.class), null, Collections.emptyList()));
         SecurityContextHolder.setContext(securityContext);
 
         // 继续向下走

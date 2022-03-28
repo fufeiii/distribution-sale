@@ -1,8 +1,8 @@
 package cn.fufeii.ds.admin.security.login;
 
 import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
+import cn.fufeii.ds.common.util.ObjectMapperUtil;
 import cn.hutool.core.io.IoUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +22,6 @@ import java.io.IOException;
  * @date 2022/3/25
  */
 public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public JwtLoginFilter() {
         super(new AntPathRequestMatcher(DsAdminConstant.LOGIN_URL, HttpMethod.POST.name()));
@@ -30,7 +29,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
-        LoginRequest loginRequest = objectMapper.readValue(IoUtil.readBytes(request.getInputStream()), LoginRequest.class);
+        LoginRequest loginRequest = ObjectMapperUtil.toObject(IoUtil.read(request.getReader()), LoginRequest.class);
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
         authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
         return this.getAuthenticationManager().authenticate(authRequest);
