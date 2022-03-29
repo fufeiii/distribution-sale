@@ -67,21 +67,22 @@ public class JwtDetectionFilter extends OncePerRequestFilter {
             jwt = JWT.of(jwtStr).setSigner(JWTSignerUtil.hs256(signKeyByte));
         } catch (Exception exception) {
             log.warn("jwt解析错误，内容为[{}]，异常信息[{}]", jwtStr, exception.getMessage());
-            throw new BadCredentialsException("jwt解析错误", exception);
+            throw new BadCredentialsException("解析错误", exception);
         }
 
         if (!jwt.verify()) {
-            throw new BadCredentialsException("jwt数据不完整");
+            throw new BadCredentialsException("数据不完整");
         }
 
         if (!jwt.validate(0)) {
-            throw new CredentialsExpiredException("jwt已失效");
+            throw new CredentialsExpiredException("已失效");
         }
 
+        // 黑名单检查
         String signature = StrUtil.split(jwtStr, CharUtil.DOT).get(2);
         boolean exists = redissonClient.getBucket(DsAdminConstant.REDIS_JWT_PREFIX + signature).isExists();
         if (exists) {
-            throw new DisabledException("jwt已被注销");
+            throw new DisabledException("已被注销");
         }
 
         // 验证成功

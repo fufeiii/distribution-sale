@@ -20,7 +20,7 @@ let JwtOperator = {
 let JwtVerify = {
     loginPageUrl: '/view/login',
     loginUrl: '/admin/login',
-    toLoginPage: function () {
+    toLoginPage: function (window) {
         window.location.replace(this.loginPageUrl);
     },
     verify: function () {

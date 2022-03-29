@@ -22,19 +22,6 @@ public interface ResultDefinition {
      *
      * @return -
      */
-    String getMsg();
-
-    /**
-     * 获取按照msg模板格式化后的响应消息
-     *
-     * @return -
-     */
-    default String getFormatMsg(String... params) {
-        String msg = this.getMsg();
-        if (params == null || params.length == 0) {
-            return msg;
-        }
-        return String.format(msg, (Object[]) params);
-    }
+    String getMsg(String... params);
 
 }

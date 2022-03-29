@@ -95,7 +95,7 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
             title: '添加分润参数',
             shade: 0.3,
             area: ['500px', '610px'],
-            content: '/admin/profit-param/add?tableId=' + ProfitParam.tableId,
+            content: '/view/profit-param/add?tableId=' + ProfitParam.tableId,
         });
     };
 
@@ -108,7 +108,7 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
             title: '编辑分润参数',
             shade: 0.3,
             area: ['500px', '610px'],
-            content: '/admin/profit-param/edit?tableId=' + ProfitParam.tableId + '&id=' + id,
+            content: '/view/profit-param/edit?tableId=' + ProfitParam.tableId + '&id=' + id,
         });
     };
 

@@ -46,23 +46,33 @@ layui.config({
 /**
  * 注册全局jwt校验模块
  */
-layui.use(['jquery'], function () {
+layui.use(['layer', 'jquery'], function () {
+
     let $ = layui.jquery;
-    // 设置全局的检查事件
+    // 设置发送请求前的全局的检查事件
     $(document).ajaxSend(function (event, jqXHR, ajaxOptions) {
         if (ajaxOptions.url !== JwtVerify.loginUrl) {
             // 不是登录接口的时候发现jwt有问题就跳转登录
-            let ok = JwtVerify.verify();
-            if (!ok) {
-                JwtOperator.clearJwt();
-                JwtVerify.toLoginPage();
-                return;
+            if (JwtVerify.verify()) {
+                let jwt = JwtOperator.getJwt();
+                if (jwt && ajaxOptions.headers !== undefined && ajaxOptions.headers[JwtOperator.headerName] === undefined) {
+                    jqXHR.setRequestHeader(JwtOperator.headerName, jwt);
+                }
             }
-            // 校验正常，不存在token时则加上
-            let jwt = JwtOperator.getJwt();
-            if (jwt && ajaxOptions.headers !== undefined && ajaxOptions.headers[JwtOperator.headerName] === undefined) {
-                jqXHR.setRequestHeader(JwtOperator.headerName, jwt);
-            }
+        }
+    });
+
+    // 设置接收到响应的的全局的检查事件
+    $(document).ajaxSuccess(function (event, jqXHR, ajaxOptions) {
+        let data = jqXHR.responseJSON;
+        // 这个范围是权限问题，jwt问题
+        if (ajaxOptions.url !== JwtVerify.loginUrl && (data.code > 6100 && data.code < 6110)) {
+            JwtOperator.clearJwt();
+            layer.alert('身份信息错误，请重新登录', function (index) {
+                layer.close(index);
+                // 最高3层iframe嵌套
+                JwtVerify.toLoginPage(parent.parent.window);
+            });
         }
     });
 });

@@ -20,7 +20,7 @@ public class BizException extends RuntimeException {
     private Integer code;
 
     public BizException(ResultDefinition resultDefinition, String... params) {
-        super(resultDefinition.getFormatMsg(params));
+        super(resultDefinition.getMsg(params));
         code = resultDefinition.getCode();
     }
 

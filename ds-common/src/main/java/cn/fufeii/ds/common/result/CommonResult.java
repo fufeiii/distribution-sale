@@ -13,17 +13,11 @@ import lombok.Data;
  */
 @Data
 public final class CommonResult<T> {
-
     private final int code;
-
     private final String msg;
-
     private final T data;
 
-    private final boolean success;
-
     private CommonResult(int code, String msg, T data) {
-        this.success = code == ExceptionEnum.SUCCESS.getCode();
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -38,15 +32,15 @@ public final class CommonResult<T> {
     }
 
     public static <T> CommonResult<T> success(ResultDefinition rd, T data) {
-        return new CommonResult<>(rd.getCode(), rd.getFormatMsg(), data);
+        return new CommonResult<>(rd.getCode(), rd.getMsg(), data);
     }
 
-    public static <T> CommonResult<T> fail(int code, String msg) {
+    public static CommonResult<Void> fail(int code, String msg) {
         return new CommonResult<>(code, msg, null);
     }
 
-    public static <T> CommonResult<T> fail(ResultDefinition rd, String... params) {
-        return fail(rd.getCode(), rd.getFormatMsg(params));
+    public static CommonResult<Void> fail(ResultDefinition rd, String... params) {
+        return fail(rd.getCode(), rd.getMsg(params));
     }
 
 }

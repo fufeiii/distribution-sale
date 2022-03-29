@@ -51,7 +51,7 @@ layui.use(['table', 'layer', 'http'], function () {
             title: '编辑段位参数',
             shade: 0.3,
             area: ['500px', '610px'],
-            content: '/admin/rank-param/edit?tableId=' + RankParam.tableId + '&id=' + id,
+            content: '/view/rank-param/edit?tableId=' + RankParam.tableId + '&id=' + id,
         });
     };
 
