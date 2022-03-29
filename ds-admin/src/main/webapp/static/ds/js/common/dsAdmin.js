@@ -31,7 +31,7 @@ let JwtVerify = {
         }
         let jwtArray = jwt.split(".")
         if (jwtArray.length !== 3) {
-            console.log('jwt错误，开始重定向到')
+            console.log('jwt错误')
             return false;
         }
         return true;
