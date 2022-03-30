@@ -19,6 +19,11 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
         return [
             [
                 {
+                    title: '平台名称',
+                    field: 'platformNickname',
+                    align: 'center'
+                },
+                {
                     title: '账户类型',
                     field: 'accountType',
                     align: 'center'

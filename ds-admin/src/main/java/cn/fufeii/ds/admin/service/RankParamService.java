@@ -33,6 +33,8 @@ public class RankParamService {
         return selectPage.convert(it -> {
             RankParamResponse response = new RankParamResponse();
             response.setId(it.getId());
+            response.setPlatformUsername(it.getPlatformUsername());
+            response.setPlatformNickname(it.getPlatformNickname());
             response.setMemberRankType(it.getMemberRankType().getMessage());
             response.setBeginIntegral(it.getBeginIntegral());
             response.setEndIntegral(it.getEndIntegral());

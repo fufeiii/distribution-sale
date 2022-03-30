@@ -1,7 +1,7 @@
 package cn.fufeii.ds.admin.security.login;
 
-import cn.fufeii.ds.repository.crud.CrudSysUserService;
-import cn.fufeii.ds.repository.entity.SysUser;
+import cn.fufeii.ds.repository.crud.CrudSystemUserService;
+import cn.fufeii.ds.repository.entity.SystemUser;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.Collections;
 @Component
 public class JwtLoginProvider implements AuthenticationProvider {
     @Autowired
-    private CrudSysUserService crudSysUserService;
+    private CrudSystemUserService crudSystemUserService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -31,18 +31,18 @@ public class JwtLoginProvider implements AuthenticationProvider {
         String username = token.getPrincipal().toString();
 
         // 查找用户
-        SysUser sysUser = crudSysUserService.selectOneOpt(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, username))
+        SystemUser systemUser = crudSystemUserService.selectOneOpt(Wrappers.<SystemUser>lambdaQuery().eq(SystemUser::getUsername, username))
                 .orElseThrow(() -> new BadCredentialsException(String.format("用户[%s]不存在", username)));
 
         // 对比账号
         String password = token.getCredentials().toString();
-        boolean equals = sysUser.getPassword().equals(SecureUtil.md5(password + sysUser.getSlat()));
+        boolean equals = systemUser.getPassword().equals(SecureUtil.md5(password + systemUser.getSlat()));
         if (!equals) {
             // TODO 限制登录次数
             throw new BadCredentialsException("密码错误");
         }
 
-        return new UsernamePasswordAuthenticationToken(sysUser, password, Collections.emptyList());
+        return new UsernamePasswordAuthenticationToken(systemUser, password, Collections.emptyList());
     }
 
     @Override

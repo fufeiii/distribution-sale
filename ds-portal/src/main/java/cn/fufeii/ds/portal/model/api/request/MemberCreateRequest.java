@@ -23,7 +23,7 @@ public class MemberCreateRequest {
     private String username;
 
     @Size(max = 16)
-    @ApiModelProperty(value = "会员昵称")
+    @ApiModelProperty(value = "会员名称")
     private String nickname;
 
     @Size(max = 16)

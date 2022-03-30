@@ -47,7 +47,6 @@ layui.config({
  * 注册全局jwt校验模块
  */
 layui.use(['layer', 'jquery'], function () {
-
     let $ = layui.jquery;
     // 设置发送请求前的全局的检查事件
     $(document).ajaxSend(function (event, jqXHR, ajaxOptions) {
@@ -56,7 +55,7 @@ layui.use(['layer', 'jquery'], function () {
             if (JwtVerify.verify()) {
                 let jwt = JwtOperator.getJwt();
                 if (jwt && ajaxOptions.headers !== undefined && ajaxOptions.headers[JwtOperator.headerName] === undefined) {
-                    jqXHR.setRequestHeader(JwtOperator.headerName, jwt);
+                    jqXHR.setRequestHeader(JwtOperator.headerName, 'Bearer ' + jwt);
                 }
             }
         }

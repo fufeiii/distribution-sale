@@ -22,10 +22,16 @@ public class ProfitParam {
     private Long id;
 
     /**
-     * 平台主键
+     * 平台标识
      */
     @TableField
-    private Long platformId;
+    private String platformUsername;
+
+    /**
+     * 平台名称
+     */
+    @TableField
+    private String platformNickname;
 
     /**
      * 账户类型

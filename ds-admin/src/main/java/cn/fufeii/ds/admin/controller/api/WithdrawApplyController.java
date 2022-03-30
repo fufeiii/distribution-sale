@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 分销事件 API Controller
+ * 提现申请管理 API Controller
  *
  * @author FuFei
  */
-@Api("提现申请")
+@Api(tags = "提现申请管理")
 @RestController
 @RequestMapping(DsAdminConstant.API_PATH_PREFIX + "/withdraw-apply")
 public class WithdrawApplyController {
@@ -29,9 +30,7 @@ public class WithdrawApplyController {
     @Autowired
     private WithdrawApplyService withdrawApplyService;
 
-    /**
-     * 分页查询
-     */
+    @ApiOperation("分页查询")
     @PostMapping("/page")
     public PageResult<WithdrawApplyResponse> page(@RequestBody WithdrawApplyQueryRequest pageParam) {
         IPage<WithdrawApplyResponse> pageResult = withdrawApplyService.page(pageParam, new Page<WithdrawApply>(pageParam.getPage(), pageParam.getSize()).addOrder(OrderItem.desc("id")));

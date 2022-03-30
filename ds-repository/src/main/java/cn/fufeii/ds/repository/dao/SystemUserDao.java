@@ -1,6 +1,6 @@
 package cn.fufeii.ds.repository.dao;
 
-import cn.fufeii.ds.repository.entity.SysUser;
+import cn.fufeii.ds.repository.entity.SystemUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,5 +10,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @author FuFei
  */
 @Mapper
-public interface SysUserDao extends BaseMapper<SysUser> {
+public interface SystemUserDao extends BaseMapper<SystemUser> {
 }

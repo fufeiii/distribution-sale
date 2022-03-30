@@ -5,14 +5,14 @@ layui.use(['table', 'form'], function () {
     /**
      * 页面实体对象
      */
-    let Member = {
-        tableId: 'memberTable'
+    let SystemUser = {
+        tableId: 'systemUserTable'
     }
 
     /**
      * 初始化表列
      */
-    Member.initCols = function () {
+    SystemUser.initCols = function () {
         return [
             [
                 {
@@ -30,38 +30,13 @@ layui.use(['table', 'form'], function () {
                     align: 'center'
                 },
                 {
-                    title: '会员标识',
+                    title: '登录名',
                     field: 'username',
                     align: 'center'
                 },
                 {
-                    title: '会员名称',
+                    title: '用户名',
                     field: 'nickname',
-                    align: 'center'
-                },
-                {
-                    title: '一级邀请人',
-                    field: 'firParent',
-                    align: 'center'
-                },
-                {
-                    title: '二级邀请人',
-                    field: 'secParent',
-                    align: 'center'
-                },
-                {
-                    title: '三级邀请人',
-                    field: 'thrParent',
-                    align: 'center'
-                },
-                {
-                    title: '身份类型',
-                    field: 'identityType',
-                    align: 'center'
-                },
-                {
-                    title: '段位类型',
-                    field: 'rankType',
                     align: 'center'
                 },
                 {
@@ -81,15 +56,15 @@ layui.use(['table', 'form'], function () {
     /**
      * 搜索操作
      */
-    Member.onSearch = function () {
-        let query = form.val('memberQueryForm');
+    SystemUser.onSearch = function () {
+        let query = form.val('sysUserQueryForm');
         Object.keys(query).forEach(function (key) {
             let value = query[key];
             if (value === '') {
                 query[key] = null;
             }
         });
-        table.reload(Member.tableId, {
+        table.reload(SystemUser.tableId, {
             where: query,
             page: {curr: 1}
         });
@@ -99,16 +74,16 @@ layui.use(['table', 'form'], function () {
      * 表格渲染配置
      */
     table.render({
-        elem: '#' + Member.tableId,
+        elem: '#' + SystemUser.tableId,
         skin: 'line',
         size: 'lg',
-        url: '/admin/member/page',
+        url: '/admin/system-user/page',
         method: 'POST',
         page: true,
         contentType: 'application/json',
         request: {pageName: 'page', limitName: 'size'},
         response: {countName: 'total'},
-        cols: Member.initCols(),
+        cols: SystemUser.initCols(),
         toolbar: '#toolbar',
         defaultToolbar: ['filter', 'print', 'exports']
     });
@@ -116,8 +91,8 @@ layui.use(['table', 'form'], function () {
     /**
      * 搜索按钮点击事件
      */
-    form.on('submit(memberQueryFormSubmit)', function (data) {
-        Member.onSearch(data);
+    form.on('submit(sysUserQueryFormSubmit)', function (data) {
+        SystemUser.onSearch(data);
         return false;
     });
 

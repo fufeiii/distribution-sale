@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel
-public class MemberQueryRequest {
+public class SystemUserQueryRequest {
 
     @ApiModelProperty(value = "页码")
     private Integer page = 1;
@@ -19,10 +19,7 @@ public class MemberQueryRequest {
     @ApiModelProperty(value = "页数")
     private Integer size = 10;
 
-    @ApiModelProperty(value = "会员标识")
+    @ApiModelProperty(value = "登录名")
     private String username;
-
-    @ApiModelProperty(value = "会员名称")
-    private String nickname;
 
 }

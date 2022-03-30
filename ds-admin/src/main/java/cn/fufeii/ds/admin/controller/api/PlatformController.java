@@ -1,11 +1,11 @@
 package cn.fufeii.ds.admin.controller.api;
 
 import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
-import cn.fufeii.ds.admin.model.vo.request.MemberQueryRequest;
-import cn.fufeii.ds.admin.model.vo.response.MemberResponse;
-import cn.fufeii.ds.admin.service.MemberService;
+import cn.fufeii.ds.admin.model.vo.request.PlatformQueryRequest;
+import cn.fufeii.ds.admin.model.vo.response.PlatformResponse;
+import cn.fufeii.ds.admin.service.PlatformService;
 import cn.fufeii.ds.common.result.PageResult;
-import cn.fufeii.ds.repository.entity.Member;
+import cn.fufeii.ds.repository.entity.Platform;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -18,22 +18,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 会员信息 API Controller
+ * 平台信息 API Controller
  *
  * @author FuFei
  */
-@Api(tags = "会员管理")
+@Api(tags = "平台管理")
 @RestController
-@RequestMapping(DsAdminConstant.API_PATH_PREFIX + "/member")
-public class MemberController {
+@RequestMapping(DsAdminConstant.API_PATH_PREFIX + "/platform")
+public class PlatformController {
 
     @Autowired
-    private MemberService memberService;
+    private PlatformService platformService;
 
     @ApiOperation("分页查询")
     @PostMapping("/page")
-    public PageResult<MemberResponse> page(@RequestBody MemberQueryRequest pageParam) {
-        IPage<MemberResponse> pageResult = memberService.page(pageParam, new Page<Member>(pageParam.getPage(), pageParam.getSize()).addOrder(OrderItem.desc("id")));
+    public PageResult<PlatformResponse> page(@RequestBody PlatformQueryRequest pageParam) {
+        IPage<PlatformResponse> pageResult = platformService.page(pageParam, new Page<Platform>(pageParam.getPage(), pageParam.getSize()).addOrder(OrderItem.desc("id")));
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
     }
 

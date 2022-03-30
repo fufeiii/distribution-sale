@@ -32,9 +32,11 @@ public class MemberService {
         return selectPage.convert(it -> {
             MemberResponse response = new MemberResponse();
             response.setId(it.getId());
-            response.setAvatar(it.getAvatar());
+            response.setPlatformUsername(it.getPlatformUsername());
+            response.setPlatformNickname(it.getPlatformNickname());
             response.setUsername(it.getUsername());
             response.setNickname(it.getNickname());
+            response.setAvatar(it.getAvatar());
             response.setFirParent(it.getFirParent());
             response.setSecParent(it.getSecParent());
             response.setThrParent(it.getThrParent());

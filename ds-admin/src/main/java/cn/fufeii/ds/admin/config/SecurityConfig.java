@@ -41,14 +41,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        // 静态资源不经过security，因为不需要上下文中的用户信息
-        web.ignoring().mvcMatchers("/ds/**", "/component/**");
+        // 静态资源不经过securit
+        web.ignoring()
+                .mvcMatchers("/ds/**", "/component/**", "/favicon.ico")
+                .mvcMatchers("/doc.html", "/webjars/**")
+                .mvcMatchers("/swagger-resources", "/v3/api-docs")
+        ;
     }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        String jwtSignKey = dsAdminProperties.getJwtSignKey();
-
         // 全局接口权限设置
         httpSecurity.authorizeRequests()
                 // 登录请求和跳转登录页可以匿名访问（默认配置是打开了匿名用户filter的）

@@ -33,6 +33,8 @@ public class ProfitParamService {
         return selectPage.convert(it -> {
             ProfitParamResponse response = new ProfitParamResponse();
             response.setId(it.getId());
+            response.setPlatformUsername(it.getPlatformUsername());
+            response.setPlatformNickname(it.getPlatformNickname());
             response.setAccountType(it.getAccountType().getMessage());
             response.setProfitType(it.getProfitType().getMessage());
             response.setCalculateMode(it.getCalculateMode().getMessage());
@@ -54,6 +56,8 @@ public class ProfitParamService {
         ProfitParam profitParam = crudProfitParamService.selectById(id);
         ProfitParamResponse response = new ProfitParamResponse();
         response.setId(profitParam.getId());
+        response.setPlatformUsername(profitParam.getPlatformUsername());
+        response.setPlatformNickname(profitParam.getPlatformNickname());
         response.setAccountType(profitParam.getAccountType().name());
         response.setProfitType(profitParam.getProfitType().name());
         response.setCalculateMode(profitParam.getCalculateMode().name());

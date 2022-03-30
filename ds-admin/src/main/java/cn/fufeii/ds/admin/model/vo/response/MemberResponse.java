@@ -18,10 +18,16 @@ public class MemberResponse {
     @ApiModelProperty(value = "主键")
     private Long id;
 
+    @ApiModelProperty(value = "平台标识")
+    private String platformUsername;
+
+    @ApiModelProperty(value = "平台名称")
+    private String platformNickname;
+
     @ApiModelProperty(value = "会员标识")
     private String username;
 
-    @ApiModelProperty(value = "会员昵称")
+    @ApiModelProperty(value = "会员名称")
     private String nickname;
 
     @ApiModelProperty(value = "会员头像")
@@ -42,7 +48,7 @@ public class MemberResponse {
     @ApiModelProperty(value = "段位类型")
     private String rankType;
 
-    @ApiModelProperty(value = "会员状态")
+    @ApiModelProperty(value = "状态")
     private String state;
 
     @ApiModelProperty(value = "创建时间")

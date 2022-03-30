@@ -88,10 +88,10 @@
         admin.setConfigPath("/ds/pear.config.json");
 
         // 用户信息
-        easyHttp.execute({url: '/admin/sys-user/current', method: 'GET'}, function (resp) {
+        easyHttp.execute({url: '/admin/system-user/current', method: 'GET'}, function (resp) {
             let avatar = resp.data.avatar;
             if (!avatar) {
-                avatar = Constant.adminAvatar;
+                avatar = Constant.defaultAvatar;
             }
             admin.setAvatar(avatar, resp.data.nickname);
             admin.render();

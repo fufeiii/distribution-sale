@@ -4,7 +4,7 @@ import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
 import cn.fufeii.ds.admin.config.property.DsAdminProperties;
 import cn.fufeii.ds.common.constant.DsConstant;
 import cn.fufeii.ds.common.util.ObjectMapperUtil;
-import cn.fufeii.ds.repository.entity.SysUser;
+import cn.fufeii.ds.repository.entity.SystemUser;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.CharUtil;
 import cn.hutool.core.util.StrUtil;
@@ -88,7 +88,7 @@ public class JwtDetectionFilter extends OncePerRequestFilter {
         // 验证成功
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         String subjectStr = jwt.getPayload(RegisteredPayload.SUBJECT).toString();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(ObjectMapperUtil.toObject(subjectStr, SysUser.class), null, Collections.emptyList()));
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(ObjectMapperUtil.toObject(subjectStr, SystemUser.class), null, Collections.emptyList()));
         SecurityContextHolder.setContext(securityContext);
 
         // 继续向下走

@@ -5,13 +5,13 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 会员信息 Request
+ * 平台信息 Request
  *
  * @author FuFei
  */
 @Data
 @ApiModel
-public class MemberQueryRequest {
+public class PlatformQueryRequest {
 
     @ApiModelProperty(value = "页码")
     private Integer page = 1;
@@ -19,10 +19,10 @@ public class MemberQueryRequest {
     @ApiModelProperty(value = "页数")
     private Integer size = 10;
 
-    @ApiModelProperty(value = "会员标识")
+    @ApiModelProperty(value = "平台标识")
     private String username;
 
-    @ApiModelProperty(value = "会员名称")
+    @ApiModelProperty(value = "平台名称")
     private String nickname;
 
 }

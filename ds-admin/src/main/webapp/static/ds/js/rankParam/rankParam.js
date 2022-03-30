@@ -17,6 +17,11 @@ layui.use(['table', 'layer', 'http'], function () {
         return [
             [
                 {
+                    title: '平台名称',
+                    field: 'platformNickname',
+                    align: 'center'
+                },
+                {
                     title: '会员段位类型',
                     field: 'memberRankType',
                     align: 'center'

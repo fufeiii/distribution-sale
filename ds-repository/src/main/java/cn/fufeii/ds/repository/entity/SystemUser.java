@@ -12,8 +12,8 @@ import java.util.Date;
  * @author FuFei
  */
 @Data
-@TableName(value = "ds_sys_user")
-public class SysUser {
+@TableName(value = "ds_system_user")
+public class SystemUser {
 
     /**
      * 主键
@@ -22,16 +22,16 @@ public class SysUser {
     private Long id;
 
     /**
-     * 平台主键
+     * 平台标识
      */
     @TableField
-    private Long platformId;
+    private String platformUsername;
 
     /**
      * 平台名称
      */
     @TableField
-    private String platformUsername;
+    private String platformNickname;
 
     /**
      * 登录名

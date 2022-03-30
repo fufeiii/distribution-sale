@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
  *
  * @author FuFei
  */
-@Api("分润参数")
+@Api(tags = "分润参数")
 @RestController
 @RequestMapping(DsAdminConstant.API_PATH_PREFIX + "/profit-param")
 public class ProfitParamController {
@@ -28,45 +29,34 @@ public class ProfitParamController {
     @Autowired
     private ProfitParamService profitParamService;
 
-
-    /**
-     * 分页查询
-     */
+    @ApiOperation("分页查询")
     @PostMapping("/page")
     public PageResult<ProfitParamResponse> page(@RequestBody ProfitParamQueryRequest pageParam) {
         IPage<ProfitParamResponse> pageResult = profitParamService.page(pageParam, new Page<ProfitParam>(pageParam.getPage(), pageParam.getSize()).addOrder(OrderItem.desc("id")));
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
     }
 
-    /**
-     * 查询详情
-     */
+    @ApiOperation("详情查询")
     @GetMapping("/get/{id}")
     public CommonResult<ProfitParamResponse> get(@PathVariable Long id) {
         return CommonResult.success(profitParamService.get(id));
     }
 
-    /**
-     * 新增
-     */
+    @ApiOperation("新增")
     @PostMapping("/create")
     public CommonResult<Void> create(@RequestBody ProfitParamUpsertRequest createParam) {
         profitParamService.create(createParam);
         return CommonResult.success();
     }
 
-    /**
-     * 修改
-     */
+    @ApiOperation("修改")
     @PutMapping("/modify")
     public CommonResult<Void> modify(@RequestBody ProfitParamUpsertRequest modifyParam) {
         profitParamService.modify(modifyParam);
         return CommonResult.success();
     }
 
-    /**
-     * 删除
-     */
+    @ApiOperation("删除")
     @DeleteMapping("/remove/{id}")
     public CommonResult<Void> remove(@PathVariable Long id) {
         profitParamService.remove(id);

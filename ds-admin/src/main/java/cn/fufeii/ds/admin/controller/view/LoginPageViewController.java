@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LoginPageViewController {
 
-
     @GetMapping(value = DsAdminConstant.VIEW_PATH_PREFIX + "/login")
     public String login() {
         return "/login.html";

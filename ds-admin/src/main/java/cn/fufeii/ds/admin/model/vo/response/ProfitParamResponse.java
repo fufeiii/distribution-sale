@@ -18,6 +18,12 @@ public class ProfitParamResponse {
     @ApiModelProperty(value = "主键")
     private Long id;
 
+    @ApiModelProperty(value = "平台标识")
+    private String platformUsername;
+
+    @ApiModelProperty(value = "平台名称")
+    private String platformNickname;
+
     @ApiModelProperty(value = "账户类型")
     private String accountType;
 

@@ -7,37 +7,31 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 段位配置 Response
+ * 平台信息 Response
  *
  * @author FuFei
  */
 @Data
 @ApiModel
-public class RankParamResponse {
+public class PlatformResponse {
 
     @ApiModelProperty(value = "主键")
     private Long id;
 
     @ApiModelProperty(value = "平台标识")
-    private String platformUsername;
+    private String username;
 
     @ApiModelProperty(value = "平台名称")
-    private String platformNickname;
+    private String nickname;
 
-    @ApiModelProperty(value = "会员段位类型")
-    private String memberRankType;
+    @ApiModelProperty(value = "签名密钥")
+    private String sk;
 
-    @ApiModelProperty(value = "开始积分")
-    private Integer beginIntegral;
-
-    @ApiModelProperty(value = "结束积分")
-    private Integer endIntegral;
+    @ApiModelProperty(value = "webhook地址")
+    private String webhook;
 
     @ApiModelProperty(value = "状态")
     private String state;
-
-    @ApiModelProperty(value = "更新时间")
-    private Date updateDateTime;
 
     @ApiModelProperty(value = "创建时间")
     private Date createDateTime;

@@ -30,7 +30,7 @@ public class SwaggerConfig {
                         .build())
                 .groupName("管理后台")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("cn.fufeii.ds.admin.controller"))
+                .apis(RequestHandlerSelectors.basePackage("cn.fufeii.ds.admin.controller.api"))
                 .paths(PathSelectors.any())
                 .build();
     }

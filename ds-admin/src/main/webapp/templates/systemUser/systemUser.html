@@ -1,22 +1,22 @@
-@layout("/common/container.html", {bodyAttr:"class=\"pear-container\"", js:["/ds/js/profitRecord/profitRecord.js"]}) {
+@layout("/common/container.html", {bodyAttr:"class=\"pear-container\"", js:["/ds/js/systemUser/systemUser.js"]}) {
+<style>
+    .tb-img-circle {
+        border-radius: 90%;
+        height: 100%;
+    }
+</style>
 <div class="layui-card">
     <div class="layui-card-body">
-        <form class="layui-form" lay-filter="profitRecordQueryForm">
+        <form class="layui-form" lay-filter="systemUserQueryForm">
             <div class="layui-form-item">
                 <div class="layui-form-item layui-inline">
-                    <label class="layui-form-label">会员标识</label>
+                    <label class="layui-form-label">登录名</label>
                     <div class="layui-input-inline">
                         <input class="layui-input" name="username" placeholder="" type="text">
                     </div>
                 </div>
                 <div class="layui-form-item layui-inline">
-                    <label class="layui-form-label">会员名称</label>
-                    <div class="layui-input-inline">
-                        <input class="layui-input" name="nickname" placeholder="" type="text">
-                    </div>
-                </div>
-                <div class="layui-form-item layui-inline">
-                    <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="profitRecordQueryFormSubmit"
+                    <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="systemUserQueryFormSubmit"
                             lay-submit>
                         <i class="layui-icon layui-icon-search"></i>
                         搜索
@@ -31,7 +31,7 @@
 </div>
 <div class="layui-card">
     <div class="layui-card-body">
-        <table id="profitRecordTable" lay-filter="profitRecordTable"></table>
+        <table id="systemUserTable" lay-filter="systemUserTable"></table>
     </div>
 </div>
 @}

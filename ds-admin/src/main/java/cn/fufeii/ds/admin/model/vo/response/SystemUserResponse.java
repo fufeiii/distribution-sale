@@ -12,23 +12,27 @@ import lombok.Data;
  */
 @Data
 @ApiModel
-public class SysUserResponse {
+public class SystemUserResponse {
 
     @ApiModelProperty(value = "主键")
     private Long id;
 
-    @ApiModelProperty(value = "平台主键")
-    private Long platformId;
+    @ApiModelProperty(value = "平台标识")
+    private String platformUsername;
 
     @ApiModelProperty(value = "平台名称")
-    private String platformUsername;
+    private String platformNickname;
 
     @ApiModelProperty(value = "登录名")
     private String username;
 
-    @ApiModelProperty(value = "名称")
+    @ApiModelProperty(value = "用户名")
     private String nickname;
 
     @ApiModelProperty(value = "头像")
     private String avatar;
+
+    @ApiModelProperty(value = "状态")
+    private String state;
+
 }
