@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        // 静态资源不经过securit
+        // 静态资源不经过security
         web.ignoring()
                 .mvcMatchers("/ds/**", "/component/**", "/favicon.ico")
                 .mvcMatchers("/doc.html", "/webjars/**")

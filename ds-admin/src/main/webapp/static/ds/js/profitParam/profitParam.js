@@ -186,5 +186,4 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
         return false;
     });
 
-
 });

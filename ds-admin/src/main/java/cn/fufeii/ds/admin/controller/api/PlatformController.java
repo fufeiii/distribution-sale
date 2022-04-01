@@ -12,10 +12,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 平台信息 API Controller
@@ -34,6 +31,13 @@ public class PlatformController {
     @PostMapping("/page")
     public PageResult<PlatformResponse> page(@RequestBody PlatformQueryRequest pageParam) {
         IPage<PlatformResponse> pageResult = platformService.page(pageParam, new Page<Platform>(pageParam.getPage(), pageParam.getSize()).addOrder(OrderItem.desc("id")));
+        return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
+    }
+
+    @ApiOperation("列表查询")
+    @GetMapping("/list")
+    public PageResult<PlatformResponse> list() {
+        IPage<PlatformResponse> pageResult = platformService.page(new PlatformQueryRequest(), new Page<Platform>(1, 10000).addOrder(OrderItem.desc("id")));
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
     }
 

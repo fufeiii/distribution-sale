@@ -5,7 +5,7 @@ import cn.fufeii.ds.common.constant.DsConstant;
 import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,6 +13,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.Ordered;
@@ -31,16 +33,21 @@ import java.util.concurrent.TimeUnit;
  * @author Fu Fei
  * @date 2022/3/20
  */
-@Slf4j
 @Aspect
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GlobalLockAspect {
 
     private final LocalVariableTableParameterNameDiscoverer localVariableTableParameterNameDiscoverer = new LocalVariableTableParameterNameDiscoverer();
+
     private final ExpressionParser expressionParser = new SpelExpressionParser();
+
     @Autowired
     private RedissonClient redissonClient;
+
+    private Logger logger(JoinPoint joinPoint) {
+        return LoggerFactory.getLogger(joinPoint.getSignature().getDeclaringTypeName());
+    }
 
     @Pointcut("@annotation(cn.fufeii.ds.common.annotation.GlobalLock)")
     public void pointcut() {
@@ -58,6 +65,7 @@ public class GlobalLockAspect {
         final String glKey = this.getGlKey(globalLock.key(), method, pjp.getArgs());
 
         RLock rLock = redissonClient.getLock(glKey);
+        Logger log = this.logger(pjp);
         boolean isLocked = false;
         try {
             // 加锁
@@ -65,6 +73,7 @@ public class GlobalLockAspect {
                 isLocked = rLock.tryLock(globalLock.waitTime(), TimeUnit.SECONDS);
             } else {
                 rLock.lock();
+                isLocked = true;
             }
             // 加锁失败抛出异常
             if (!isLocked) {

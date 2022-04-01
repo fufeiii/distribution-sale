@@ -57,7 +57,7 @@ layui.use(['table', 'form'], function () {
      * 搜索操作
      */
     SystemUser.onSearch = function () {
-        let query = form.val('sysUserQueryForm');
+        let query = form.val('systemUserQueryForm');
         Object.keys(query).forEach(function (key) {
             let value = query[key];
             if (value === '') {
@@ -69,6 +69,20 @@ layui.use(['table', 'form'], function () {
             page: {curr: 1}
         });
     }
+
+
+    /**
+     * 弹出添加对话框
+     */
+    SystemUser.openAddDlg = function () {
+        layer.open({
+            type: 2,
+            title: '添加用户',
+            shade: 0.3,
+            area: ['550px', '450px'],
+            content: '/view/system-user/add?tableId=' + SystemUser.tableId,
+        });
+    };
 
     /**
      * 表格渲染配置
@@ -91,10 +105,18 @@ layui.use(['table', 'form'], function () {
     /**
      * 搜索按钮点击事件
      */
-    form.on('submit(sysUserQueryFormSubmit)', function (data) {
+    form.on('submit(systemUserQueryFormSubmit)', function (data) {
         SystemUser.onSearch(data);
         return false;
     });
 
+    /**
+     * 监听表格上方按钮 toolbar
+     */
+    table.on('toolbar(' + SystemUser.tableId + ')', function (obj) {
+        if (obj.event === 'add') {
+            SystemUser.openAddDlg();
+        }
+    });
 
 });

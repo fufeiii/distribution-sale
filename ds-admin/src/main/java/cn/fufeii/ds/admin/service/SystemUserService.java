@@ -1,5 +1,6 @@
 package cn.fufeii.ds.admin.service;
 
+import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
 import cn.fufeii.ds.admin.model.vo.request.SystemUserQueryRequest;
 import cn.fufeii.ds.admin.model.vo.response.SystemUserResponse;
 import cn.fufeii.ds.common.util.BeanCopierUtil;
@@ -49,6 +50,9 @@ public class SystemUserService {
     }
 
 
+    /**
+     * 设置通用响应字段
+     */
     private void setResponse(SystemUser systemUser, SystemUserResponse response) {
         response.setId(systemUser.getId());
         response.setPlatformUsername(systemUser.getPlatformUsername());
@@ -57,6 +61,15 @@ public class SystemUserService {
         response.setNickname(systemUser.getNickname());
         response.setAvatar(systemUser.getAvatar());
         response.setState(systemUser.getState().getMessage());
+        response.setIsAdmin(this.isAdmin(systemUser));
     }
+
+    /**
+     * 判断用户是否为超管
+     */
+    public boolean isAdmin(SystemUser systemUser) {
+        return DsAdminConstant.ADMIN_USERNAME.equals(systemUser.getUsername());
+    }
+
 
 }

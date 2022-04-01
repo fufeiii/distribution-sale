@@ -93,6 +93,7 @@
             if (!avatar) {
                 avatar = Constant.defaultAvatar;
             }
+            AdminOperator.setAdmin(resp.data.isAdmin);
             admin.setAvatar(avatar, resp.data.nickname);
             admin.render();
         });

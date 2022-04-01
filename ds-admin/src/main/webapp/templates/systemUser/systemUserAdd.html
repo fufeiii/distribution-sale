@@ -1,0 +1,55 @@
+@layout("/common/container.html", {js:["/ds/js/systemUser/systemUserAdd.js"]}) {
+<form action="" class="layui-form" lay-filter="systemUserForm">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">平台名称</label>
+                <div class="layui-input-block">
+                    <select id="platformUsernameSelect" lay-verify="required" name="platformUsername">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">登录名</label>
+                <div class="layui-input-block">
+                    <input autocomplete="new-username" class="layui-input" lay-verify="required" name="username"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">用户名</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" lay-verify="required" name="nickname"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">头像</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" lay-verify="required" name="avatar"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">密码</label>
+                <div class="layui-input-block">
+                    <input autocomplete="new-password" class="layui-input" lay-verify="required" name="password"
+                           type="password"/>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="bottom">
+        <div class="button-container">
+            <button class="pear-btn pear-btn-primary pear-btn-sm" lay-filter="btnSubmit" lay-submit="" type="submit">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button class="pear-btn pear-btn-sm" type="reset">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+@}

@@ -17,6 +17,9 @@ public class SystemUserResponse {
     @ApiModelProperty(value = "主键")
     private Long id;
 
+    @ApiModelProperty(value = "是否为超管")
+    private Boolean isAdmin;
+
     @ApiModelProperty(value = "平台标识")
     private String platformUsername;
 

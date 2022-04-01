@@ -10,7 +10,11 @@ layui.define(['http', 'popup'], function (exports) {
                 if (data.code === 0) {
                     successCallback && successCallback(data);
                 } else {
-                    failureCallback && failureCallback(data);
+                    if (failureCallback) {
+                        failureCallback(data);
+                    } else {
+                        popup.failure(data.msg);
+                    }
                 }
             })
             .fail(function (data) {

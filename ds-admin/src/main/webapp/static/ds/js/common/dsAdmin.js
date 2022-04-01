@@ -37,3 +37,12 @@ let JwtVerify = {
     }
 }
 
+let AdminOperator = {
+    isAdmin: function () {
+        return 'true' === localStorage.getItem('isAdmin');
+    },
+    setAdmin: function (isAdmin) {
+        localStorage.setItem('isAdmin', isAdmin + '');
+    }
+}
+

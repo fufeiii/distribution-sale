@@ -19,4 +19,9 @@ public class SystemUserViewController {
         return "/systemUser/systemUser.html";
     }
 
+    @GetMapping("/add")
+    public String add() {
+        return "/systemUser/systemUserAdd.html";
+    }
+
 }

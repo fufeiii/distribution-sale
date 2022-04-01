@@ -34,11 +34,16 @@ public class LogAspect {
     @Around("pointcut()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         Logger log = this.logger(joinPoint);
-        log.info("函数{}()入参 = {}", joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+        boolean infoEnabled = log.isInfoEnabled();
+        if (infoEnabled) {
+            log.info("函数{}()入参 = {}", joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+        }
         try {
             long start = System.nanoTime();
             Object result = joinPoint.proceed();
-            log.info("函数{}()耗时{}ms出参 = {}", joinPoint.getSignature().getName(), (System.nanoTime() - start) / 100_0000L, result);
+            if (infoEnabled) {
+                log.info("函数{}()耗时{}ms出参 = {}", joinPoint.getSignature().getName(), (System.nanoTime() - start) / 100_0000L, result);
+            }
             return result;
         } catch (Exception e) {
             log.warn("函数{}()异常={}({})", joinPoint.getSignature().getName(), e.getClass().getSimpleName(), e.getMessage());
