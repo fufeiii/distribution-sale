@@ -19,4 +19,10 @@ public class PlatformViewController {
         return "/platform/platform.html";
     }
 
+
+    @GetMapping("/add")
+    public String addPage() {
+        return "/platform/platformAdd.html";
+    }
+
 }

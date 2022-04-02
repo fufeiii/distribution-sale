@@ -4,6 +4,7 @@ import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
 import cn.fufeii.ds.admin.model.vo.request.SystemUserCreateRequest;
 import cn.fufeii.ds.admin.model.vo.request.SystemUserQueryRequest;
 import cn.fufeii.ds.admin.model.vo.response.SystemUserResponse;
+import cn.fufeii.ds.admin.security.CurrentUserHelper;
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.exception.BizException;
@@ -20,7 +21,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,7 +40,7 @@ public class SystemUserService {
      * 当前用户
      */
     public SystemUserResponse current() {
-        SystemUser systemUser = (SystemUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SystemUser systemUser = CurrentUserHelper.self();
         SystemUserResponse response = new SystemUserResponse();
         this.setResponse(systemUser, response);
         return response;
@@ -61,37 +61,13 @@ public class SystemUserService {
         });
     }
 
-
-    /**
-     * 设置通用响应字段
-     */
-    private void setResponse(SystemUser systemUser, SystemUserResponse response) {
-        response.setId(systemUser.getId());
-        response.setPlatformUsername(systemUser.getPlatformUsername());
-        response.setPlatformNickname(systemUser.getPlatformNickname());
-        response.setUsername(systemUser.getUsername());
-        response.setNickname(systemUser.getNickname());
-        response.setAvatar(systemUser.getAvatar());
-        response.setState(systemUser.getState().getMessage());
-        response.setCreateDateTime(systemUser.getCreateDateTime());
-        response.setIsAdmin(this.isAdmin(systemUser));
-    }
-
-    /**
-     * 判断用户是否为超管
-     */
-    public boolean isAdmin(SystemUser systemUser) {
-        return DsAdminConstant.ADMIN_USERNAME.equals(systemUser.getUsername());
-    }
-
-
     /**
      * 创建用户
      */
     public void create(SystemUserCreateRequest request) {
         // 不能使用超管账号
         if (DsAdminConstant.ADMIN_USERNAME.equals(request.getUsername())) {
-            throw new BizException(ExceptionEnum.ADMIN_CREATE_ERROR, "禁止使用系统预留登录名");
+            throw new BizException(ExceptionEnum.USER_CREATE_ERROR, "禁止使用系统预留登录名");
         }
         // 填充默认值
         if (CharSequenceUtil.isBlank(request.getNickname())) {
@@ -109,7 +85,7 @@ public class SystemUserService {
                 .eq(SystemUser::getPlatformUsername, request.getPlatformUsername())
                 .eq(SystemUser::getUsername, request.getUsername());
         if (crudSystemUserService.exist(queryWrapper)) {
-            throw new BizException(ExceptionEnum.ADMIN_CREATE_ERROR, "用户已存在");
+            throw new BizException(ExceptionEnum.USER_CREATE_ERROR, "用户已存在");
         }
 
         // 创建用户
@@ -125,4 +101,22 @@ public class SystemUserService {
         user.setState(StateEnum.ENABLE);
         crudSystemUserService.insertOrUpdate(user);
     }
+
+
+    /**
+     * 设置通用响应字段
+     */
+    private void setResponse(SystemUser systemUser, SystemUserResponse response) {
+        response.setId(systemUser.getId());
+        response.setPlatformUsername(systemUser.getPlatformUsername());
+        response.setPlatformNickname(systemUser.getPlatformNickname());
+        response.setUsername(systemUser.getUsername());
+        response.setNickname(systemUser.getNickname());
+        response.setAvatar(systemUser.getAvatar());
+        response.setState(systemUser.getState().getMessage());
+        response.setCreateDateTime(systemUser.getCreateDateTime());
+        response.setIsAdmin(CurrentUserHelper.isAdmin(systemUser));
+    }
+
+
 }

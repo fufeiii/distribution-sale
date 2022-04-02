@@ -41,6 +41,9 @@ let AdminOperator = {
     isAdmin: function () {
         return 'true' === localStorage.getItem('isAdmin');
     },
+    isNotAdmin: function () {
+        return !this.isAdmin();
+    },
     setAdmin: function (isAdmin) {
         localStorage.setItem('isAdmin', isAdmin + '');
     }

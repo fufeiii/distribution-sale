@@ -56,7 +56,7 @@ public class ProfitParamViewController {
      * 编辑页面
      */
     @GetMapping("/edit")
-    public String edit(Model model) {
+    public String editPage(Model model) {
         this.injectionParam(model);
         return "/profitParam/profitParamEdit.html";
     }

@@ -1,24 +1,13 @@
-layui.use(['form', 'layer', 'easyHttp', 'popup'], function () {
-    let $ = layui.jquery;
+layui.use(['form', 'easyHttp', 'popup'], function () {
     let easyHttp = layui.easyHttp;
     let form = layui.form;
     let popup = layui.popup;
-
-    easyHttp.execute({url: '/admin/platform/list', method: 'GET'}, function (resp) {
-        let $platformUsernameSelect = $('#platformUsernameSelect');
-        for (let i = 0; i < resp.data.length; i++) {
-            let p = resp.data[i];
-            $platformUsernameSelect.append("<option value='" + p.username + "'>" + p.nickname + "</option>");
-        }
-        form.render('select', 'systemUserForm');
-    });
-
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
         console.log(data.field)
         easyHttp.execute({
-            url: '/admin/system-user/create',
+            url: '/admin/platform/create',
             method: 'POST',
             data: JSON.stringify(data.field)
         }, function (resp) {

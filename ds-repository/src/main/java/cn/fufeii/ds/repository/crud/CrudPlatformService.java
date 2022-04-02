@@ -1,5 +1,7 @@
 package cn.fufeii.ds.repository.crud;
 
+import cn.fufeii.ds.common.enumerate.ExceptionEnum;
+import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.repository.dao.PlatformDao;
 import cn.fufeii.ds.repository.entity.Platform;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -48,7 +50,7 @@ public class CrudPlatformService {
      * 通过ID获取一个存在的实体
      */
     public Platform selectById(Long id) {
-        return this.selectByIdOpt(id).orElseThrow(RuntimeException::new);
+        return this.selectByIdOpt(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "id(" + id + ")"));
     }
 
     /**

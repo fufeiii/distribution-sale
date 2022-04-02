@@ -22,15 +22,21 @@ public enum ExceptionEnum implements ResultDefinition {
 
     /* ========================= 管理台异常枚举 ========================= */
     ADMIN_COMMON_ERROR(6000, "管理台错误", ""),
+    STATE_COMMON_ERROR(6001, "重复修改状态", ""),
     // ~ 6100 - 6110 端属于权限占位端
     LOGIN_ERROR(6101, "", "登录错误：%s"),
     JWT_ERROR(6102, "", "jwt错误：%s"),
     LOGOUT_ERROR(6103, "", "登出错误：%s"),
 
-    ADMIN_CREATE_ERROR(6203, "", "创建用户错误：%s"),
+    USER_CREATE_ERROR(6201, "", "创建用户错误：%s"),
+    PLATFORM_CREATE_ERROR(6301, "", "创建平台错误：%s"),
+
+    /* ========================= 通用实体常枚举 ========================= */
+    ENTITY_NOT_EXIST(7001, "", "数据[%s]不存在"),
+
 
     /* ========================= 业务异常枚举 ========================= */
-    UNKNOWN_STRATEGY(7001, "", "未知的[%s]的分销策略");
+    UNKNOWN_STRATEGY(7101, "", "未知的[%s]的分销策略");
 
 
     private final int code;

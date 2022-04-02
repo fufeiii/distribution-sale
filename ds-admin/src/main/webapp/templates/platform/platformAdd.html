@@ -1,0 +1,39 @@
+@layout("/common/container.html", {js:["/ds/js/platform/platformAdd.js"]}) {
+<form action="" class="layui-form" lay-filter="platformForm">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">平台标识</label>
+                <div class="layui-input-block">
+                    <input autocomplete="new-username" class="layui-input" lay-verify="required" name="username"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">平台名称</label>
+                <div class="layui-input-block">
+                    <input autocomplete="off" class="layui-input" lay-verify="required" name="nickname"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">Webhook</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" name="webhook"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom">
+        <div class="button-container">
+            <button class="pear-btn pear-btn-primary pear-btn-sm" lay-filter="btnSubmit" lay-submit="" type="submit">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button class="pear-btn pear-btn-sm" type="reset">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+@}

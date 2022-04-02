@@ -2,8 +2,11 @@ package cn.fufeii.ds.admin.controller.api;
 
 import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
 import cn.fufeii.ds.admin.model.vo.request.PlatformQueryRequest;
+import cn.fufeii.ds.admin.model.vo.request.PlatformUpsertRequest;
 import cn.fufeii.ds.admin.model.vo.response.PlatformResponse;
 import cn.fufeii.ds.admin.service.PlatformService;
+import cn.fufeii.ds.common.enumerate.biz.StateEnum;
+import cn.fufeii.ds.common.result.CommonResult;
 import cn.fufeii.ds.common.result.PageResult;
 import cn.fufeii.ds.repository.entity.Platform;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -39,6 +42,27 @@ public class PlatformController {
     public PageResult<PlatformResponse> list() {
         IPage<PlatformResponse> pageResult = platformService.page(new PlatformQueryRequest(), new Page<Platform>(1, 10000).addOrder(OrderItem.desc("id")));
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
+    }
+
+    @ApiOperation("新增")
+    @PostMapping("/create")
+    public CommonResult<Void> create(@RequestBody PlatformUpsertRequest request) {
+        platformService.create(request);
+        return CommonResult.success();
+    }
+
+    @ApiOperation("启用")
+    @PutMapping("/enable/{id}")
+    public CommonResult<Void> enable(@PathVariable Long id) {
+        platformService.changeState(id, StateEnum.ENABLE);
+        return CommonResult.success();
+    }
+
+    @ApiOperation("禁用")
+    @PutMapping("/disable/{id}")
+    public CommonResult<Void> disable(@PathVariable Long id) {
+        platformService.changeState(id, StateEnum.DISABLE);
+        return CommonResult.success();
     }
 
 }
