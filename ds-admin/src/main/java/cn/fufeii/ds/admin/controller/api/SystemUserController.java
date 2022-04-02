@@ -1,9 +1,11 @@
 package cn.fufeii.ds.admin.controller.api;
 
 import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
+import cn.fufeii.ds.admin.model.vo.request.SystemUserCreateRequest;
 import cn.fufeii.ds.admin.model.vo.request.SystemUserQueryRequest;
 import cn.fufeii.ds.admin.model.vo.response.SystemUserResponse;
 import cn.fufeii.ds.admin.service.SystemUserService;
+import cn.fufeii.ds.common.annotation.DataValid;
 import cn.fufeii.ds.common.result.CommonResult;
 import cn.fufeii.ds.common.result.PageResult;
 import cn.fufeii.ds.repository.entity.SystemUser;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
  * @date 2022/3/27
  */
 @Api(tags = "用户管理")
+@DataValid
 @RestController
 @RequestMapping(DsAdminConstant.API_PATH_PREFIX + "/system-user")
 public class SystemUserController {
@@ -39,6 +42,13 @@ public class SystemUserController {
     public PageResult<SystemUserResponse> page(@RequestBody SystemUserQueryRequest pageParam) {
         IPage<SystemUserResponse> pageResult = systemUserService.page(pageParam, new Page<SystemUser>(pageParam.getPage(), pageParam.getSize()).addOrder(OrderItem.desc("id")));
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
+    }
+
+    @ApiOperation("新增")
+    @PostMapping("/create")
+    public CommonResult<Void> create(@RequestBody SystemUserCreateRequest request) {
+        systemUserService.create(request);
+        return CommonResult.success();
     }
 
 

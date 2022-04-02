@@ -1,10 +1,11 @@
-package cn.fufeii.ds.admin.model.vo.response;
+package cn.fufeii.ds.admin.model.vo.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.Date;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * 系统用户 Response
@@ -14,33 +15,29 @@ import java.util.Date;
  */
 @Data
 @ApiModel
-public class SystemUserResponse {
+public class SystemUserCreateRequest {
 
-    @ApiModelProperty(value = "主键")
-    private Long id;
-
-    @ApiModelProperty(value = "是否为超管")
-    private Boolean isAdmin;
-
+    @NotBlank
     @ApiModelProperty(value = "平台标识")
     private String platformUsername;
 
-    @ApiModelProperty(value = "平台名称")
-    private String platformNickname;
-
+    @NotBlank
+    @Size(max = 16)
     @ApiModelProperty(value = "登录名")
     private String username;
 
+    @NotBlank
+    @Size(max = 16)
     @ApiModelProperty(value = "用户名")
     private String nickname;
 
+    @Size(max = 255)
     @ApiModelProperty(value = "头像")
     private String avatar;
 
-    @ApiModelProperty(value = "状态")
-    private String state;
-
-    @ApiModelProperty(value = "创建日期")
-    private Date createDateTime;
+    @NotBlank
+    @Size(min = 5, max = 16)
+    @ApiModelProperty(value = "密码")
+    private String password;
 
 }

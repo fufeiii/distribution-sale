@@ -28,6 +28,11 @@ public class DsAdminProperties implements InitializingBean {
      */
     private Duration jwtSignTtl = Duration.ofHours(1);
 
+    /**
+     * 登录错误次数限制
+     */
+    private Integer loginErrorLimit = 5;
+
 
     @Override
     public void afterPropertiesSet() throws Exception {

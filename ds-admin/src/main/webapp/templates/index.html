@@ -77,26 +77,27 @@
             easyHttp.execute({url: '/admin/logout', method: 'POST', data: JSON.stringify({})}, function (resp) {
                 JwtOperator.clearJwt();
                 popup.success('注销成功', function () {
-                    window.location.href = '/';
+                    JwtVerify.toLoginPage(window);
                 });
             });
             // 注销逻辑 返回 true / false
-            return true;
+            return false;
         });
         // 配置文件
         admin.setConfigType("json");
         admin.setConfigPath("/ds/pear.config.json");
 
-        // 用户信息
+        // 获取用户信息
         easyHttp.execute({url: '/admin/system-user/current', method: 'GET'}, function (resp) {
             let avatar = resp.data.avatar;
-            if (!avatar) {
+            if (!Util.isLegalImgSrc(avatar)) {
                 avatar = Constant.defaultAvatar;
             }
             AdminOperator.setAdmin(resp.data.isAdmin);
             admin.setAvatar(avatar, resp.data.nickname);
             admin.render();
         });
+
     })
 </script>
 @}

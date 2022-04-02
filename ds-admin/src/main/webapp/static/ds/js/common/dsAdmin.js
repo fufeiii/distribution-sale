@@ -46,3 +46,12 @@ let AdminOperator = {
     }
 }
 
+let Util = {
+    isLegalImgSrc: function (src) {
+        if (!src) {
+            return false;
+        }
+        return src.startsWith('/') || src.startsWith('http');
+    }
+}
+

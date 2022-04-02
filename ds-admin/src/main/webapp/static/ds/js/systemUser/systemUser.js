@@ -18,7 +18,7 @@ layui.use(['table', 'form'], function () {
                 {
                     title: '头像', templet: function (d) {
                         let img = d.avatar;
-                        if (!img) {
+                        if (!Util.isLegalImgSrc(img)) {
                             img = Constant.defaultAvatar;
                         }
                         return '<img class="tb-img-circle" alt=""  src="' + img + '" />';

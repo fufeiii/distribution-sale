@@ -4,6 +4,7 @@ import cn.fufeii.ds.repository.dao.PlatformDao;
 import cn.fufeii.ds.repository.entity.Platform;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -102,5 +103,8 @@ public class CrudPlatformService {
     // ---------------------------- 下面基础CRUD的扩展 ----------------------------------- //
     // --------------------------------------------------------------------------------- //
 
+    public Platform selectByUsername(String username) {
+        return this.selectOne(Wrappers.<Platform>lambdaQuery().eq(Platform::getUsername, username));
+    }
 
 }

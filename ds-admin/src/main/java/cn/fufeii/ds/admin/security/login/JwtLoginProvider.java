@@ -1,5 +1,6 @@
 package cn.fufeii.ds.admin.security.login;
 
+import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.repository.crud.CrudSystemUserService;
 import cn.fufeii.ds.repository.entity.SystemUser;
 import cn.hutool.crypto.SecureUtil;
@@ -7,6 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -33,6 +35,9 @@ public class JwtLoginProvider implements AuthenticationProvider {
         // 查找用户
         SystemUser systemUser = crudSystemUserService.selectOneOpt(Wrappers.<SystemUser>lambdaQuery().eq(SystemUser::getUsername, username))
                 .orElseThrow(() -> new BadCredentialsException(String.format("用户[%s]不存在", username)));
+        if (StateEnum.DISABLE == systemUser.getState()) {
+            throw new DisabledException(String.format("用户[%s]被禁用", username));
+        }
 
         // 对比账号
         String password = token.getCredentials().toString();

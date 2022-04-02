@@ -69,7 +69,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BizException.class)
     @ResponseStatus(HttpStatus.OK)
     public Object bizError(BizException e) {
-        log.error("业务异常", e);
+        log.warn("业务异常", e);
         return CommonResult.fail(e.getCode(), e.getMessage());
     }
 

@@ -15,6 +15,12 @@
       "type": "java.time.Duration",
       "sourceType": "cn.fufeii.ds.admin.config.property.DsAdminProperties",
       "defaultValue": "1h"
+    },
+    {
+      "name": "ds.admin.login-error-limit",
+      "type": "java.lang.Integer",
+      "sourceType": "cn.fufeii.ds.admin.config.property.DsAdminProperties",
+      "defaultValue": "5"
     }
   ]
 }

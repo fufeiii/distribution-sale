@@ -21,11 +21,13 @@ public enum ExceptionEnum implements ResultDefinition {
 
 
     /* ========================= 管理台异常枚举 ========================= */
-    ADMIN_ERROR(6000, "管理台错误", ""),
+    ADMIN_COMMON_ERROR(6000, "管理台错误", ""),
     // ~ 6100 - 6110 端属于权限占位端
     LOGIN_ERROR(6101, "", "登录错误：%s"),
     JWT_ERROR(6102, "", "jwt错误：%s"),
     LOGOUT_ERROR(6103, "", "登出错误：%s"),
+
+    ADMIN_CREATE_ERROR(6203, "", "创建用户错误：%s"),
 
     /* ========================= 业务异常枚举 ========================= */
     UNKNOWN_STRATEGY(7001, "", "未知的[%s]的分销策略");
