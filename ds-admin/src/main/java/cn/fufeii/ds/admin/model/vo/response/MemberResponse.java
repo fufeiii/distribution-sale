@@ -34,13 +34,22 @@ public class MemberResponse {
     private String avatar;
 
     @ApiModelProperty(value = "第一层级父级标识")
-    private String firParent;
+    private String firstInviterUsername;
+
+    @ApiModelProperty(value = "第一层级父级名称")
+    private String firstInviterNickname;
 
     @ApiModelProperty(value = "第二层级父级标识")
-    private String secParent;
+    private String secondInviterUsername;
+
+    @ApiModelProperty(value = "第二层级父级名称")
+    private String secondInviterNickname;
 
     @ApiModelProperty(value = "第三层级父级标识")
-    private String thrParent;
+    private String thirdInviterUsername;
+
+    @ApiModelProperty(value = "第三层级父级名称")
+    private String thirdInviterNickname;
 
     @ApiModelProperty(value = "身份类型")
     private String identityType;

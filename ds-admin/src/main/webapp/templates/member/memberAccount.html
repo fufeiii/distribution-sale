@@ -1,0 +1,71 @@
+@layout("/common/container.html", {js:["/ds/js/member/memberAccount.js"]}) {
+<form action="" class="layui-form" lay-filter="memberAccountForm">
+    <div class="main-container">
+        <div class="layui-form-item">
+            <blockquote class="layui-elem-quote">会员信息</blockquote>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">会员名称</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="memberNickname" readonly/>
+            </div>
+            <label class="layui-form-label layui-form-required">会员标识</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="memberUsername" readonly/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">会员状态</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="memberState" readonly/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <blockquote class="layui-elem-quote">金钱信息</blockquote>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">历史总金额</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="moneyTotalHistory" readonly/>
+            </div>
+            <label class="layui-form-label layui-form-required">总金额</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="moneyTotal" readonly/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">可用金额</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="moneyAvailable" readonly/>
+            </div>
+            <label class="layui-form-label layui-form-required">冻结金额</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="moneyFrozen" readonly/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <blockquote class="layui-elem-quote">积分信息</blockquote>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">历史总积分</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="pointsTotalHistory" readonly/>
+            </div>
+            <label class="layui-form-label layui-form-required">总积分</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="pointsTotal" readonly/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">可用积分</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="pointsAvailable" readonly/>
+            </div>
+            <label class="layui-form-label layui-form-required">冻结积分</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="pointsFrozen" readonly/>
+            </div>
+        </div>
+    </div>
+</form>
+@}

@@ -34,12 +34,6 @@ public class RankParam {
     private String platformNickname;
 
     /**
-     * 平台名称
-     */
-    @TableField
-    private String platformName;
-
-    /**
      * 会员段位类型
      */
     @TableField

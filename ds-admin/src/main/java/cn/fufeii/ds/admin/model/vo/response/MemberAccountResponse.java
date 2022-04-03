@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel
-public class AccountResponse {
+public class MemberAccountResponse {
 
     @ApiModelProperty(value = "主键")
     private Long id;
@@ -19,25 +19,37 @@ public class AccountResponse {
     @ApiModelProperty(value = "会员主键")
     private Long memberId;
 
+    @ApiModelProperty(value = "会员标识")
+    private String memberUsername;
+
+    @ApiModelProperty(value = "会员名称")
+    private String memberNickname;
+
+    @ApiModelProperty(value = "会员状态")
+    private String memberState;
+
+    @ApiModelProperty(value = "历史总金额")
+    private String moneyTotalHistory;
+
     @ApiModelProperty(value = "总金额")
-    private Integer moneyTotal;
+    private String moneyTotal;
 
     @ApiModelProperty(value = "可用金额")
-    private Integer moneyAvailable;
+    private String moneyAvailable;
 
     @ApiModelProperty(value = "冻结金额")
-    private Integer moneyFrozen;
+    private String moneyFrozen;
 
     @ApiModelProperty(value = "历史总积分")
-    private Integer pointsTotalHistory;
+    private String pointsTotalHistory;
 
     @ApiModelProperty(value = "总积分")
-    private Integer pointsTotal;
+    private String pointsTotal;
 
     @ApiModelProperty(value = "可用积分")
-    private Integer pointsAvailable;
+    private String pointsAvailable;
 
     @ApiModelProperty(value = "冻结积分")
-    private Integer pointsFrozen;
+    private String pointsFrozen;
 
 }

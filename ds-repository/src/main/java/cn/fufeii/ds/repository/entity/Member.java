@@ -54,22 +54,22 @@ public class Member {
     private String avatar;
 
     /**
-     * 第一层级父级标识
+     * 第一邀请人
      */
     @TableField
-    private String firParent;
+    private Long firstInviterId;
 
     /**
-     * 第二层级父级标识
+     * 第二邀请人
      */
     @TableField
-    private String secParent;
+    private Long secondInviterId;
 
     /**
-     * 第三层级父级标识
+     * 第三邀请人
      */
     @TableField
-    private String thrParent;
+    private Long thirdInviterId;
 
     /**
      * 身份类型

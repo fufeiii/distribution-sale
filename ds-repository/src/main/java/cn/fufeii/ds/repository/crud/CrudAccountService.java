@@ -1,9 +1,12 @@
 package cn.fufeii.ds.repository.crud;
 
+import cn.fufeii.ds.common.enumerate.ExceptionEnum;
+import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.repository.dao.AccountDao;
 import cn.fufeii.ds.repository.entity.Account;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +50,7 @@ public class CrudAccountService {
      * 通过ID获取一个存在的实体
      */
     public Account selectById(Long id) {
-        return this.selectByIdOpt(id).orElseThrow(RuntimeException::new);
+        return this.selectByIdOpt(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "id(" + id + ")"));
     }
 
     /**
@@ -61,7 +64,7 @@ public class CrudAccountService {
      * 通过条件获取一个存在的实体
      */
     public Account selectOne(Wrapper<Account> queryWrapper) {
-        return this.selectOneOpt(queryWrapper).orElseThrow(RuntimeException::new);
+        return this.selectOneOpt(queryWrapper).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "Account"));
     }
 
     /**
@@ -102,5 +105,11 @@ public class CrudAccountService {
     // ---------------------------- 下面基础CRUD的扩展 ----------------------------------- //
     // --------------------------------------------------------------------------------- //
 
+    /**
+     * 通过会员主键查询账户
+     */
+    public Account selectByMemberId(Long memberId) {
+        return this.selectOne(Wrappers.<Account>lambdaQuery().eq(Account::getMemberId, memberId));
+    }
 
 }

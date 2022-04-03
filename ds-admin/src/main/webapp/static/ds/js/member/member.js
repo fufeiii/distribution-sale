@@ -1,6 +1,8 @@
-layui.use(['table', 'form'], function () {
+layui.use(['table', 'form', 'easyHttp', 'popup'], function () {
     let table = layui.table;
     let form = layui.form;
+    let easyHttp = layui.easyHttp;
+    let popup = layui.popup;
 
     /**
      * 页面实体对象
@@ -16,13 +18,9 @@ layui.use(['table', 'form'], function () {
         return [
             [
                 {
-                    title: '头像', templet: function (d) {
-                        let img = d.avatar;
-                        if (!img) {
-                            img = Constant.defaultAvatar;
-                        }
-                        return '<img class="tb-img-circle" alt=""  src="' + img + '" />';
-                    }, align: 'center', width: 90, unresize: true
+                    title: '头像',
+                    width: 70,
+                    templet: '#avatarTpl'
                 },
                 {
                     title: '平台名称',
@@ -41,17 +39,17 @@ layui.use(['table', 'form'], function () {
                 },
                 {
                     title: '一级邀请人',
-                    field: 'firParent',
+                    field: 'firstInviterNickname',
                     align: 'center'
                 },
                 {
                     title: '二级邀请人',
-                    field: 'secParent',
+                    field: 'secondInviterNickname',
                     align: 'center'
                 },
                 {
                     title: '三级邀请人',
-                    field: 'thrParent',
+                    field: 'thirdInviterNickname',
                     align: 'center'
                 },
                 {
@@ -66,13 +64,20 @@ layui.use(['table', 'form'], function () {
                 },
                 {
                     title: '状态',
-                    field: 'state',
-                    align: 'center'
+                    align: 'center',
+                    templet: '#stateTpl'
                 },
                 {
                     title: '创建日期',
                     field: 'createDateTime',
+                    width: 160,
                     align: 'center'
+                },
+                {
+                    title: '操作',
+                    toolbar: '#rowBar',
+                    align: 'center',
+                    width: 130
                 }
             ]
         ];
@@ -96,6 +101,19 @@ layui.use(['table', 'form'], function () {
     }
 
     /**
+     * 打开账户信息窗口
+     */
+    Member.openAccountDlg = function (id) {
+        layer.open({
+            type: 2,
+            title: '账户信息',
+            shade: 0.3,
+            area: ['700px', '600px'],
+            content: '/view/member/account?id=' + id,
+        });
+    };
+
+    /**
      * 表格渲染配置
      */
     table.render({
@@ -114,11 +132,41 @@ layui.use(['table', 'form'], function () {
     });
 
     /**
+     * 监听数据行末尾按钮 rowBar
+     */
+    table.on('tool(' + Member.tableId + ')', function (obj) {
+        if (obj.event === 'account') {
+            Member.openAccountDlg(obj.data.id);
+        }
+    });
+
+    /**
      * 搜索按钮点击事件
      */
     form.on('submit(memberQueryFormSubmit)', function (data) {
         Member.onSearch(data);
         return false;
+    });
+
+
+    /**
+     * 启用禁用点击事件
+     */
+    form.on('switch(stateBtn)', function (data) {
+        let tips = data.elem.checked ? '启用' : '禁用';
+        let path = data.elem.checked ? 'enable' : 'disable';
+        layer.confirm('确认' + tips, {icon: 3, title: '提示', closeBtn: 0}, function (index) {
+            easyHttp.execute({url: '/admin/member/' + path + '/' + data.value, method: 'PUT'}, function (resp) {
+                popup.success('操作成功');
+                layer.close(index);
+            }, function (resp) {
+                popup.failure(resp.msg);
+            });
+        }, function (index) {
+            data.elem.checked = !data.elem.checked;
+            form.render('checkbox');
+            layer.close(index);
+        });
     });
 
 

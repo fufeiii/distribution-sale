@@ -16,7 +16,6 @@ import cn.fufeii.ds.repository.entity.SystemUser;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -51,7 +50,8 @@ public class SystemUserService {
      * 分页查询
      */
     public IPage<SystemUserResponse> page(SystemUserQueryRequest pageParam, IPage<SystemUser> pageable) {
-        Wrapper<SystemUser> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, SystemUser.class));
+        LambdaQueryWrapper<SystemUser> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, SystemUser.class));
+        CurrentUserHelper.setPlatformIfPossible(queryWrapper);
         IPage<SystemUser> selectPage = crudSystemUserService.selectPage(queryWrapper, pageable);
         // 组装response对象返回
         return selectPage.convert(it -> {

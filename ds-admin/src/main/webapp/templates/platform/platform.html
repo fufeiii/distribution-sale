@@ -42,10 +42,6 @@
         新增
     </button>
 </script>
-<script>
-    AdminOperator.isAdmin()
-</script>
-
 <script id="stateTpl" type="text/html">
     <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="stateBtn"
            {{ AdminOperator.isAdmin() ? '' : 'disabled'}}

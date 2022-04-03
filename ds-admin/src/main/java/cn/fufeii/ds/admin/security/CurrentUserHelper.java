@@ -1,7 +1,9 @@
 package cn.fufeii.ds.admin.security;
 
 import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
+import cn.fufeii.ds.repository.config.CurrentPlatformHelper;
 import cn.fufeii.ds.repository.entity.SystemUser;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -45,6 +47,15 @@ public class CurrentUserHelper {
      */
     public static String platformUsername() {
         return self().getPlatformUsername();
+    }
+
+    /**
+     * 设置平台标识到查询条件中
+     */
+    public static <T> void setPlatformIfPossible(LambdaQueryWrapper<T> queryWrapper) {
+        if (isNotAdmin()) {
+            CurrentPlatformHelper.setPlatform(queryWrapper, platformUsername());
+        }
     }
 
 }

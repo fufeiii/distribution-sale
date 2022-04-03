@@ -15,4 +15,6 @@ public final class DsConstant {
     public static final String HEADER_AUTHORIZATION = "Authorization";
     public static final String HEADER_AUTHORIZATION_PREFIX = "Bearer ";
 
+    public static final Long NULL_MEMBER_INVITER_ID = 0L;
+
 }

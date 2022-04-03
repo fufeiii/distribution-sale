@@ -39,4 +39,16 @@
         <table id="memberTable" lay-filter="memberTable"></table>
     </div>
 </div>
+<script id="avatarTpl" type="text/html">
+    <img class="tb-img-circle" alt="" src="{{ Util.isLegalImgSrc(d.avatar) ? d.avatar : Constant.defaultAvatar }}"/>
+</script>
+<script id="rowBar" type="text/html">
+    <button class="pear-btn pear-btn-warming pear-btn-sm" lay-event="account"><i class="layui-icon layui-icon-rmb"></i>
+    </button>
+</script>
+<script id="stateTpl" type="text/html">
+    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="stateBtn"
+           {{ AdminOperator.isAdmin() ? 'disabled' : ''}}
+    {{ d.state=== '启用' ? 'checked' : '' }} />
+</script>
 @}

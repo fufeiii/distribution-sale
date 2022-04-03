@@ -27,6 +27,12 @@ public class Account {
     private Long memberId;
 
     /**
+     * 历史总金额
+     */
+    @TableField
+    private Integer moneyTotalHistory;
+
+    /**
      * 总金额
      */
     @TableField

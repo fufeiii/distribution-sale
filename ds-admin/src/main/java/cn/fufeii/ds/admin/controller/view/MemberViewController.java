@@ -19,4 +19,9 @@ public class MemberViewController {
         return "/member/member.html";
     }
 
+    @GetMapping("/account")
+    public String account() {
+        return "/member/memberAccount.html";
+    }
+
 }
