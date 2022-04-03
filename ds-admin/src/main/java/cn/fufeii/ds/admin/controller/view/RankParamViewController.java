@@ -39,7 +39,6 @@ public class RankParamViewController {
      */
     @GetMapping("/add")
     public String addPage(Model model) {
-        this.injectionParam(model);
         return "/rankParam/rankParamAdd.html";
     }
 
@@ -48,7 +47,6 @@ public class RankParamViewController {
      */
     @GetMapping("/edit")
     public String edit(Model model) {
-        this.injectionParam(model);
         return "/rankParam/rankParamEdit.html";
     }
 

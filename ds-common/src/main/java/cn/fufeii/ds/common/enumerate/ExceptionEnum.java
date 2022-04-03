@@ -23,6 +23,8 @@ public enum ExceptionEnum implements ResultDefinition {
     /* ========================= 管理台异常枚举 ========================= */
     ADMIN_COMMON_ERROR(6000, "管理台错误", ""),
     STATE_COMMON_ERROR(6001, "重复修改状态", ""),
+    API_ADMIN_DENY_ERROR(6002, "超管无权限调用", ""),
+    API_USER_DENY_ERROR(6002, "用户无权限调用", ""),
     // ~ 6100 - 6110 端属于权限占位端
     LOGIN_ERROR(6101, "", "登录错误：%s"),
     JWT_ERROR(6102, "", "jwt错误：%s"),
@@ -30,6 +32,7 @@ public enum ExceptionEnum implements ResultDefinition {
 
     USER_CREATE_ERROR(6201, "", "创建用户错误：%s"),
     PLATFORM_CREATE_ERROR(6301, "", "创建平台错误：%s"),
+    PROFIT_PARAM_CREATE_ERROR(6401, "", "创建分润参数错误：%s"),
 
     /* ========================= 通用枚举 ========================= */
     ENTITY_NOT_EXIST(7001, "", "数据不存在：%s"),

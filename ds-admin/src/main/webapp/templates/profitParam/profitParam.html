@@ -103,15 +103,21 @@
 </div>
 
 <script id="toolbar" type="text/html">
-    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add"><i class="layui-icon layui-icon-add-1"></i>
+    <button id="addButton"
+            class="pear-btn pear-btn-md {{ AdminOperator.isAdmin() ? 'layui-btn-disabled' : 'pear-btn-primary'}}"
+            lay-event="{{ AdminOperator.isAdmin() ? '' : 'add'}}"><i class="layui-icon layui-icon-add-1"></i>
         新增
     </button>
 </script>
 
 <script id="rowBar" type="text/html">
-    <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
+    <button class="pear-btn pear-btn-sm {{ AdminOperator.isAdmin() ? 'layui-btn-disabled' : 'pear-btn-primary' }}"
+            lay-event="{{ AdminOperator.isAdmin() ? '' : 'edit' }}">
+        <i class="layui-icon layui-icon-edit"></i>
     </button>
-    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
+    <button class="pear-btn pear-btn-sm {{ AdminOperator.isAdmin() ? 'layui-btn-disabled' : 'pear-btn-danger' }}"
+            lay-event="{{ AdminOperator.isAdmin() ? '' : 'remove' }}">
+        <i class="layui-icon layui-icon-delete"></i>
     </button>
 </script>
 @}

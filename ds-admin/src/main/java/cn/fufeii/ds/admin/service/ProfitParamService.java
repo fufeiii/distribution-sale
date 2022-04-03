@@ -3,10 +3,12 @@ package cn.fufeii.ds.admin.service;
 import cn.fufeii.ds.admin.model.vo.request.ProfitParamQueryRequest;
 import cn.fufeii.ds.admin.model.vo.request.ProfitParamUpsertRequest;
 import cn.fufeii.ds.admin.model.vo.response.ProfitParamResponse;
+import cn.fufeii.ds.admin.security.CurrentUserHelper;
 import cn.fufeii.ds.common.util.BeanCopierUtil;
 import cn.fufeii.ds.repository.crud.CrudProfitParamService;
 import cn.fufeii.ds.repository.entity.ProfitParam;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import cn.fufeii.ds.repository.entity.SystemUser;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,8 @@ public class ProfitParamService {
      * 分页查询
      */
     public IPage<ProfitParamResponse> page(ProfitParamQueryRequest pageParam, IPage<ProfitParam> pageable) {
-        Wrapper<ProfitParam> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, ProfitParam.class));
+        LambdaQueryWrapper<ProfitParam> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, ProfitParam.class));
+        CurrentUserHelper.setPlatformIfPossible(queryWrapper);
         IPage<ProfitParam> selectPage = crudProfitParamService.selectPage(queryWrapper, pageable);
         // 组装response对象返回
         return selectPage.convert(it -> {
@@ -54,6 +57,9 @@ public class ProfitParamService {
      */
     public ProfitParamResponse get(Long id) {
         ProfitParam profitParam = crudProfitParamService.selectById(id);
+        // 数据权限
+        CurrentUserHelper.checkPlatformThrow(profitParam.getPlatformUsername());
+        // 响应
         ProfitParamResponse response = new ProfitParamResponse();
         response.setId(profitParam.getId());
         response.setPlatformUsername(profitParam.getPlatformUsername());
@@ -74,20 +80,26 @@ public class ProfitParamService {
     /**
      * 保存
      */
-    public void create(ProfitParamUpsertRequest createParam) {
+    public void create(ProfitParamUpsertRequest request) {
+        // 保存分润参数
         ProfitParam profitParam = new ProfitParam();
         // 建议使用setter，字段类型问题能在编译期发现
-        BeanCopierUtil.copy(createParam, profitParam);
+        BeanCopierUtil.copy(request, profitParam);
+        SystemUser currentUser = CurrentUserHelper.self();
+        profitParam.setPlatformUsername(currentUser.getPlatformUsername());
+        profitParam.setPlatformNickname(currentUser.getPlatformNickname());
         crudProfitParamService.insertOrUpdate(profitParam);
     }
 
     /**
      * 更新
      */
-    public void modify(ProfitParamUpsertRequest modifyParam) {
-        ProfitParam profitParam = new ProfitParam();
+    public void modify(ProfitParamUpsertRequest request) {
+        ProfitParam profitParam = crudProfitParamService.selectById(request.getId());
+        // 数据权限
+        CurrentUserHelper.checkPlatformThrow(profitParam.getPlatformUsername());
         // 建议使用setter，字段类型问题能在编译期发现
-        BeanCopierUtil.copy(modifyParam, profitParam);
+        BeanCopierUtil.copy(request, profitParam);
         crudProfitParamService.insertOrUpdate(profitParam);
     }
 
@@ -95,6 +107,9 @@ public class ProfitParamService {
      * 删除
      */
     public void remove(Long id) {
+        ProfitParam profitParam = crudProfitParamService.selectById(id);
+        // 数据权限
+        CurrentUserHelper.checkPlatformThrow(profitParam.getPlatformUsername());
         crudProfitParamService.deleteById(id);
     }
 

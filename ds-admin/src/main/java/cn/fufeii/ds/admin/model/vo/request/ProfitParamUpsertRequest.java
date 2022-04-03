@@ -4,8 +4,8 @@ import cn.fufeii.ds.common.enumerate.biz.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -37,7 +37,7 @@ public class ProfitParamUpsertRequest {
     private ProfitLevelEnum profitLevel;
 
     @NotNull
-    @Min(1)
+    @Range(min = 1, max = 100)
     @ApiModelProperty(value = "分润比例")
     private Integer profitRatio;
 

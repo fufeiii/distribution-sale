@@ -1,8 +1,8 @@
-layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
+layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
     let table = layui.table;
     let form = layui.form;
     let layer = layui.layer;
-    let http = layui.http;
+    let easyHttp = layui.easyHttp;
     let popup = layui.popup;
 
     /**
@@ -122,19 +122,10 @@ layui.use(['table', 'form', 'layer', 'http', 'popup'], function () {
      */
     ProfitParam.onRemove = function (id) {
         layer.confirm('确认删除吗', {icon: 3, title: '提示'}, function (index) {
-            http.ajax({url: '/admin/profit-param/remove/' + id, method: 'DELETE'})
-                .done(function (data) {
-                    if (data.code === 0) {
-                        popup.success('操作成功');
-                        ProfitParam.onSearch();
-                    } else {
-                        popup.failure(data.msg);
-                    }
-                })
-                .fail(function (data) {
-                    console.log(data)
-                    popup.failure('服务器错误');
-                });
+            easyHttp.execute({url: '/admin/profit-param/remove/' + id, method: 'DELETE'}, function (resp) {
+                popup.success('操作成功');
+                table.reload(ProfitParam.tableId);
+            });
             layer.close(index);
         });
     }

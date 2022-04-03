@@ -1,6 +1,8 @@
 package cn.fufeii.ds.admin.security;
 
 import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
+import cn.fufeii.ds.common.enumerate.ExceptionEnum;
+import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.repository.config.CurrentPlatformHelper;
 import cn.fufeii.ds.repository.entity.SystemUser;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -43,10 +45,26 @@ public class CurrentUserHelper {
     }
 
     /**
+     * 如果是超管就抛出异常
+     */
+    public static void isAdminThrow() {
+        if (CurrentUserHelper.isAdmin()) {
+            throw new BizException(ExceptionEnum.API_ADMIN_DENY_ERROR);
+        }
+    }
+
+    /**
      * 当前用户的平台
      */
     public static String platformUsername() {
         return self().getPlatformUsername();
+    }
+
+    /**
+     * 检查数据权限
+     */
+    public static void checkPlatformThrow(String dataPlatformUsername) {
+        CurrentPlatformHelper.checkPlatformThrow(platformUsername(), dataPlatformUsername);
     }
 
     /**

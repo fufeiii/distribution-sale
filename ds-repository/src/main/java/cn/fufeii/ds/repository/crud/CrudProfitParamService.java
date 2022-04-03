@@ -1,5 +1,7 @@
 package cn.fufeii.ds.repository.crud;
 
+import cn.fufeii.ds.common.enumerate.ExceptionEnum;
+import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.repository.dao.ProfitParamDao;
 import cn.fufeii.ds.repository.entity.ProfitParam;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -47,7 +49,7 @@ public class CrudProfitParamService {
      * 通过ID获取一个存在的实体
      */
     public ProfitParam selectById(Long id) {
-        return this.selectByIdOpt(id).orElseThrow(RuntimeException::new);
+        return this.selectByIdOpt(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "id(" + id + ")"));
     }
 
     /**

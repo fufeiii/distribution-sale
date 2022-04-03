@@ -10,7 +10,6 @@ import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.util.BeanCopierUtil;
 import cn.fufeii.ds.common.util.DsUtil;
-import cn.fufeii.ds.repository.config.CurrentPlatformHelper;
 import cn.fufeii.ds.repository.crud.CrudAccountService;
 import cn.fufeii.ds.repository.crud.CrudMemberService;
 import cn.fufeii.ds.repository.entity.Account;
@@ -99,8 +98,8 @@ public class MemberService {
      */
     public MemberAccountResponse account(Long memberId) {
         Member member = crudMemberService.selectById(memberId);
-        // 访问权限检查
-        CurrentPlatformHelper.checkPlatformThrow(CurrentUserHelper.platformUsername(), member.getPlatformUsername());
+        // 数据检查
+        CurrentUserHelper.checkPlatformThrow(member.getPlatformUsername());
         Account account = crudAccountService.selectByMemberId(memberId);
 
         // 组装响应

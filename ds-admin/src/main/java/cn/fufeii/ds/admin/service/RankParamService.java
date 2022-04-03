@@ -3,10 +3,12 @@ package cn.fufeii.ds.admin.service;
 import cn.fufeii.ds.admin.model.vo.request.RankParamQueryRequest;
 import cn.fufeii.ds.admin.model.vo.request.RankParamUpsertRequest;
 import cn.fufeii.ds.admin.model.vo.response.RankParamResponse;
+import cn.fufeii.ds.admin.security.CurrentUserHelper;
 import cn.fufeii.ds.common.util.BeanCopierUtil;
 import cn.fufeii.ds.repository.crud.CrudRankParamService;
 import cn.fufeii.ds.repository.entity.RankParam;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import cn.fufeii.ds.repository.entity.SystemUser;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,8 @@ public class RankParamService {
      * 分页查询
      */
     public IPage<RankParamResponse> page(RankParamQueryRequest pageParam, IPage<RankParam> pageable) {
-        Wrapper<RankParam> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, RankParam.class));
+        LambdaQueryWrapper<RankParam> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, RankParam.class));
+        CurrentUserHelper.setPlatformIfPossible(queryWrapper);
         IPage<RankParam> selectPage = crudRankParamService.selectPage(queryWrapper, pageable);
         // 组装response对象返回
         return selectPage.convert(it -> {
@@ -49,9 +52,10 @@ public class RankParamService {
      */
     public RankParamResponse get(Long id) {
         RankParam rankParam = crudRankParamService.selectById(id);
+        CurrentUserHelper.checkPlatformThrow(rankParam.getPlatformUsername());
         RankParamResponse response = new RankParamResponse();
         response.setId(rankParam.getId());
-        response.setMemberRankType(rankParam.getMemberRankType().name());
+        response.setMemberRankType(rankParam.getMemberRankType().getMessage());
         response.setBeginIntegral(rankParam.getBeginIntegral());
         response.setEndIntegral(rankParam.getEndIntegral());
         response.setCreateDateTime(rankParam.getCreateDateTime());
@@ -62,20 +66,24 @@ public class RankParamService {
     /**
      * 保存
      */
-    public void create(RankParamUpsertRequest addParam) {
+    public void create(RankParamUpsertRequest request) {
         RankParam rankParam = new RankParam();
         // 建议使用setter，字段类型问题能在编译期发现
-        BeanCopierUtil.copy(addParam, rankParam);
+        BeanCopierUtil.copy(request, rankParam);
+        SystemUser currentUser = CurrentUserHelper.self();
+        rankParam.setPlatformUsername(currentUser.getPlatformUsername());
+        rankParam.setPlatformNickname(currentUser.getPlatformNickname());
         crudRankParamService.insertOrUpdate(rankParam);
     }
 
     /**
      * 更新
      */
-    public void modify(RankParamUpsertRequest modifyParam) {
-        RankParam rankParam = new RankParam();
+    public void modify(RankParamUpsertRequest request) {
+        RankParam rankParam = crudRankParamService.selectById(request.getId());
+        CurrentUserHelper.checkPlatformThrow(rankParam.getPlatformUsername());
         // 建议使用setter，字段类型问题能在编译期发现
-        BeanCopierUtil.copy(modifyParam, rankParam);
+        BeanCopierUtil.copy(request, rankParam);
         crudRankParamService.insertOrUpdate(rankParam);
     }
 
@@ -83,6 +91,8 @@ public class RankParamService {
      * 删除
      */
     public void remove(Long id) {
+        RankParam rankParam = crudRankParamService.selectById(id);
+        CurrentUserHelper.checkPlatformThrow(rankParam.getPlatformUsername());
         crudRankParamService.deleteById(id);
     }
 

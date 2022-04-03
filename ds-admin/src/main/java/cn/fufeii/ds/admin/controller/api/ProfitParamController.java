@@ -5,6 +5,7 @@ import cn.fufeii.ds.admin.model.vo.request.ProfitParamQueryRequest;
 import cn.fufeii.ds.admin.model.vo.request.ProfitParamUpsertRequest;
 import cn.fufeii.ds.admin.model.vo.response.ProfitParamResponse;
 import cn.fufeii.ds.admin.service.ProfitParamService;
+import cn.fufeii.ds.common.annotation.DataValid;
 import cn.fufeii.ds.common.result.CommonResult;
 import cn.fufeii.ds.common.result.PageResult;
 import cn.fufeii.ds.repository.entity.ProfitParam;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * @author FuFei
  */
 @Api(tags = "分润参数")
+@DataValid
 @RestController
 @RequestMapping(DsAdminConstant.API_PATH_PREFIX + "/profit-param")
 public class ProfitParamController {

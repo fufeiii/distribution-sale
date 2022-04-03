@@ -1,7 +1,8 @@
-layui.use(['table', 'layer', 'http'], function () {
+layui.use(['table', 'layer', 'easyHttp', 'popup'], function () {
     let table = layui.table;
-    let form = layui.form;
     let layer = layui.layer;
+    let easyHttp = layui.easyHttp;
+    let popup = layui.popup;
 
     /**
      * 页面实体对象
@@ -55,11 +56,23 @@ layui.use(['table', 'layer', 'http'], function () {
             type: 2,
             title: '编辑段位参数',
             shade: 0.3,
-            area: ['500px', '610px'],
+            area: ['500px', '310px'],
             content: '/view/rank-param/edit?tableId=' + RankParam.tableId + '&id=' + id,
         });
     };
 
+    /**
+     * 移除操作
+     */
+    RankParam.onRemove = function (id) {
+        layer.confirm('确认删除吗', {icon: 3, title: '提示'}, function (index) {
+            easyHttp.execute({url: '/admin/rank-param/remove/' + id, method: 'DELETE'}, function (resp) {
+                popup.success('操作成功');
+                table.reload(RankParam.tableId);
+            });
+            layer.close(index);
+        });
+    }
 
     /**
      * 表格渲染配置
@@ -83,6 +96,17 @@ layui.use(['table', 'layer', 'http'], function () {
      * 监听表格上方按钮 toolbar
      */
     table.on('toolbar(' + RankParam.tableId + ')', function (obj) {
+        if (obj.event === 'remove') {
+            RankParam.onRemove(obj.data.id);
+        } else if (obj.event === 'edit') {
+            RankParam.openEditDlg(obj.data.id);
+        }
+    });
+
+    /**
+     * 监听表格上方按钮 toolbar
+     */
+    table.on('toolbar(' + RankParam.tableId + ')', function (obj) {
         if (obj.event === 'add') {
             RankParam.openAddDlg();
         }
@@ -92,18 +116,11 @@ layui.use(['table', 'layer', 'http'], function () {
      * 监听数据行末尾按钮 rowBar
      */
     table.on('tool(' + RankParam.tableId + ')', function (obj) {
-        if (obj.event === 'edit') {
+        if (obj.event === 'remove') {
+            RankParam.onRemove(obj.data.id);
+        } else if (obj.event === 'edit') {
             RankParam.openEditDlg(obj.data.id);
         }
-    });
-
-
-    /**
-     * 搜索按钮点击事件
-     */
-    form.on('submit(rankParamQueryFormSubmit)', function (data) {
-        RankParam.onSearch(data);
-        return false;
     });
 
 
