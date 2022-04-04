@@ -28,10 +28,10 @@ public class RankParamResponse {
     private String memberRankType;
 
     @ApiModelProperty(value = "开始积分")
-    private Integer beginIntegral;
+    private Integer beginPoints;
 
     @ApiModelProperty(value = "结束积分")
-    private Integer endIntegral;
+    private Integer endPoints;
 
     @ApiModelProperty(value = "状态")
     private String state;

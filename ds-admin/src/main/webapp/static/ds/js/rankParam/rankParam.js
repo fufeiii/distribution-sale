@@ -16,7 +16,10 @@ layui.use(['table', 'layer', 'easyHttp', 'popup'], function () {
      */
     RankParam.initCols = function () {
         return [
-            [
+            [{
+                title: '序号',
+                type: 'numbers'
+            },
                 {
                     title: '平台名称',
                     field: 'platformNickname',
@@ -29,12 +32,12 @@ layui.use(['table', 'layer', 'easyHttp', 'popup'], function () {
                 },
                 {
                     title: '开始积分',
-                    field: 'beginIntegral',
+                    field: 'beginPoints',
                     align: 'center'
                 },
                 {
                     title: '结束积分',
-                    field: 'endIntegral',
+                    field: 'endPoints',
                     align: 'center'
                 },
                 {
@@ -47,6 +50,18 @@ layui.use(['table', 'layer', 'easyHttp', 'popup'], function () {
         ];
     }
 
+    /**
+     * 弹出添加对话框
+     */
+    RankParam.openAddDlg = function () {
+        layer.open({
+            type: 2,
+            title: '添加分润参数',
+            shade: 0.3,
+            area: ['500px', '410px'],
+            content: '/view/rank-param/add?tableId=' + RankParam.tableId,
+        });
+    };
 
     /**
      * 弹出编辑对话框

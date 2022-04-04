@@ -10,10 +10,13 @@ layui.use(['form', 'layer', 'easyHttp', 'popup'], function () {
 
     //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
+        let param = data.field
+        // 这个字段不用传回
+        param.memberRankType = undefined;
         easyHttp.execute({
             url: '/admin/rank-param/modify',
             method: 'PUT',
-            data: JSON.stringify(data.field)
+            data: JSON.stringify(param)
         }, function (resp) {
             popup.success('操作成功');
             //关闭当前页

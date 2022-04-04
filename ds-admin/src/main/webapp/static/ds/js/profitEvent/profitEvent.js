@@ -16,6 +16,10 @@ layui.use(['table', 'form'], function () {
         return [
             [
                 {
+                    title: '序号',
+                    type: 'numbers'
+                },
+                {
                     title: '分润类型',
                     field: 'profitType',
                     align: 'center'

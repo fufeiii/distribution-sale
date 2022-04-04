@@ -19,6 +19,10 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
         return [
             [
                 {
+                    title: '序号',
+                    type: 'numbers'
+                },
+                {
                     title: '平台名称',
                     field: 'platformNickname',
                     align: 'center'

@@ -1,4 +1,4 @@
-@layout("/common/container.html", {js:["/ds/js/rankParam/rankParamEdit.js"]}) {
+@layout("/common/container.html", {js:["/ds/js/rankParam/rankParamAdd.js"]}) {
 <form action="" class="layui-form" lay-filter="rankParamTable">
     <div class="mainBox">
         <div class="main-container">
@@ -6,7 +6,9 @@
             <div class="layui-form-item">
                 <label class="layui-form-label layui-form-required">会员段位</label>
                 <div class="layui-input-block">
-                    <input class="layui-input" lay-verify="required" name="memberRankType" readonly>
+                    <select id="memberRankTypeSelect" lay-verify="required" name="memberRankType">
+                        <option value="">请选择</option>
+                    </select>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -26,7 +28,7 @@
 
     <div class="bottom">
         <div class="button-container">
-            <button class="pear-btn pear-btn-primary pear-btn-sm" lay-filter="btnSubmit" lay-submit="" type="submit">
+            <button class="pear-btn pear-btn-primary pear-btn-sm" lay-filter="btnSubmit" lay-submit type="submit">
                 <i class="layui-icon layui-icon-ok"></i>
                 提交
             </button>

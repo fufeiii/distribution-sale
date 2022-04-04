@@ -43,13 +43,13 @@ public class RankParam {
      * 开始积分
      */
     @TableField
-    private Integer beginIntegral;
+    private Integer beginPoints;
 
     /**
      * 结束积分
      */
     @TableField
-    private Integer endIntegral;
+    private Integer endPoints;
 
     /**
      * 乐观锁
