@@ -79,15 +79,19 @@ public class CrudProfitRecordService {
     }
 
     /**
-     * 插入或者更新实体
+     * 插入实体
      */
-    public ProfitRecord insertOrUpdate(ProfitRecord entityParam) {
-        if (entityParam.getId() == null) {
-            profitRecordDao.insert(entityParam);
-        } else {
-            profitRecordDao.updateById(entityParam);
-        }
-        return entityParam;
+    public ProfitRecord insert(ProfitRecord entity) {
+        profitRecordDao.insert(entity);
+        return entity;
+    }
+
+    /**
+     * 更新实体
+     */
+    public ProfitRecord updateById(ProfitRecord entity) {
+        profitRecordDao.updateById(entity);
+        return entity;
     }
 
     /**

@@ -82,15 +82,19 @@ public class CrudAccountService {
     }
 
     /**
-     * 插入或者更新实体
+     * 插入实体
      */
-    public Account insertOrUpdate(Account entityParam) {
-        if (entityParam.getId() == null) {
-            accountDao.insert(entityParam);
-        } else {
-            accountDao.updateById(entityParam);
-        }
-        return entityParam;
+    public Account insert(Account entity) {
+        accountDao.insert(entity);
+        return entity;
+    }
+
+    /**
+     * 更新实体
+     */
+    public Account updateById(Account entity) {
+        accountDao.updateById(entity);
+        return entity;
     }
 
     /**

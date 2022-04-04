@@ -73,7 +73,7 @@ public class RankParamService {
         SystemUser currentUser = CurrentUserHelper.self();
         rankParam.setPlatformUsername(currentUser.getPlatformUsername());
         rankParam.setPlatformNickname(currentUser.getPlatformNickname());
-        crudRankParamService.insertOrUpdate(rankParam);
+        crudRankParamService.insert(rankParam);
     }
 
     /**
@@ -84,7 +84,7 @@ public class RankParamService {
         CurrentUserHelper.checkPlatformThrow(rankParam.getPlatformUsername());
         // 建议使用setter，字段类型问题能在编译期发现
         BeanCopierUtil.copy(request, rankParam);
-        crudRankParamService.insertOrUpdate(rankParam);
+        crudRankParamService.updateById(rankParam);
     }
 
     /**

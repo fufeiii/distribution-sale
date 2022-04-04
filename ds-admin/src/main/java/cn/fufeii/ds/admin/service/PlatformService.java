@@ -67,7 +67,7 @@ public class PlatformService {
         platform.setWebhook(request.getWebhook());
         platform.setSk(RandomUtil.randomString(32));
         platform.setState(StateEnum.ENABLE);
-        crudPlatformService.insertOrUpdate(platform);
+        crudPlatformService.insert(platform);
     }
 
     /**
@@ -79,7 +79,7 @@ public class PlatformService {
             throw new BizException(ExceptionEnum.STATE_COMMON_ERROR);
         }
         platform.setState(stateEnum);
-        crudPlatformService.insertOrUpdate(platform);
+        crudPlatformService.updateById(platform);
     }
 
 

@@ -99,7 +99,7 @@ public class SystemUserService {
         user.setSlat(slat);
         user.setPassword(SecureUtil.md5(request.getPassword() + slat));
         user.setState(StateEnum.ENABLE);
-        crudSystemUserService.insertOrUpdate(user);
+        crudSystemUserService.insert(user);
     }
 
 

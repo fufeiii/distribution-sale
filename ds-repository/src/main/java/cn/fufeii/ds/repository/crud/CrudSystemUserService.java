@@ -79,15 +79,19 @@ public class CrudSystemUserService {
     }
 
     /**
-     * 插入或者更新实体
+     * 插入实体
      */
-    public SystemUser insertOrUpdate(SystemUser entityParam) {
-        if (entityParam.getId() == null) {
-            systemUserDao.insert(entityParam);
-        } else {
-            systemUserDao.updateById(entityParam);
-        }
-        return entityParam;
+    public SystemUser insert(SystemUser entity) {
+        systemUserDao.insert(entity);
+        return entity;
+    }
+
+    /**
+     * 更新实体
+     */
+    public SystemUser updateById(SystemUser entity) {
+        systemUserDao.updateById(entity);
+        return entity;
     }
 
     /**

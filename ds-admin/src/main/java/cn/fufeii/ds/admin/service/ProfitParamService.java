@@ -88,7 +88,7 @@ public class ProfitParamService {
         SystemUser currentUser = CurrentUserHelper.self();
         profitParam.setPlatformUsername(currentUser.getPlatformUsername());
         profitParam.setPlatformNickname(currentUser.getPlatformNickname());
-        crudProfitParamService.insertOrUpdate(profitParam);
+        crudProfitParamService.insert(profitParam);
     }
 
     /**
@@ -100,7 +100,7 @@ public class ProfitParamService {
         CurrentUserHelper.checkPlatformThrow(profitParam.getPlatformUsername());
         // 建议使用setter，字段类型问题能在编译期发现
         BeanCopierUtil.copy(request, profitParam);
-        crudProfitParamService.insertOrUpdate(profitParam);
+        crudProfitParamService.updateById(profitParam);
     }
 
     /**

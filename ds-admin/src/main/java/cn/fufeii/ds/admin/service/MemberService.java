@@ -130,7 +130,7 @@ public class MemberService {
             throw new BizException(ExceptionEnum.STATE_COMMON_ERROR);
         }
         member.setState(stateEnum);
-        crudMemberService.insertOrUpdate(member);
+        crudMemberService.updateById(member);
     }
 
 

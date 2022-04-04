@@ -79,15 +79,19 @@ public class CrudWithdrawApplyService {
     }
 
     /**
-     * 插入或者更新实体
+     * 插入实体
      */
-    public WithdrawApply insertOrUpdate(WithdrawApply entityParam) {
-        if (entityParam.getId() == null) {
-            withdrawApplyDao.insert(entityParam);
-        } else {
-            withdrawApplyDao.updateById(entityParam);
-        }
-        return entityParam;
+    public WithdrawApply insert(WithdrawApply entity) {
+        withdrawApplyDao.insert(entity);
+        return entity;
+    }
+
+    /**
+     * 更新实体
+     */
+    public WithdrawApply updateById(WithdrawApply entity) {
+        withdrawApplyDao.updateById(entity);
+        return entity;
     }
 
     /**

@@ -82,15 +82,19 @@ public class CrudPlatformService {
     }
 
     /**
-     * 插入或者更新实体
+     * 插入实体
      */
-    public Platform insertOrUpdate(Platform entityParam) {
-        if (entityParam.getId() == null) {
-            platformDao.insert(entityParam);
-        } else {
-            platformDao.updateById(entityParam);
-        }
-        return entityParam;
+    public Platform insert(Platform entity) {
+        platformDao.insert(entity);
+        return entity;
+    }
+
+    /**
+     * 更新实体
+     */
+    public Platform updateById(Platform entity) {
+        platformDao.updateById(entity);
+        return entity;
     }
 
     /**

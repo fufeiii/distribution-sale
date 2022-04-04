@@ -80,15 +80,19 @@ public class CrudMemberService {
     }
 
     /**
-     * 插入或者更新实体
+     * 插入实体
      */
-    public Member insertOrUpdate(Member entityParam) {
-        if (entityParam.getId() == null) {
-            memberDao.insert(entityParam);
-        } else {
-            memberDao.updateById(entityParam);
-        }
-        return entityParam;
+    public Member insert(Member entity) {
+        memberDao.insert(entity);
+        return entity;
+    }
+
+    /**
+     * 更新实体
+     */
+    public Member updateById(Member entity) {
+        memberDao.updateById(entity);
+        return entity;
     }
 
     /**

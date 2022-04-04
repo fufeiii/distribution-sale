@@ -79,15 +79,19 @@ public class CrudRankParamService {
     }
 
     /**
-     * 插入或者更新实体
+     * 插入实体
      */
-    public RankParam insertOrUpdate(RankParam entityParam) {
-        if (entityParam.getId() == null) {
-            rankParamDao.insert(entityParam);
-        } else {
-            rankParamDao.updateById(entityParam);
-        }
-        return entityParam;
+    public RankParam insert(RankParam entity) {
+        rankParamDao.insert(entity);
+        return entity;
+    }
+
+    /**
+     * 更新实体
+     */
+    public RankParam updateById(RankParam entity) {
+        rankParamDao.updateById(entity);
+        return entity;
     }
 
     /**
