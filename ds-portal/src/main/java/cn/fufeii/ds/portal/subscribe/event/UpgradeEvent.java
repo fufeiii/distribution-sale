@@ -1,4 +1,4 @@
-package cn.fufeii.ds.portal.ps.event;
+package cn.fufeii.ds.portal.subscribe.event;
 
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 
@@ -8,9 +8,9 @@ import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
  * @author FuFei
  * @date 2022/3/20
  */
-public class MoneyEvent extends AbstractProfitEvent {
+public class UpgradeEvent extends AbstractProfitEvent {
 
-    public MoneyEvent(ProfitTypeEnum profitType, Object source) {
+    public UpgradeEvent(ProfitTypeEnum profitType, Object source) {
         super(profitType, source);
     }
 

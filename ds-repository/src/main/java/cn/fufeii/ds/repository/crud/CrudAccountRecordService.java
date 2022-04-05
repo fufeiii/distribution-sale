@@ -41,7 +41,7 @@ public class CrudAccountRecordService {
     /**
      * 通过ID获取一个可能存在的实体
      */
-    public Optional<AccountRecord> selectByIdOpt(Long id) {
+    public Optional<AccountRecord> selectByIdOptional(Long id) {
         return Optional.ofNullable(accountRecordDao.selectById(id));
     }
 
@@ -49,7 +49,7 @@ public class CrudAccountRecordService {
      * 通过ID获取一个存在的实体
      */
     public AccountRecord selectById(Long id) {
-        return this.selectByIdOpt(id).orElseThrow(IllegalStateException::new);
+        return this.selectByIdOptional(id).orElseThrow(IllegalStateException::new);
     }
 
     /**

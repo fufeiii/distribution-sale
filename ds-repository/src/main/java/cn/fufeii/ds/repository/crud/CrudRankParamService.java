@@ -41,7 +41,7 @@ public class CrudRankParamService {
     /**
      * 通过ID获取一个可能存在的实体
      */
-    public Optional<RankParam> selectByIdOpt(Long id) {
+    public Optional<RankParam> selectByIdOptional(Long id) {
         return Optional.ofNullable(rankParamDao.selectById(id));
     }
 
@@ -49,7 +49,7 @@ public class CrudRankParamService {
      * 通过ID获取一个存在的实体
      */
     public RankParam selectById(Long id) {
-        return this.selectByIdOpt(id).orElseThrow(IllegalStateException::new);
+        return this.selectByIdOptional(id).orElseThrow(IllegalStateException::new);
     }
 
     /**

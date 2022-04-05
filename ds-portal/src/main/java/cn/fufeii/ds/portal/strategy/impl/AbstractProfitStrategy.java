@@ -1,6 +1,6 @@
-package cn.fufeii.ds.portal.stgy.impl;
+package cn.fufeii.ds.portal.strategy.impl;
 
-import cn.fufeii.ds.portal.stgy.ProfitStrategy;
+import cn.fufeii.ds.portal.strategy.ProfitStrategy;
 
 /**
  * @author FuFei

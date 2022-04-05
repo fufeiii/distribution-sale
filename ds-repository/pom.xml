@@ -17,7 +17,7 @@
         <dependency>
             <groupId>cn.fufeii</groupId>
             <artifactId>ds-common</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <!-- mysql驱动 -->
         <dependency>

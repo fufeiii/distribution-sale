@@ -41,7 +41,7 @@ public class CrudWithdrawApplyService {
     /**
      * 通过ID获取一个可能存在的实体
      */
-    public Optional<WithdrawApply> selectByIdOpt(Long id) {
+    public Optional<WithdrawApply> selectByIdOptional(Long id) {
         return Optional.ofNullable(withdrawApplyDao.selectById(id));
     }
 
@@ -49,7 +49,7 @@ public class CrudWithdrawApplyService {
      * 通过ID获取一个存在的实体
      */
     public WithdrawApply selectById(Long id) {
-        return this.selectByIdOpt(id).orElseThrow(IllegalStateException::new);
+        return this.selectByIdOptional(id).orElseThrow(IllegalStateException::new);
     }
 
     /**

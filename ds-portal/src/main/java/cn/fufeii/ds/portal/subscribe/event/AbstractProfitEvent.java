@@ -1,4 +1,4 @@
-package cn.fufeii.ds.portal.ps.event;
+package cn.fufeii.ds.portal.subscribe.event;
 
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import lombok.Getter;

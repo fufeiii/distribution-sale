@@ -52,3 +52,6 @@ logging:
     cn.fufeii.ds.repository.dao: debug
     cn.fufeii.ds: debug
 
+
+ds:
+  portal:

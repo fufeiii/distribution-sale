@@ -41,7 +41,7 @@ public class CrudSystemUserService {
     /**
      * 通过ID获取一个可能存在的实体
      */
-    public Optional<SystemUser> selectByIdOpt(Long id) {
+    public Optional<SystemUser> selectByIdOptional(Long id) {
         return Optional.ofNullable(systemUserDao.selectById(id));
     }
 
@@ -49,7 +49,7 @@ public class CrudSystemUserService {
      * 通过ID获取一个存在的实体
      */
     public SystemUser selectById(Long id) {
-        return this.selectByIdOpt(id).orElseThrow(IllegalStateException::new);
+        return this.selectByIdOptional(id).orElseThrow(IllegalStateException::new);
     }
 
     /**

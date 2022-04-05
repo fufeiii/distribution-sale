@@ -42,7 +42,7 @@ public class CrudMemberService {
     /**
      * 通过ID获取一个可能存在的实体
      */
-    public Optional<Member> selectByIdOpt(Long id) {
+    public Optional<Member> selectByIdOptional(Long id) {
         return Optional.ofNullable(memberDao.selectById(id));
     }
 
@@ -50,7 +50,7 @@ public class CrudMemberService {
      * 通过ID获取一个存在的实体
      */
     public Member selectById(Long id) {
-        return this.selectByIdOpt(id).orElseThrow(IllegalStateException::new);
+        return this.selectByIdOptional(id).orElseThrow(IllegalStateException::new);
     }
 
     /**

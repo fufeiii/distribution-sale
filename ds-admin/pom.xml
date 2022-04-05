@@ -18,7 +18,7 @@
         <dependency>
             <groupId>cn.fufeii</groupId>
             <artifactId>ds-repository</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <!-- spring-security -->
         <dependency>

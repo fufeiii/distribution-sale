@@ -1,4 +1,4 @@
-package cn.fufeii.ds.portal.stgy.impl;
+package cn.fufeii.ds.portal.strategy.impl;
 
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import org.springframework.stereotype.Service;

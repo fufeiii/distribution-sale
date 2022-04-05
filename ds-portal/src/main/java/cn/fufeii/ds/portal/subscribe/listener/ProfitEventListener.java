@@ -1,8 +1,8 @@
-package cn.fufeii.ds.portal.ps.listener;
+package cn.fufeii.ds.portal.subscribe.listener;
 
-import cn.fufeii.ds.portal.ps.event.InviteEvent;
-import cn.fufeii.ds.portal.ps.event.MoneyEvent;
-import cn.fufeii.ds.portal.ps.event.UpgradeEvent;
+import cn.fufeii.ds.portal.subscribe.event.InviteEvent;
+import cn.fufeii.ds.portal.subscribe.event.MoneyEvent;
+import cn.fufeii.ds.portal.subscribe.event.UpgradeEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;

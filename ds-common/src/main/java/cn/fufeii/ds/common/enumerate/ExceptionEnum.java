@@ -18,7 +18,8 @@ public enum ExceptionEnum implements ResultDefinition {
 
     /* ========================= 服务端异常枚举 ========================= */
     SERVER_ERROR(5000, "服务端错误", ""),
-    SERVER_SQL_UPDATE_FAIL(5001, "更新失败", ""),
+    SERVER_API_AUTH_ERROR(5001, "", "鉴权失败：%s"),
+    SERVER_SQL_UPDATE_FAIL(5101, "更新失败", ""),
 
 
     /* ========================= 管理台异常枚举 ========================= */

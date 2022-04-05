@@ -41,7 +41,7 @@ public class CrudProfitParamService {
     /**
      * 通过ID获取一个可能存在的实体
      */
-    public Optional<ProfitParam> selectByIdOpt(Long id) {
+    public Optional<ProfitParam> selectByIdOptional(Long id) {
         return Optional.ofNullable(profitParamDao.selectById(id));
     }
 
@@ -49,7 +49,7 @@ public class CrudProfitParamService {
      * 通过ID获取一个存在的实体
      */
     public ProfitParam selectById(Long id) {
-        return this.selectByIdOpt(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "id(" + id + ")"));
+        return this.selectByIdOptional(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "id(" + id + ")"));
     }
 
     /**

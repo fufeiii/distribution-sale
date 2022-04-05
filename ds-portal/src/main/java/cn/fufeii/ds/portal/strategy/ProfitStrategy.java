@@ -1,4 +1,4 @@
-package cn.fufeii.ds.portal.stgy;
+package cn.fufeii.ds.portal.strategy;
 
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 

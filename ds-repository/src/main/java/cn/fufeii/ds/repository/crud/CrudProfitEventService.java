@@ -41,7 +41,7 @@ public class CrudProfitEventService {
     /**
      * 通过ID获取一个可能存在的实体
      */
-    public Optional<ProfitEvent> selectByIdOpt(Long id) {
+    public Optional<ProfitEvent> selectByIdOptional(Long id) {
         return Optional.ofNullable(profitEventDao.selectById(id));
     }
 
@@ -49,7 +49,7 @@ public class CrudProfitEventService {
      * 通过ID获取一个存在的实体
      */
     public ProfitEvent selectById(Long id) {
-        return this.selectByIdOpt(id).orElseThrow(IllegalStateException::new);
+        return this.selectByIdOptional(id).orElseThrow(IllegalStateException::new);
     }
 
     /**

@@ -42,7 +42,7 @@ public class CrudPlatformService {
     /**
      * 通过ID获取一个可能存在的实体
      */
-    public Optional<Platform> selectByIdOpt(Long id) {
+    public Optional<Platform> selectByIdOptional(Long id) {
         return Optional.ofNullable(platformDao.selectById(id));
     }
 
@@ -50,7 +50,7 @@ public class CrudPlatformService {
      * 通过ID获取一个存在的实体
      */
     public Platform selectById(Long id) {
-        return this.selectByIdOpt(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "id(" + id + ")"));
+        return this.selectByIdOptional(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "id(" + id + ")"));
     }
 
     /**

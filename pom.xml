@@ -17,6 +17,7 @@
     <description>微服务架构下的分销中心</description>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <alibaba.cloud.version>2.2.7.RELEASE</alibaba.cloud.version>
         <spring.cloud.version>Hoxton.SR12</spring.cloud.version>
         <spring.boot.version>2.3.12.RELEASE</spring.boot.version>

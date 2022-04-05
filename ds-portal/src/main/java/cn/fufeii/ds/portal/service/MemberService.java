@@ -9,7 +9,7 @@ import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.portal.model.api.request.MemberCreateRequest;
 import cn.fufeii.ds.portal.model.api.response.MemberCreateResponse;
-import cn.fufeii.ds.portal.ps.event.InviteEvent;
+import cn.fufeii.ds.portal.subscribe.event.InviteEvent;
 import cn.fufeii.ds.repository.crud.CrudAccountService;
 import cn.fufeii.ds.repository.crud.CrudMemberService;
 import cn.fufeii.ds.repository.entity.Account;
@@ -38,7 +38,7 @@ public class MemberService {
     @Autowired
     private CrudAccountService crudAccountService;
 
-    @GlobalLock(key = "#request.username + '-create")
+    @GlobalLock(key = "#request.username + '-create'")
     @Transactional(rollbackFor = Exception.class)
     public MemberCreateResponse create(MemberCreateRequest request) {
         // 检查用户是否存在

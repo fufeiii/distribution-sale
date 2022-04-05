@@ -80,8 +80,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.OK)
     public Object serverError(Throwable e) {
-        log.error("内部异常", e);
-        return CommonResult.fail(ExceptionEnum.SERVER_ERROR.getCode(), e.getMessage());
+        log.warn("内部异常", e);
+        return CommonResult.fail(ExceptionEnum.SERVER_ERROR.getCode(), "内部异常");
     }
 
 }

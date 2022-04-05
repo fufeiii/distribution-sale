@@ -42,7 +42,7 @@ public class CrudAccountService {
     /**
      * 通过ID获取一个可能存在的实体
      */
-    public Optional<Account> selectByIdOpt(Long id) {
+    public Optional<Account> selectByIdOptional(Long id) {
         return Optional.ofNullable(accountDao.selectById(id));
     }
 
@@ -50,7 +50,7 @@ public class CrudAccountService {
      * 通过ID获取一个存在的实体
      */
     public Account selectById(Long id) {
-        return this.selectByIdOpt(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "id(" + id + ")"));
+        return this.selectByIdOptional(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "id(" + id + ")"));
     }
 
     /**

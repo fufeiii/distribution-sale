@@ -1,9 +1,9 @@
-package cn.fufeii.ds.portal.stgy;
+package cn.fufeii.ds.portal.strategy;
 
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import cn.fufeii.ds.common.exception.BizException;
-import cn.fufeii.ds.portal.ps.event.AbstractProfitEvent;
+import cn.fufeii.ds.portal.subscribe.event.AbstractProfitEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
