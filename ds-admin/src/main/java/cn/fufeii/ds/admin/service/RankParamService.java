@@ -82,7 +82,7 @@ public class RankParamService {
         this.checkPointsRange(request.getBeginPoints(), request.getEndPoints());
         SystemUser currentUser = CurrentUserHelper.self();
         // 手动加锁并执行逻辑
-        lockTemplate.lock(currentUser.getPlatformUsername() + ":rp-create", log, () -> {
+        lockTemplate.runWithLock(currentUser.getPlatformUsername() + ":rp-create", log, () -> {
             // 检查是否存在并插入数据
             LambdaQueryWrapper<RankParam> queryWrapper = Wrappers.<RankParam>lambdaQuery()
                     .eq(RankParam::getPlatformUsername, currentUser.getPlatformUsername())

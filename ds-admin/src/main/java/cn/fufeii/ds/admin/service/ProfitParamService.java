@@ -91,7 +91,7 @@ public class ProfitParamService {
     public void create(ProfitParamUpsertRequest request) {
         SystemUser currentUser = CurrentUserHelper.self();
         // 手动加锁并执行逻辑
-        lockTemplate.lock(currentUser.getPlatformUsername() + ":pp-create", log, () -> {
+        lockTemplate.runWithLock(currentUser.getPlatformUsername() + ":pp-create", log, () -> {
             // 检查是否存在并插入数据
             LambdaQueryWrapper<ProfitParam> queryWrapper = Wrappers.<ProfitParam>lambdaQuery()
                     .eq(ProfitParam::getPlatformUsername, currentUser.getPlatformUsername())

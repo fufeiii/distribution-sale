@@ -23,11 +23,11 @@ public class LockTemplate {
     @Autowired
     private RedissonClient redissonClient;
 
-    public void lock(String key, Logger log, Runnable runnable) {
+    public void runWithLock(String key, Logger log, Runnable runnable) {
         this.execute(DsConstant.REDIS_GL_NAMESPACE + key, 0, log, runnable);
     }
 
-    public void tryLock(String key, long waitTime, Logger log, Runnable runnable) {
+    public void runWithTryLock(String key, long waitTime, Logger log, Runnable runnable) {
         this.execute(DsConstant.REDIS_GL_NAMESPACE + key, waitTime, log, runnable);
     }
 
