@@ -1,6 +1,7 @@
 package cn.fufeii.ds.portal.service;
 
 import cn.fufeii.ds.common.annotation.GlobalLock;
+import cn.fufeii.ds.common.constant.DsConstant;
 import cn.fufeii.ds.common.enumerate.biz.MemberIdentityTypeEnum;
 import cn.fufeii.ds.common.enumerate.biz.MemberRankTypeEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
@@ -37,7 +38,7 @@ public class MemberService {
     @Autowired
     private CrudAccountService crudAccountService;
 
-    @GlobalLock(key = "#request.username")
+    @GlobalLock(key = "#request.username + '-create")
     @Transactional(rollbackFor = Exception.class)
     public MemberCreateResponse create(MemberCreateRequest request) {
         // 检查用户是否存在
@@ -60,16 +61,16 @@ public class MemberService {
         member.setUsername(request.getUsername());
         member.setNickname(request.getNickname());
         member.setAvatar(StrUtil.isBlank(request.getAvatar()) ? CharSequenceUtil.EMPTY : request.getAvatar());
-        member.setFirParent(CharSequenceUtil.EMPTY);
-        member.setSecParent(CharSequenceUtil.EMPTY);
-        member.setThrParent(CharSequenceUtil.EMPTY);
+        member.setFirstInviterId(DsConstant.NULL_MEMBER_INVITER_ID);
+        member.setSecondInviterId(DsConstant.NULL_MEMBER_INVITER_ID);
+        member.setThirdInviterId(DsConstant.NULL_MEMBER_INVITER_ID);
         if (isJoinCreate) {
-            this.setParentPath(member, inviteMember);
+            this.setInviterId(member, inviteMember);
         }
         member.setIdentityType(MemberIdentityTypeEnum.GENERAL);
         member.setRankType(MemberRankTypeEnum.BRONZE);
         member.setState(StateEnum.ENABLE);
-        crudMemberService.insertOrUpdate(member);
+        crudMemberService.insert(member);
         Long memberId = member.getId();
 
         // 创建账户
@@ -82,7 +83,7 @@ public class MemberService {
         account.setPointsTotal(0);
         account.setPointsAvailable(0);
         account.setPointsFrozen(0);
-        crudAccountService.insertOrUpdate(account);
+        crudAccountService.insert(account);
 
         // 发布邀请事件
         if (isJoinCreate) {
@@ -96,17 +97,17 @@ public class MemberService {
     }
 
     /**
-     * 设置父级标识
+     * 设置邀请人标识
      */
-    private void setParentPath(Member member, Member inviteMember) {
-        member.setFirParent(inviteMember.getUsername());
-        String twoParent = inviteMember.getFirParent();
-        if (CharSequenceUtil.isNotBlank(twoParent)) {
-            member.setSecParent(twoParent);
+    private void setInviterId(Member member, Member inviteMember) {
+        member.setFirstInviterId(inviteMember.getId());
+        Long secondInviterId = inviteMember.getSecondInviterId();
+        if (!DsConstant.NULL_MEMBER_INVITER_ID.equals(secondInviterId)) {
+            member.setSecondInviterId(secondInviterId);
         }
-        String thrParent = inviteMember.getSecParent();
-        if (CharSequenceUtil.isNotBlank(thrParent)) {
-            member.setThrParent(thrParent);
+        Long thirdInviterId = inviteMember.getThirdInviterId();
+        if (!DsConstant.NULL_MEMBER_INVITER_ID.equals(thirdInviterId)) {
+            member.setThirdInviterId(thirdInviterId);
         }
     }
 
