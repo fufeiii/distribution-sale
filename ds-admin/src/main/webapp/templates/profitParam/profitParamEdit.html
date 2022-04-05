@@ -1,54 +1,38 @@
-@layout("/common/container.html", {js:["/ds/js/profitParam/profitParamEdit.js"]}) {
+@layout("/common/container.html", {js:["/ds/js/profitParam/profitParamEdit.js","/ds/js/profitParam/profitParamEnum.js?formId=profitParamTable"]}) {
 <form action="" class="layui-form" lay-filter="profitParamTable">
     <div class="mainBox">
         <div class="main-container">
             <div class="layui-form-item">
                 <blockquote class="layui-elem-quote">
-                    注：请认真填写
+                    注：请认真填写。
                 </blockquote>
             </div>
             <input name="id" type="hidden">
             <div class="layui-form-item">
                 <label class="layui-form-label layui-form-required">账户类型</label>
                 <div class="layui-input-block">
-                    <select lay-verify="required" name="accountType">
-                        <option value="">请选择</option>
-                        @for(at in ate){
-                        <option value="${at.key}">${at.value}</option>
-                        @}
+                    <select id="accountTypeSelect" lay-verify="required" name="accountType">
                     </select>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label layui-form-required">分润类型</label>
                 <div class="layui-input-block">
-                    <select id="profitType" lay-verify="required" name="profitType">
-                        <option value="">请选择</option>
-                        @for(te in pte){
-                        <option value="${te.key}">${te.value}</option>
-                        @}
+                    <select id="profitTypeSelect" lay-verify="required" name="profitType">
                     </select>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label layui-form-required">计算方式</label>
                 <div class="layui-input-block">
-                    <select lay-verify="required" name="calculateMode">
-                        <option value="">请选择</option>
-                        @for(cm in cme){
-                        <option value="${cm.key}">${cm.value}</option>
-                        @}
+                    <select id="calculateModeSelect" lay-verify="required" name="calculateMode">
                     </select>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label layui-form-required">分润等级</label>
                 <div class="layui-input-block">
-                    <select id="profitLevel" lay-verify="required" name="profitLevel">
-                        <option value="">请选择</option>
-                        @for(pl in ple){
-                        <option value="${pl.key}">${pl.value}</option>
-                        @}
+                    <select id="profitLevelSelect" lay-verify="required" name="profitLevel">
                     </select>
                 </div>
             </div>
@@ -57,40 +41,20 @@
                 <div class="layui-input-block">
                     <input class="layui-input" id="profitRatio" lay-verType="tips" lay-verify="required|number"
                            name="profitRatio"
-                           placeholder="请输入分润比例" value=""/>
+                           placeholder="请输入分润比例" value="1"/>
                 </div>
             </div>
-
             <div class="layui-form-item">
                 <label class="layui-form-label layui-form-required">会员身份</label>
                 <div class="layui-input-block">
-                    <select id="memberIdentityType" lay-verify="required" name="memberIdentityType">
-                        <option value="">请选择</option>
-                        @for(te in mte){
-                        <option value="${te.key}">${te.value}</option>
-                        @}
+                    <select id="memberIdentityTypeSelect" lay-verify="required" name="memberIdentityType">
                     </select>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label layui-form-required">会员段位</label>
                 <div class="layui-input-block">
-                    <select id="memberRankType" lay-verify="required" name="memberRankType">
-                        <option value="">请选择</option>
-                        @for(re in mre){
-                        <option value="${re.key}">${re.value}</option>
-                        @}
-                    </select>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label layui-form-required">状&emsp;&emsp;态</label>
-                <div class="layui-input-block">
-                    <select id="state" lay-verify="required" name="state">
-                        <option value="">请选择</option>
-                        @for(s in se){
-                        <option value="${s.key}">${s.value}</option>
-                        @}
+                    <select id="memberRankTypeSelect" lay-verify="required" name="memberRankType">
                     </select>
                 </div>
             </div>
@@ -103,9 +67,9 @@
                 <i class="layui-icon layui-icon-ok"></i>
                 提交
             </button>
-            <button class="pear-btn pear-btn-sm" type="reset">
-                <i class="layui-icon layui-icon-refresh"></i>
-                重置
+            <button class="pear-btn pear-btn-sm" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name))">
+                <i class="layui-icon layui-icon-close"></i>
+                取消
             </button>
         </div>
     </div>

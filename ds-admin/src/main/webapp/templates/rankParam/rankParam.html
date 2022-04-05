@@ -4,15 +4,16 @@
         <table id="rankParamTable" lay-filter="rankParamTable"></table>
     </div>
 </div>
+<script id="stateTpl" type="text/html">
+    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="stateBtn"
+           {{ AdminOperator.isAdmin() ? 'disabled' : ''}}
+    {{ d.state=== '启用' ? 'checked' : '' }} />
+</script>
 <script id="toolbar" type="text/html">
     <button id="addButton"
             class="pear-btn pear-btn-md {{ AdminOperator.isAdmin() ? 'layui-btn-disabled' : 'pear-btn-primary'}}"
             lay-event="{{ AdminOperator.isAdmin() ? '' : 'add'}}"><i class="layui-icon layui-icon-add-1"></i>
         新增
-    </button>
-    <button class="pear-btn pear-btn-md pear-btn-primary" onclick="RankParam"><i
-            class="layui-icon layui-icon-add-1"></i>
-        刷新
     </button>
 </script>
 <script id="rowBar" type="text/html">

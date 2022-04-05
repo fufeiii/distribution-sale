@@ -5,6 +5,7 @@ import cn.fufeii.ds.admin.model.vo.request.RankParamUpsertRequest;
 import cn.fufeii.ds.admin.model.vo.response.RankParamResponse;
 import cn.fufeii.ds.admin.security.CurrentUserHelper;
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
+import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.util.BeanCopierUtil;
 import cn.fufeii.ds.common.util.LockTemplate;
@@ -42,14 +43,7 @@ public class RankParamService {
         // 组装response对象返回
         return selectPage.convert(it -> {
             RankParamResponse response = new RankParamResponse();
-            response.setId(it.getId());
-            response.setPlatformUsername(it.getPlatformUsername());
-            response.setPlatformNickname(it.getPlatformNickname());
-            response.setMemberRankType(it.getMemberRankType().getMessage());
-            response.setBeginPoints(it.getBeginPoints());
-            response.setEndPoints(it.getEndPoints());
-            response.setCreateDateTime(it.getCreateDateTime());
-            response.setUpdateDateTime(it.getUpdateDateTime());
+            this.setResponse(it, response);
             return response;
         });
     }
@@ -61,13 +55,21 @@ public class RankParamService {
         RankParam rankParam = crudRankParamService.selectById(id);
         CurrentUserHelper.checkPlatformThrow(rankParam.getPlatformUsername());
         RankParamResponse response = new RankParamResponse();
+        this.setResponse(rankParam, response);
+        return response;
+    }
+
+    /**
+     * 通用响应设置
+     */
+    public void setResponse(RankParam rankParam, RankParamResponse response) {
         response.setId(rankParam.getId());
         response.setMemberRankType(rankParam.getMemberRankType().getMessage());
         response.setBeginPoints(rankParam.getBeginPoints());
         response.setEndPoints(rankParam.getEndPoints());
+        response.setState(rankParam.getState().getMessage());
         response.setCreateDateTime(rankParam.getCreateDateTime());
         response.setUpdateDateTime(rankParam.getUpdateDateTime());
-        return response;
     }
 
     /**
@@ -78,11 +80,12 @@ public class RankParamService {
             throw new BizException(ExceptionEnum.API_FIELD_ERROR, "memberRankType不能为空");
         }
         this.checkPointsRange(request.getBeginPoints(), request.getEndPoints());
-        // 手动加锁
-        lockTemplate.lock("rp-create", log, () -> {
+        SystemUser currentUser = CurrentUserHelper.self();
+        // 手动加锁并执行逻辑
+        lockTemplate.lock(currentUser.getPlatformUsername() + ":rp-create", log, () -> {
             // 检查是否存在并插入数据
-            SystemUser currentUser = CurrentUserHelper.self();
-            LambdaQueryWrapper<RankParam> queryWrapper = Wrappers.<RankParam>lambdaQuery().eq(RankParam::getPlatformUsername, currentUser.getPlatformUsername())
+            LambdaQueryWrapper<RankParam> queryWrapper = Wrappers.<RankParam>lambdaQuery()
+                    .eq(RankParam::getPlatformUsername, currentUser.getPlatformUsername())
                     .eq(RankParam::getMemberRankType, request.getMemberRankType());
             if (crudRankParamService.exist(queryWrapper)) {
                 throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "该参数已存在");
@@ -92,6 +95,7 @@ public class RankParamService {
             BeanCopierUtil.copy(request, rankParam);
             rankParam.setPlatformUsername(currentUser.getPlatformUsername());
             rankParam.setPlatformNickname(currentUser.getPlatformNickname());
+            rankParam.setState(StateEnum.ENABLE);
             crudRankParamService.insert(rankParam);
         });
     }
@@ -113,6 +117,15 @@ public class RankParamService {
     }
 
     /**
+     * 检查分数
+     */
+    private void checkPointsRange(Integer begin, Integer end) {
+        if (begin > end) {
+            throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "起始分数必须大于结束分数");
+        }
+    }
+
+    /**
      * 删除
      */
     public void remove(Long id) {
@@ -123,12 +136,16 @@ public class RankParamService {
 
 
     /**
-     * 检查分数
+     * 修改状态
      */
-    private void checkPointsRange(Integer begin, Integer end) {
-        if (begin > end) {
-            throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "起始分数必须大于结束分数");
+    public void changeState(Long id, StateEnum stateEnum) {
+        RankParam rankParam = crudRankParamService.selectById(id);
+        if (stateEnum == rankParam.getState()) {
+            throw new BizException(ExceptionEnum.STATE_COMMON_ERROR);
         }
+        rankParam.setState(stateEnum);
+        crudRankParamService.updateById(rankParam);
     }
+
 
 }

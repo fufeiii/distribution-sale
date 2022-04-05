@@ -1,8 +1,9 @@
-layui.use(['table', 'layer', 'easyHttp', 'popup'], function () {
+layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
     let table = layui.table;
     let layer = layui.layer;
     let easyHttp = layui.easyHttp;
     let popup = layui.popup;
+    let form = layui.form;
 
     /**
      * 页面实体对象
@@ -39,6 +40,10 @@ layui.use(['table', 'layer', 'easyHttp', 'popup'], function () {
                     title: '结束积分',
                     field: 'endPoints',
                     align: 'center'
+                },
+                {
+                    title: '状态',
+                    templet: '#stateTpl'
                 },
                 {
                     title: '操作',
@@ -140,5 +145,22 @@ layui.use(['table', 'layer', 'easyHttp', 'popup'], function () {
         }
     });
 
+    /**
+     * 启用禁用点击事件
+     */
+    form.on('switch(stateBtn)', function (data) {
+        let tips = data.elem.checked ? '启用' : '禁用';
+        let path = data.elem.checked ? 'enable' : 'disable';
+        data.elem.checked = !data.elem.checked;
+        form.render('checkbox');
+        layer.confirm('确认' + tips, {icon: 3, title: '提示', closeBtn: 0}, function (index) {
+            easyHttp.execute({url: '/admin/rank-param/' + path + '/' + data.value, method: 'PUT'}, function (resp) {
+                data.elem.checked = !data.elem.checked;
+                form.render('checkbox');
+                popup.success('操作成功');
+                layer.close(index);
+            });
+        });
+    });
 
 });

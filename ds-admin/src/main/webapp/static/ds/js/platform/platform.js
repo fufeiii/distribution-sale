@@ -117,17 +117,15 @@ layui.use(['table', 'form', 'layer', 'popup', 'easyHttp'], function () {
     form.on('switch(stateBtn)', function (data) {
         let tips = data.elem.checked ? '启用' : '禁用';
         let path = data.elem.checked ? 'enable' : 'disable';
+        data.elem.checked = !data.elem.checked;
+        form.render('checkbox');
         layer.confirm('确认' + tips, {icon: 3, title: '提示', closeBtn: 0}, function (index) {
             easyHttp.execute({url: '/admin/platform/' + path + '/' + data.value, method: 'PUT'}, function (resp) {
+                data.elem.checked = !data.elem.checked;
+                form.render('checkbox');
                 popup.success('操作成功');
                 layer.close(index);
-            }, function (resp) {
-                popup.failure(resp.msg);
             });
-        }, function (index) {
-            data.elem.checked = !data.elem.checked;
-            form.render('checkbox');
-            layer.close(index);
         });
     });
 

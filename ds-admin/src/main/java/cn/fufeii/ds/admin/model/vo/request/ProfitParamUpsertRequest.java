@@ -49,8 +49,4 @@ public class ProfitParamUpsertRequest {
     @ApiModelProperty(value = "会员段位")
     private MemberRankTypeEnum memberRankType;
 
-    @NotNull
-    @ApiModelProperty(value = "状态")
-    private StateEnum state;
-
 }

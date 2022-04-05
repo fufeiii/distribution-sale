@@ -4,6 +4,7 @@ import cn.fufeii.ds.admin.model.vo.request.RankParamQueryRequest;
 import cn.fufeii.ds.admin.model.vo.request.RankParamUpsertRequest;
 import cn.fufeii.ds.admin.model.vo.response.RankParamResponse;
 import cn.fufeii.ds.admin.service.RankParamService;
+import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.result.CommonResult;
 import cn.fufeii.ds.common.result.PageResult;
 import cn.fufeii.ds.repository.entity.RankParam;
@@ -61,4 +62,19 @@ public class RankParamController {
         rankParamService.remove(id);
         return CommonResult.success();
     }
+
+    @ApiOperation("启用")
+    @PutMapping("/enable/{id}")
+    public CommonResult<Void> enable(@PathVariable Long id) {
+        rankParamService.changeState(id, StateEnum.ENABLE);
+        return CommonResult.success();
+    }
+
+    @ApiOperation("禁用")
+    @PutMapping("/disable/{id}")
+    public CommonResult<Void> disable(@PathVariable Long id) {
+        rankParamService.changeState(id, StateEnum.DISABLE);
+        return CommonResult.success();
+    }
+
 }

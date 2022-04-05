@@ -64,8 +64,8 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
                 },
                 {
                     title: '状态',
-                    field: 'state',
-                    align: 'center'
+                    align: 'center',
+                    templet: '#stateTpl'
                 },
                 {
                     title: '操作',
@@ -179,6 +179,27 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
     form.on('submit(profitParamQueryFormSubmit)', function (data) {
         ProfitParam.onSearch(data);
         return false;
+    });
+
+    /**
+     * 启用禁用点击事件
+     */
+    form.on('switch(stateBtn)', function (data) {
+        let tips = data.elem.checked ? '启用' : '禁用';
+        let path = data.elem.checked ? 'enable' : 'disable';
+        data.elem.checked = !data.elem.checked;
+        form.render('checkbox');
+        layer.confirm('确认' + tips, {icon: 3, title: '提示', closeBtn: 0}, function (index) {
+            easyHttp.execute({url: '/admin/profit-param/' + path + '/' + data.value, method: 'PUT'}, function (resp) {
+                data.elem.checked = !data.elem.checked;
+                form.render('checkbox');
+                popup.success('操作成功');
+                layer.close(index);
+            }, function (resp) {
+                popup.failure(resp.msg);
+
+            });
+        });
     });
 
 });

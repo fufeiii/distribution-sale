@@ -6,6 +6,7 @@ import cn.fufeii.ds.admin.model.vo.request.ProfitParamUpsertRequest;
 import cn.fufeii.ds.admin.model.vo.response.ProfitParamResponse;
 import cn.fufeii.ds.admin.service.ProfitParamService;
 import cn.fufeii.ds.common.annotation.DataValid;
+import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.result.CommonResult;
 import cn.fufeii.ds.common.result.PageResult;
 import cn.fufeii.ds.repository.entity.ProfitParam;
@@ -64,4 +65,19 @@ public class ProfitParamController {
         profitParamService.remove(id);
         return CommonResult.success();
     }
+
+    @ApiOperation("启用")
+    @PutMapping("/enable/{id}")
+    public CommonResult<Void> enable(@PathVariable Long id) {
+        profitParamService.changeState(id, StateEnum.ENABLE);
+        return CommonResult.success();
+    }
+
+    @ApiOperation("禁用")
+    @PutMapping("/disable/{id}")
+    public CommonResult<Void> disable(@PathVariable Long id) {
+        profitParamService.changeState(id, StateEnum.DISABLE);
+        return CommonResult.success();
+    }
+
 }
