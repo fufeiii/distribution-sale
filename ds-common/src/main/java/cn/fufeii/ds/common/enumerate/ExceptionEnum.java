@@ -18,6 +18,7 @@ public enum ExceptionEnum implements ResultDefinition {
 
     /* ========================= 服务端异常枚举 ========================= */
     SERVER_ERROR(5000, "服务端错误", ""),
+    SERVER_SQL_UPDATE_FAIL(5001, "更新失败", ""),
 
 
     /* ========================= 管理台异常枚举 ========================= */
@@ -25,7 +26,7 @@ public enum ExceptionEnum implements ResultDefinition {
     STATE_COMMON_ERROR(6001, "重复修改状态", ""),
     API_ADMIN_DENY_ERROR(6002, "超管无权限调用", ""),
     API_USER_DENY_ERROR(6003, "用户无权限调用", ""),
-    API_PARAM_ERROR(6004, "", "参数错误：%s"),
+    API_FIELD_ERROR(6004, "", "参数错误：%s"),
     // ~ 6100 - 6110 端属于权限占位端
     LOGIN_ERROR(6101, "", "登录错误：%s"),
     JWT_ERROR(6102, "", "jwt错误：%s"),

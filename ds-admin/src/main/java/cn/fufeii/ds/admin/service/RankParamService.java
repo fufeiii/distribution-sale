@@ -7,12 +7,14 @@ import cn.fufeii.ds.admin.security.CurrentUserHelper;
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.util.BeanCopierUtil;
+import cn.fufeii.ds.common.util.LockTemplate;
 import cn.fufeii.ds.repository.crud.CrudRankParamService;
 import cn.fufeii.ds.repository.entity.RankParam;
 import cn.fufeii.ds.repository.entity.SystemUser;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +23,14 @@ import org.springframework.stereotype.Service;
  *
  * @author FuFei
  */
+@Slf4j
 @Service
 public class RankParamService {
 
     @Autowired
     private CrudRankParamService crudRankParamService;
+    @Autowired
+    private LockTemplate lockTemplate;
 
     /**
      * 分页查询
@@ -69,14 +74,26 @@ public class RankParamService {
      * 保存
      */
     public void create(RankParamUpsertRequest request) {
+        if (request.getMemberRankType() == null) {
+            throw new BizException(ExceptionEnum.API_FIELD_ERROR, "memberRankType不能为空");
+        }
         this.checkPointsRange(request.getBeginPoints(), request.getEndPoints());
-        RankParam rankParam = new RankParam();
-        // 建议使用setter，字段类型问题能在编译期发现
-        BeanCopierUtil.copy(request, rankParam);
-        SystemUser currentUser = CurrentUserHelper.self();
-        rankParam.setPlatformUsername(currentUser.getPlatformUsername());
-        rankParam.setPlatformNickname(currentUser.getPlatformNickname());
-        crudRankParamService.insert(rankParam);
+        // 手动加锁
+        lockTemplate.lock("rp-create", log, () -> {
+            // 检查是否存在并插入数据
+            SystemUser currentUser = CurrentUserHelper.self();
+            LambdaQueryWrapper<RankParam> queryWrapper = Wrappers.<RankParam>lambdaQuery().eq(RankParam::getPlatformUsername, currentUser.getPlatformUsername())
+                    .eq(RankParam::getMemberRankType, request.getMemberRankType());
+            if (crudRankParamService.exist(queryWrapper)) {
+                throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "该参数已存在");
+            }
+            RankParam rankParam = new RankParam();
+            // 建议使用setter，字段类型问题能在编译期发现
+            BeanCopierUtil.copy(request, rankParam);
+            rankParam.setPlatformUsername(currentUser.getPlatformUsername());
+            rankParam.setPlatformNickname(currentUser.getPlatformNickname());
+            crudRankParamService.insert(rankParam);
+        });
     }
 
     /**
@@ -87,7 +104,7 @@ public class RankParamService {
         CurrentUserHelper.checkPlatformThrow(rankParam.getPlatformUsername());
         // 这个字段是不能改变的
         if (request.getMemberRankType() != null) {
-            throw new BizException(ExceptionEnum.API_PARAM_ERROR, "memberRankType不能修改");
+            throw new BizException(ExceptionEnum.API_FIELD_ERROR, "memberRankType不能修改");
         }
         this.checkPointsRange(request.getBeginPoints(), request.getEndPoints());
         // 建议使用setter，字段类型问题能在编译期发现

@@ -104,7 +104,7 @@ layui.use(['table', 'layer', 'easyHttp', 'popup'], function () {
         response: {countName: 'total'},
         cols: RankParam.initCols(),
         toolbar: '#toolbar',
-        defaultToolbar: ['filter', 'print', 'exports']
+        defaultToolbar: [{title: '刷新', layEvent: 'refresh', icon: 'layui-icon-refresh'}, 'filter', 'print', 'exports']
     });
 
     /**
@@ -124,6 +124,8 @@ layui.use(['table', 'layer', 'easyHttp', 'popup'], function () {
     table.on('toolbar(' + RankParam.tableId + ')', function (obj) {
         if (obj.event === 'add') {
             RankParam.openAddDlg();
+        } else if (obj.event === 'refresh') {
+            table.reload(RankParam.tableId);
         }
     });
 

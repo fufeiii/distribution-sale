@@ -1,5 +1,7 @@
 package cn.fufeii.ds.repository.crud;
 
+import cn.fufeii.ds.common.enumerate.ExceptionEnum;
+import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.repository.dao.WithdrawApplyDao;
 import cn.fufeii.ds.repository.entity.WithdrawApply;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -47,7 +49,7 @@ public class CrudWithdrawApplyService {
      * 通过ID获取一个存在的实体
      */
     public WithdrawApply selectById(Long id) {
-        return this.selectByIdOpt(id).orElseThrow(RuntimeException::new);
+        return this.selectByIdOpt(id).orElseThrow(IllegalStateException::new);
     }
 
     /**
@@ -61,7 +63,7 @@ public class CrudWithdrawApplyService {
      * 通过条件获取一个存在的实体
      */
     public WithdrawApply selectOne(Wrapper<WithdrawApply> queryWrapper) {
-        return this.selectOneOpt(queryWrapper).orElseThrow(RuntimeException::new);
+        return this.selectOneOpt(queryWrapper).orElseThrow(IllegalStateException::new);
     }
 
     /**
@@ -90,7 +92,10 @@ public class CrudWithdrawApplyService {
      * 更新实体
      */
     public WithdrawApply updateById(WithdrawApply entity) {
-        withdrawApplyDao.updateById(entity);
+        int row = withdrawApplyDao.updateById(entity);
+        if (row == 0) {
+            throw new BizException(ExceptionEnum.SERVER_SQL_UPDATE_FAIL);
+        }
         return entity;
     }
 

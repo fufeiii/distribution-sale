@@ -93,7 +93,10 @@ public class CrudAccountService {
      * 更新实体
      */
     public Account updateById(Account entity) {
-        accountDao.updateById(entity);
+        int row = accountDao.updateById(entity);
+        if (row == 0) {
+            throw new BizException(ExceptionEnum.SERVER_SQL_UPDATE_FAIL);
+        }
         return entity;
     }
 

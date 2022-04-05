@@ -10,6 +10,10 @@
             lay-event="{{ AdminOperator.isAdmin() ? '' : 'add'}}"><i class="layui-icon layui-icon-add-1"></i>
         新增
     </button>
+    <button class="pear-btn pear-btn-md pear-btn-primary" onclick="RankParam"><i
+            class="layui-icon layui-icon-add-1"></i>
+        刷新
+    </button>
 </script>
 <script id="rowBar" type="text/html">
     <button class="pear-btn pear-btn-sm {{ AdminOperator.isAdmin() ? 'layui-btn-disabled' : 'pear-btn-primary' }}"

@@ -68,13 +68,12 @@ public class GlobalLockAspect {
         Logger log = this.logger(pjp);
         boolean isLocked = false;
         try {
-            // 加锁
+            long waitTime = 0;
             if (globalLock.tryLock()) {
-                isLocked = rLock.tryLock(globalLock.waitTime(), TimeUnit.SECONDS);
-            } else {
-                rLock.lock();
-                isLocked = true;
+                waitTime = globalLock.waitTime();
             }
+            // 加锁
+            isLocked = rLock.tryLock(waitTime, TimeUnit.SECONDS);
             // 加锁失败抛出异常
             if (!isLocked) {
                 throw new IllegalStateException(StrUtil.format("加锁失败，线程{}：{}", Thread.currentThread().getName(), glKey));
@@ -101,7 +100,7 @@ public class GlobalLockAspect {
      * @param args   被解析方法的参数
      */
     public String getGlKey(String rawKey, Method method, Object[] args) {
-        String keyPrefix = DsConstant.REDIS_NAMESPACE + StrPool.COLON + DsConstant.GL_NAMESPACE + StrPool.COLON;
+        String keyPrefix = DsConstant.REDIS_GL_NAMESPACE;
         // 没填写key
         if (StrUtil.isBlank(rawKey)) {
             return keyPrefix + method.getDeclaringClass().getSimpleName() + StrPool.COLON + method.getName();

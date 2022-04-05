@@ -1,5 +1,7 @@
 package cn.fufeii.ds.repository.crud;
 
+import cn.fufeii.ds.common.enumerate.ExceptionEnum;
+import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.repository.dao.AccountRecordDao;
 import cn.fufeii.ds.repository.entity.AccountRecord;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -47,7 +49,7 @@ public class CrudAccountRecordService {
      * 通过ID获取一个存在的实体
      */
     public AccountRecord selectById(Long id) {
-        return this.selectByIdOpt(id).orElseThrow(RuntimeException::new);
+        return this.selectByIdOpt(id).orElseThrow(IllegalStateException::new);
     }
 
     /**
@@ -61,7 +63,7 @@ public class CrudAccountRecordService {
      * 通过条件获取一个存在的实体
      */
     public AccountRecord selectOne(Wrapper<AccountRecord> queryWrapper) {
-        return this.selectOneOpt(queryWrapper).orElseThrow(RuntimeException::new);
+        return this.selectOneOpt(queryWrapper).orElseThrow(IllegalStateException::new);
     }
 
     /**
@@ -90,7 +92,10 @@ public class CrudAccountRecordService {
      * 更新实体
      */
     public AccountRecord updateById(AccountRecord entity) {
-        accountRecordDao.updateById(entity);
+        int row = accountRecordDao.updateById(entity);
+        if (row == 0) {
+            throw new BizException(ExceptionEnum.SERVER_SQL_UPDATE_FAIL);
+        }
         return entity;
     }
 

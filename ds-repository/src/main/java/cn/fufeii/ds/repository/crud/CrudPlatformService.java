@@ -64,7 +64,7 @@ public class CrudPlatformService {
      * 通过条件获取一个存在的实体
      */
     public Platform selectOne(Wrapper<Platform> queryWrapper) {
-        return this.selectOneOpt(queryWrapper).orElseThrow(RuntimeException::new);
+        return this.selectOneOpt(queryWrapper).orElseThrow(IllegalStateException::new);
     }
 
     /**
@@ -93,7 +93,10 @@ public class CrudPlatformService {
      * 更新实体
      */
     public Platform updateById(Platform entity) {
-        platformDao.updateById(entity);
+        int row = platformDao.updateById(entity);
+        if (row == 0) {
+            throw new BizException(ExceptionEnum.SERVER_SQL_UPDATE_FAIL);
+        }
         return entity;
     }
 

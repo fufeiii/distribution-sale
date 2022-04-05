@@ -21,7 +21,9 @@ public @interface GlobalLock {
     String key() default "";
 
     /**
-     * 是否尝试加锁，默认为阻塞加锁
+     * 是否尝试加锁
+     * 注意：底层都是使用的tryLock(long time, TimeUnit unit)，
+     * 若为false，则time为0
      * 若为true则最多等待{@link #waitTime()}秒
      */
     boolean tryLock() default true;

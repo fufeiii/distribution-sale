@@ -63,7 +63,7 @@ public class CrudProfitParamService {
      * 通过条件获取一个存在的实体
      */
     public ProfitParam selectOne(Wrapper<ProfitParam> queryWrapper) {
-        return this.selectOneOpt(queryWrapper).orElseThrow(RuntimeException::new);
+        return this.selectOneOpt(queryWrapper).orElseThrow(IllegalStateException::new);
     }
 
     /**
@@ -92,7 +92,10 @@ public class CrudProfitParamService {
      * 更新实体
      */
     public ProfitParam updateById(ProfitParam entity) {
-        profitParamDao.updateById(entity);
+        int row = profitParamDao.updateById(entity);
+        if (row == 0) {
+            throw new BizException(ExceptionEnum.SERVER_SQL_UPDATE_FAIL);
+        }
         return entity;
     }
 
