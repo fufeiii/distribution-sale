@@ -10,6 +10,7 @@ import cn.fufeii.ds.admin.security.login.JwtLoginProvider;
 import cn.fufeii.ds.admin.security.logout.JwtLogoutFilter;
 import cn.fufeii.ds.admin.security.logout.JwtLogoutHandler;
 import cn.fufeii.ds.admin.security.logout.JwtLogoutSuccessHandler;
+import cn.fufeii.ds.common.constant.DsConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,10 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         // 静态资源不经过security
         web.ignoring()
-                .mvcMatchers("/ds/**", "/component/**", "/favicon.ico")
-                .mvcMatchers("/doc.html", "/webjars/**")
-                .mvcMatchers("/swagger-resources", "/v3/api-docs")
-        ;
+                .mvcMatchers("/ds/**", "/component/**")
+                .mvcMatchers(DsConstant.KNIFE4J_URL);
     }
 
     @Override

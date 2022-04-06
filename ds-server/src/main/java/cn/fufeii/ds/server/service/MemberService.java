@@ -11,8 +11,10 @@ import cn.fufeii.ds.repository.crud.CrudAccountService;
 import cn.fufeii.ds.repository.crud.CrudMemberService;
 import cn.fufeii.ds.repository.entity.Account;
 import cn.fufeii.ds.repository.entity.Member;
+import cn.fufeii.ds.repository.entity.Platform;
 import cn.fufeii.ds.server.model.api.request.MemberCreateRequest;
 import cn.fufeii.ds.server.model.api.response.MemberCreateResponse;
+import cn.fufeii.ds.server.security.CurrentPlatformHolder;
 import cn.fufeii.ds.server.subscribe.event.InviteEvent;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
@@ -70,12 +72,16 @@ public class MemberService {
         member.setIdentityType(MemberIdentityTypeEnum.GENERAL);
         member.setRankType(MemberRankTypeEnum.BRONZE);
         member.setState(StateEnum.ENABLE);
+        Platform currentPlatform = CurrentPlatformHolder.get();
+        member.setPlatformUsername(currentPlatform.getUsername());
+        member.setPlatformNickname(currentPlatform.getNickname());
         crudMemberService.insert(member);
         Long memberId = member.getId();
 
         // 创建账户
         Account account = new Account();
         account.setMemberId(memberId);
+        account.setMoneyTotalHistory(0);
         account.setMoneyTotal(0);
         account.setMoneyAvailable(0);
         account.setMoneyFrozen(0);

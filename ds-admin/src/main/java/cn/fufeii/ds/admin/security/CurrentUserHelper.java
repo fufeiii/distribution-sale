@@ -3,7 +3,7 @@ package cn.fufeii.ds.admin.security;
 import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.exception.BizException;
-import cn.fufeii.ds.repository.config.CurrentPlatformHelper;
+import cn.fufeii.ds.repository.config.DataAuthorityHelper;
 import cn.fufeii.ds.repository.entity.SystemUser;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -64,7 +64,7 @@ public class CurrentUserHelper {
      * 检查数据权限
      */
     public static void checkPlatformThrow(String dataPlatformUsername) {
-        CurrentPlatformHelper.checkPlatformThrow(platformUsername(), dataPlatformUsername);
+        DataAuthorityHelper.checkPlatformThrow(platformUsername(), dataPlatformUsername);
     }
 
     /**
@@ -72,7 +72,7 @@ public class CurrentUserHelper {
      */
     public static <T> void setPlatformIfPossible(LambdaQueryWrapper<T> queryWrapper) {
         if (isNotAdmin()) {
-            CurrentPlatformHelper.setPlatform(queryWrapper, platformUsername());
+            DataAuthorityHelper.setPlatform(queryWrapper, platformUsername());
         }
     }
 

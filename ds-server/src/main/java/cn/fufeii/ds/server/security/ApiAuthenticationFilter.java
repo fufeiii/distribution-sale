@@ -13,11 +13,11 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
-import cn.hutool.crypto.symmetric.AES;
 import jodd.util.StringPool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -42,11 +42,23 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class ApiAuthenticationFilter extends OncePerRequestFilter {
-    private final ThreadLocal<Platform> platformThreadLocal = new InheritableThreadLocal<>();
+    private final AntPathMatcher matcher = new AntPathMatcher();
     @Autowired
     private DsServerProperties dsServerProperties;
     @Autowired
     private CrudPlatformService crudPlatformService;
+
+    public static void main(String[] args) {
+        String waitSignStr = "POST\n" + "/api/member/create\n" + "{\"avatar\": \"\",\"inviteUsername\": \"\",\"nickname\": \"123\",\"username\": \"31\"}\n";
+        String data = SecureUtil.hmacSha256("eta3m6xh65v5wlsqxc69qlq6a4aeyjna").digestHex(waitSignStr);
+        System.out.println("data = " + data);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        // doc文档不需要过滤
+        return Arrays.stream(DsConstant.KNIFE4J_URL).anyMatch(it -> matcher.match(it, request.getServletPath()));
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -88,29 +100,21 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 加密和签名机制
-        Boolean enableApiEncryption = dsServerProperties.getEnableApiEncryption();
-        Boolean enableApiSignature = dsServerProperties.getEnableApiSignature();
+        // 验签操作
         HttpServletRequest requestWrapper = request;
-        String requestBody = "";
-        if (enableApiEncryption || enableApiSignature) {
-            ContentReuseRequestWrapper reuseRequestWrapper = new ContentReuseRequestWrapper(request);
-            requestWrapper = reuseRequestWrapper;
-            requestBody = new String(reuseRequestWrapper.getContent());
-        }
-
-        // 解密和验签操作
         try {
-            // 解密，platform.username作为ak使用
-            if (enableApiEncryption) {
-                requestBody = this.decodeBody(requestBody, platform.getUsername());
-            }
-            // 验签，platform.sk作为ak使用
-            if (enableApiSignature) {
+            // 验签，platform.sk
+            if (dsServerProperties.getEnableApiSignature()) {
+                ContentReuseRequestWrapper reuseRequestWrapper = new ContentReuseRequestWrapper(request);
+                // 改变引用，以便进一步处理请求体
+                requestWrapper = reuseRequestWrapper;
+                String requestBody = StrUtil.utf8Str(reuseRequestWrapper.getContent());
+                // 执行验签逻辑
                 String waitSignStr = requestWrapper.getMethod() + "\n" + requestWrapper.getServletPath() + "\n" + requestBody + "\n";
                 boolean checkSignature = this.checkSignature(waitSignStr, authorizationParam.getSignature(), platform.getSk());
                 if (!checkSignature) {
                     ResponseUtil.write(response, CommonResult.fail(ExceptionEnum.SERVER_API_AUTH_ERROR, "验签错误"));
+                    return;
                 }
             }
         } catch (RuntimeException e) {
@@ -120,33 +124,14 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
         }
 
         // 验证通过
-        platformThreadLocal.set(platform);
+        CurrentPlatformHolder.set(platform);
         try {
             filterChain.doFilter(requestWrapper, response);
         } finally {
-            platformThreadLocal.remove();
+            CurrentPlatformHolder.remove();
         }
 
     }
-
-
-    /**
-     * 解密
-     * aes256
-     */
-    private String decodeBody(String requestBody, String ak) {
-        int keyLength = 32;
-        int keyMissingLength = keyLength - ak.length();
-        String key;
-        if (keyMissingLength > 0) {
-            key = ak + StrUtil.repeat('0', keyMissingLength);
-        } else {
-            // 理论上这个不会走这个分支，因为数据库限制了ds_platform.username最大32
-            key = ak.substring(0, keyLength);
-        }
-        return new AES(StrUtil.utf8Bytes(key)).decryptStr(requestBody);
-    }
-
 
     /**
      * 验签
@@ -154,7 +139,7 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
      */
     private boolean checkSignature(String waitSignStr, String signature, String sk) {
         // 获取请求体并比较签名
-        String digestBase64 = SecureUtil.hmacSha256(sk).digestBase64(waitSignStr, false);
+        String digestBase64 = SecureUtil.hmacSha256(sk).digestHex(waitSignStr);
         if (!Objects.equals(digestBase64, signature)) {
             log.debug("验签失败：待签名字符串[{}]， 签名[{}]，原签名[{}]", waitSignStr, digestBase64, signature);
             return false;

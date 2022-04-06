@@ -16,7 +16,7 @@ import java.util.Date;
 @Setter
 @Component
 @ConfigurationProperties(prefix = "mybatis-plus.entity")
-public class CommonMetaObjectHandler implements MetaObjectHandler {
+public class MpMetaObjectHandler implements MetaObjectHandler {
     private String versionFieldName = "version";
     private Integer versionFieldValue = 0;
     private String createDateTimeFieldName = "createDateTime";

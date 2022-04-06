@@ -8,15 +8,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import java.util.Objects;
 
 /**
- * 当前平台Helper
- * 主要是设置平台标识（类似租户）已解决数据权限问题
- * 没有使用mybatis-plus的多租户插件，因为它有点重
- * 而且无法适配admin和server两个服务的当前平台获取方式
+ * 数据权限Helper
+ * 针对平台标识（类似租户）进行操作，每个平台只能读取自己的数据
  *
  * @author FuFei
  * @date 2022/4/3
  */
-public final class CurrentPlatformHelper {
+public final class DataAuthorityHelper {
 
     /**
      * 设置[平台标识]字段到LambdaQueryWrapper中

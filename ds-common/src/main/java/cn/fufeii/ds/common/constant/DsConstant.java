@@ -8,6 +8,7 @@ package cn.fufeii.ds.common.constant;
  */
 public final class DsConstant {
 
+    public static final String[] KNIFE4J_URL = {"/favicon.ico", "/doc.html", "/webjars/**", "/swagger-resources", "/v3/api-docs"};
 
     public static final String REDIS_NAMESPACE = "ds:";
     public static final String REDIS_GL_NAMESPACE = REDIS_NAMESPACE + "gl:";
