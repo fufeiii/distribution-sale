@@ -1,0 +1,21 @@
+{
+  "groups": [
+    {
+      "name": "ds.server"
+    }
+  ],
+  "properties": [
+    {
+      "name": "ds.server.enable-api-encryption",
+      "type": "java.lang.Boolean",
+      "sourceType": "cn.fufeii.ds.server.config.property.DsServerProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "ds.server.enable-api-signature",
+      "type": "java.lang.Boolean",
+      "sourceType": "cn.fufeii.ds.server.config.property.DsServerProperties",
+      "defaultValue": true
+    }
+  ]
+}

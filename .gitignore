@@ -40,4 +40,4 @@ _dockerCerts/
 .factorypath
 transaction-logs
 admin-app-log
-portal-app-log
+server-app-log

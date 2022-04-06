@@ -9,7 +9,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>ds-admin</module>
-        <module>ds-portal</module>
+        <module>ds-server</module>
         <module>ds-common</module>
         <module>ds-repository</module>
     </modules>

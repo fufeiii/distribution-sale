@@ -11,7 +11,7 @@ import java.util.Objects;
  * 当前平台Helper
  * 主要是设置平台标识（类似租户）已解决数据权限问题
  * 没有使用mybatis-plus的多租户插件，因为它有点重
- * 而且无法适配admin和portal两个服务的当前平台获取方式
+ * 而且无法适配admin和server两个服务的当前平台获取方式
  *
  * @author FuFei
  * @date 2022/4/3
