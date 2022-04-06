@@ -48,12 +48,6 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private CrudPlatformService crudPlatformService;
 
-    public static void main(String[] args) {
-        String waitSignStr = "POST\n" + "/api/member/create\n" + "{\"avatar\": \"\",\"inviteUsername\": \"\",\"nickname\": \"123\",\"username\": \"31\"}\n";
-        String data = SecureUtil.hmacSha256("eta3m6xh65v5wlsqxc69qlq6a4aeyjna").digestHex(waitSignStr);
-        System.out.println("data = " + data);
-    }
-
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         // doc文档不需要过滤

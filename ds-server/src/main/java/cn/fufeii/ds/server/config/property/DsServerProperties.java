@@ -16,11 +16,6 @@ import org.springframework.context.annotation.Configuration;
 public class DsServerProperties {
 
     /**
-     * 启用API加密机制
-     */
-    private Boolean enableApiEncryption = false;
-
-    /**
      * 启用API签名机制
      */
     private Boolean enableApiSignature = true;
