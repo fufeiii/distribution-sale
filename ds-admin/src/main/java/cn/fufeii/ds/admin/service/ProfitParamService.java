@@ -97,7 +97,6 @@ public class ProfitParamService {
                     .eq(ProfitParam::getPlatformUsername, currentUser.getPlatformUsername())
                     .eq(ProfitParam::getAccountType, request.getAccountType())
                     .eq(ProfitParam::getProfitType, request.getProfitType())
-                    .eq(ProfitParam::getCalculateMode, request.getCalculateMode())
                     .eq(ProfitParam::getProfitLevel, request.getProfitLevel())
                     .eq(ProfitParam::getMemberIdentityType, request.getMemberIdentityType())
                     .eq(ProfitParam::getMemberRankType, request.getMemberRankType());

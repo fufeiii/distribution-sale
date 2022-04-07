@@ -3,14 +3,14 @@ package cn.fufeii.ds.server.security;
 import cn.fufeii.ds.repository.entity.Platform;
 
 /**
- * 当前平台 Holder
+ * PlatformContextHolder
  *
  * @author FuFei
  * @date 2022/4/6
  */
-public final class CurrentPlatformHolder {
+public final class PlatformContextHolder {
 
-    public static final ThreadLocal<Platform> PLATFORM_THREAD_LOCAL = new InheritableThreadLocal<>();
+    public static final ThreadLocal<Platform> PLATFORM_THREAD_LOCAL = new ThreadLocal<>();
 
     public static Platform get() {
         return PLATFORM_THREAD_LOCAL.get();

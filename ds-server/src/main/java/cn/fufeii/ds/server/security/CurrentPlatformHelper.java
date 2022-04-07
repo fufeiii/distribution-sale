@@ -1,5 +1,7 @@
 package cn.fufeii.ds.server.security;
 
+import cn.fufeii.ds.repository.entity.Platform;
+
 /**
  * 当前平台 Helper
  *
@@ -7,6 +9,10 @@ package cn.fufeii.ds.server.security;
  * @date 2022/4/6
  */
 public final class CurrentPlatformHelper {
+
+    public static Platform self() {
+        return PlatformContextHolder.get();
+    }
 
 
 }

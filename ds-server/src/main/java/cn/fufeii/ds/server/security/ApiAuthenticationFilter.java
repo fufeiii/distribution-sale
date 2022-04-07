@@ -118,11 +118,11 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
         }
 
         // 验证通过
-        CurrentPlatformHolder.set(platform);
+        PlatformContextHolder.set(platform);
         try {
             filterChain.doFilter(requestWrapper, response);
         } finally {
-            CurrentPlatformHolder.remove();
+            PlatformContextHolder.remove();
         }
 
     }

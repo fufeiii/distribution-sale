@@ -28,7 +28,7 @@ public enum AccountTypeEnum {
     /**
      * 积分
      */
-    INTEGRAL(2, "积分");
+    POINTS(2, "积分");
 
     @EnumValue
     private final Integer code;

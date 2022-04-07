@@ -16,7 +16,9 @@ public interface ProfitStrategy {
 
     /**
      * 分润
+     *
+     * @param source 引发分润的来源
      */
-    void profit();
+    void profit(Object source);
 
 }

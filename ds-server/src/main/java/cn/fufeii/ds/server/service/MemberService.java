@@ -14,7 +14,7 @@ import cn.fufeii.ds.repository.entity.Member;
 import cn.fufeii.ds.repository.entity.Platform;
 import cn.fufeii.ds.server.model.api.request.MemberCreateRequest;
 import cn.fufeii.ds.server.model.api.response.MemberCreateResponse;
-import cn.fufeii.ds.server.security.CurrentPlatformHolder;
+import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.subscribe.event.InviteEvent;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
@@ -72,7 +72,7 @@ public class MemberService {
         member.setIdentityType(MemberIdentityTypeEnum.GENERAL);
         member.setRankType(MemberRankTypeEnum.BRONZE);
         member.setState(StateEnum.ENABLE);
-        Platform currentPlatform = CurrentPlatformHolder.get();
+        Platform currentPlatform = CurrentPlatformHelper.self();
         member.setPlatformUsername(currentPlatform.getUsername());
         member.setPlatformNickname(currentPlatform.getNickname());
         crudMemberService.insert(member);
@@ -93,7 +93,9 @@ public class MemberService {
 
         // 发布邀请事件
         if (isJoinCreate) {
-            applicationEventPublisher.publishEvent(new InviteEvent(ProfitTypeEnum.INVITE, memberId));
+            InviteEvent.Source source = new InviteEvent.Source();
+            source.setMemberId(memberId);
+            applicationEventPublisher.publishEvent(new InviteEvent(ProfitTypeEnum.INVITE, source));
         }
 
         // 返回
