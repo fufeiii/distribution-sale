@@ -1,5 +1,6 @@
 package cn.fufeii.ds.server.config;
 
+import com.alibaba.ttl.TtlRunnable;
 import org.springframework.boot.task.TaskExecutorCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,10 @@ public class TaskExecutionConfig {
 
     @Bean
     public TaskExecutorCustomizer taskExecutorCustomizer() {
-        return taskExecutor -> taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        return taskExecutor -> {
+            taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+            taskExecutor.setTaskDecorator(TtlRunnable::get);
+        };
     }
 
 }

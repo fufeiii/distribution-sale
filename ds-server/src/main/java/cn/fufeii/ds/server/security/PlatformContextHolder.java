@@ -1,6 +1,7 @@
 package cn.fufeii.ds.server.security;
 
 import cn.fufeii.ds.repository.entity.Platform;
+import com.alibaba.ttl.TransmittableThreadLocal;
 
 /**
  * PlatformContextHolder
@@ -10,7 +11,7 @@ import cn.fufeii.ds.repository.entity.Platform;
  */
 public final class PlatformContextHolder {
 
-    public static final ThreadLocal<Platform> PLATFORM_THREAD_LOCAL = new ThreadLocal<>();
+    public static final ThreadLocal<Platform> PLATFORM_THREAD_LOCAL = new TransmittableThreadLocal<>();
 
     public static Platform get() {
         return PLATFORM_THREAD_LOCAL.get();
