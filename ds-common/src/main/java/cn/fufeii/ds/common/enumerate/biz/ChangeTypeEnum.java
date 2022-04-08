@@ -30,9 +30,9 @@ public enum ChangeTypeEnum {
     WITHDRAW_FREEZE(3, "提现冻结"),
 
     /**
-     * 提现冻结
+     * 提现解冻
      */
-    WITHDRAW_UNFREEZE(4, "提现冻结");
+    WITHDRAW_UNFREEZE(4, "提现解冻");
 
     @EnumValue
     private final Integer code;

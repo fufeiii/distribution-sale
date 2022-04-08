@@ -11,8 +11,13 @@ import lombok.Data;
  */
 public class InviteEvent extends AbstractProfitEvent {
 
-    public InviteEvent(ProfitTypeEnum profitType, Object source) {
+    public InviteEvent(ProfitTypeEnum profitType, Source source) {
         super(profitType, source);
+    }
+
+    @Override
+    public Source getSource() {
+        return (Source) super.getSource();
     }
 
     @Data

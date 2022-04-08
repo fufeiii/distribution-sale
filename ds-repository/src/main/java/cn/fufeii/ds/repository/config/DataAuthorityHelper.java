@@ -21,14 +21,6 @@ public final class DataAuthorityHelper {
      */
     @SuppressWarnings("unchecked")
     public static <T> void setPlatform(LambdaQueryWrapper<T> queryWrapper, String platformUsername) {
-        if (Member.class.equals(queryWrapper.getEntityClass())) {
-            ((LambdaQueryWrapper<Member>) queryWrapper).eq(Member::getPlatformUsername, platformUsername);
-            return;
-        }
-        if (Platform.class.equals(queryWrapper.getEntityClass())) {
-            ((LambdaQueryWrapper<Platform>) queryWrapper).eq(Platform::getUsername, platformUsername);
-            return;
-        }
         if (ProfitParam.class.equals(queryWrapper.getEntityClass())) {
             ((LambdaQueryWrapper<ProfitParam>) queryWrapper).eq(ProfitParam::getPlatformUsername, platformUsername);
             return;
@@ -39,6 +31,14 @@ public final class DataAuthorityHelper {
         }
         if (ProfitEvent.class.equals(queryWrapper.getEntityClass())) {
             ((LambdaQueryWrapper<ProfitEvent>) queryWrapper).eq(ProfitEvent::getPlatformUsername, platformUsername);
+            return;
+        }
+        if (Member.class.equals(queryWrapper.getEntityClass())) {
+            ((LambdaQueryWrapper<Member>) queryWrapper).eq(Member::getPlatformUsername, platformUsername);
+            return;
+        }
+        if (Platform.class.equals(queryWrapper.getEntityClass())) {
+            ((LambdaQueryWrapper<Platform>) queryWrapper).eq(Platform::getUsername, platformUsername);
             return;
         }
         if (WithdrawApply.class.equals(queryWrapper.getEntityClass())) {

@@ -1,13 +1,17 @@
 package cn.fufeii.ds.server.strategy.impl;
 
-import cn.fufeii.ds.common.enumerate.biz.AccountTypeEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitLevelEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import cn.fufeii.ds.repository.entity.Member;
+import cn.fufeii.ds.repository.entity.Platform;
 import cn.fufeii.ds.repository.entity.ProfitEvent;
-import cn.fufeii.ds.repository.entity.ProfitParam;
+import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.subscribe.event.InviteEvent;
+import cn.hutool.core.text.StrPool;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * 邀请分润策略
@@ -15,6 +19,7 @@ import org.springframework.stereotype.Service;
  * @author FuFei
  * @date 2022/3/22
  */
+@Slf4j
 @Service
 public class InviteProfitStrategy extends AbstractProfitStrategy {
 
@@ -25,25 +30,47 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
 
     @Override
     public void profit(Object source) {
+        log.info("【邀请分润】=====> 开始");
         InviteEvent.Source inviteEventInviteEvent = (InviteEvent.Source) source;
+        Member inviteeMember = crudMemberService.selectById(inviteEventInviteEvent.getMemberId());
 
         // 记录分润事件
-        ProfitEvent inviteEvent = new ProfitEvent();
+        ProfitEvent inviteEvent = this.saveProfitEvent(inviteeMember);
 
-        // 获取会员，遍历其从自身上级会员，并查找对应参数
-        Member selfMember = crudMemberService.selectById(inviteEventInviteEvent.getMemberId());
-        ProfitParam selfMoneyParam = super.getInviteProfitParam(AccountTypeEnum.MONEY, ProfitLevelEnum.SELF, selfMember.getIdentityType(), selfMember.getRankType());
-        ProfitParam selfPointsParam = super.getInviteProfitParam(AccountTypeEnum.POINTS, ProfitLevelEnum.SELF, selfMember.getIdentityType(), selfMember.getRankType());
+        // 获取当前会员
+        super.handleProfit(inviteEvent, inviteeMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.SELF);
 
-        super.doProfit(inviteEvent, selfMember, selfMoneyParam, selfPointsParam);
-
-        // 查询一级邀请人
+        // 查询一级邀请人，被邀请加入的肯定有一级邀请人
+        Member firstInviterMember = crudMemberService.selectById(inviteeMember.getFirstInviterId());
+        super.handleProfit(inviteEvent, firstInviterMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.ONE);
 
         // 查询二级邀请人
+        Optional<Member> secondInviterMemberOptional = crudMemberService.selectByIdOptional(inviteeMember.getSecondInviterId());
+        secondInviterMemberOptional.ifPresent(secondInviterMember -> super.handleProfit(inviteEvent, secondInviterMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.TWO));
 
         // 查询三级邀请人
+        Optional<Member> thirdInviterMemberOptional = crudMemberService.selectByIdOptional(inviteeMember.getThirdInviterId());
+        thirdInviterMemberOptional.ifPresent(thirdInviterMember -> super.handleProfit(inviteEvent, thirdInviterMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.THREE));
+
+        log.info("【邀请分润】=====> 结束");
+
+    }
 
 
+    /**
+     * 保存分销事件
+     */
+    private ProfitEvent saveProfitEvent(Member inviteeMember) {
+        ProfitEvent profitEvent = new ProfitEvent();
+        Platform self = CurrentPlatformHelper.self();
+        profitEvent.setPlatformUsername(self.getUsername());
+        profitEvent.setPlatformNickname(self.getNickname());
+        profitEvent.setProfitType(ProfitTypeEnum.INVITE);
+        profitEvent.setTriggerMemberId(inviteeMember.getFirstInviterId());
+        profitEvent.setEventNumber(inviteeMember.getFirstInviterId() + StrPool.DASHED + ProfitTypeEnum.INVITE.name());
+        profitEvent.setEventAmount(0);
+        profitEvent.setMemo(String.format("用户[%s]被邀请加入", inviteeMember.getNickname()));
+        return crudProfitEventService.insert(profitEvent);
     }
 
 }
