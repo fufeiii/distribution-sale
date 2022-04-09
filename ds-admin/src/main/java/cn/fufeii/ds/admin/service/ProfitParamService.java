@@ -108,6 +108,7 @@ public class ProfitParamService {
             BeanCopierUtil.copy(request, profitParam);
             profitParam.setPlatformUsername(currentUser.getPlatformUsername());
             profitParam.setPlatformNickname(currentUser.getPlatformNickname());
+            profitParam.setState(StateEnum.ENABLE);
             crudProfitParamService.insert(profitParam);
         });
     }
