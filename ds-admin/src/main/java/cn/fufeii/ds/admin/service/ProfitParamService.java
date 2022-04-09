@@ -140,6 +140,7 @@ public class ProfitParamService {
      */
     public void changeState(Long id, StateEnum stateEnum) {
         ProfitParam profitParam = crudProfitParamService.selectById(id);
+        CurrentUserHelper.checkPlatformThrow(profitParam.getPlatformUsername());
         if (stateEnum == profitParam.getState()) {
             throw new BizException(ExceptionEnum.STATE_COMMON_ERROR);
         }

@@ -76,16 +76,16 @@ public class GlobalLockAspect {
             isLocked = rLock.tryLock(waitTime, TimeUnit.SECONDS);
             // 加锁失败抛出异常
             if (!isLocked) {
-                throw new IllegalStateException(StrUtil.format("加锁失败，线程{}：{}", Thread.currentThread().getName(), glKey));
+                throw new IllegalStateException(StrUtil.format("加锁失败, 线程{}: {}", Thread.currentThread().getName(), glKey));
             }
             // 执行目标方法
-            log.debug("加锁成功：{}", glKey);
+            log.debug("加锁成功: {}", glKey);
             return pjp.proceed();
         } finally {
             // 加锁成功才解锁
             if (isLocked) {
                 rLock.unlock();
-                log.debug("解锁成功：{}", glKey);
+                log.debug("解锁成功: {}", glKey);
             }
         }
     }
@@ -93,7 +93,7 @@ public class GlobalLockAspect {
 
     /**
      * 获取锁名
-     * 这个key可能是显示定义的，或者是springEL表达式，或者没有填写
+     * 这个key可能是显示定义的, 或者是springEL表达式, 或者没有填写
      *
      * @param rawKey 注解上的关键字
      * @param method 被解析方法

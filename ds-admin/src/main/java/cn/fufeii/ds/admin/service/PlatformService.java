@@ -54,7 +54,7 @@ public class PlatformService {
      */
     public void create(PlatformUpsertRequest request) {
         // 查看平台是否已存在
-        boolean present = crudPlatformService.selectOneOpt(Wrappers.<Platform>lambdaQuery().eq(Platform::getUsername, request.getUsername()))
+        boolean present = crudPlatformService.selectOneOptional(Wrappers.<Platform>lambdaQuery().eq(Platform::getUsername, request.getUsername()))
                 .isPresent();
         if (present) {
             throw new BizException(ExceptionEnum.PLATFORM_CREATE_ERROR, "平台已存在");

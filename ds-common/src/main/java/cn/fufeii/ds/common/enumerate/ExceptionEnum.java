@@ -18,7 +18,7 @@ public enum ExceptionEnum implements ResultDefinition {
 
     /* ========================= 服务端异常枚举 ========================= */
     SERVER_ERROR(5000, "服务端错误", ""),
-    SERVER_API_AUTH_ERROR(5001, "", "鉴权失败：%s"),
+    SERVER_API_AUTH_ERROR(5001, "", "鉴权失败: %s"),
     SERVER_SQL_UPDATE_FAIL(5101, "更新失败", ""),
 
 
@@ -27,20 +27,21 @@ public enum ExceptionEnum implements ResultDefinition {
     STATE_COMMON_ERROR(6001, "重复修改状态", ""),
     API_ADMIN_DENY_ERROR(6002, "超管无权限调用", ""),
     API_USER_DENY_ERROR(6003, "用户无权限调用", ""),
-    API_FIELD_ERROR(6004, "", "参数错误：%s"),
+    API_FIELD_ERROR(6004, "", "参数错误: %s"),
     // ~ 6100 - 6110 端属于权限占位端
-    LOGIN_ERROR(6101, "", "登录错误：%s"),
-    JWT_ERROR(6102, "", "jwt错误：%s"),
-    LOGOUT_ERROR(6103, "", "登出错误：%s"),
+    LOGIN_ERROR(6101, "", "登录错误: %s"),
+    JWT_ERROR(6102, "", "jwt错误: %s"),
+    LOGOUT_ERROR(6103, "", "登出错误: %s"),
     // 业务创建类错误
-    USER_CREATE_ERROR(6201, "", "创建用户错误：%s"),
-    PLATFORM_CREATE_ERROR(6301, "", "创建平台错误：%s"),
-    PROFIT_PARAM_CREATE_ERROR(6401, "", "创建分润参数错误：%s"),
-    RANK_PARAM_CREATE_ERROR(6501, "", "创建段位数错误：%s"),
+    USER_CREATE_ERROR(6201, "", "创建用户错误: %s"),
+    PLATFORM_CREATE_ERROR(6301, "", "创建平台错误: %s"),
+    PROFIT_PARAM_CREATE_ERROR(6401, "", "创建分润参数错误: %s"),
+    RANK_PARAM_CREATE_ERROR(6501, "", "创建段位数错误: %s"),
 
     /* ========================= 通用枚举 ========================= */
-    ENTITY_NOT_EXIST(7001, "", "数据不存在：%s"),
-    NO_DATA_PERMISSION(7011, "无数据权限", "无权限：%s"),
+    BIZ_COMMON_ERROR(7000, "", "业务错误: %s"),
+    ENTITY_NOT_EXIST(7001, "", "数据不存在: %s"),
+    NO_DATA_PERMISSION(7011, "无数据权限", "无权限: %s"),
 
 
     /* ========================= 业务异常枚举 ========================= */

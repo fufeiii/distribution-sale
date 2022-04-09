@@ -55,7 +55,7 @@ public class CrudAccountRecordService {
     /**
      * 通过条件获取一个可能存在的实体
      */
-    public Optional<AccountRecord> selectOneOpt(Wrapper<AccountRecord> queryWrapper) {
+    public Optional<AccountRecord> selectOneOptional(Wrapper<AccountRecord> queryWrapper) {
         return Optional.ofNullable(accountRecordDao.selectOne(queryWrapper));
     }
 
@@ -63,7 +63,7 @@ public class CrudAccountRecordService {
      * 通过条件获取一个存在的实体
      */
     public AccountRecord selectOne(Wrapper<AccountRecord> queryWrapper) {
-        return this.selectOneOpt(queryWrapper).orElseThrow(IllegalStateException::new);
+        return this.selectOneOptional(queryWrapper).orElseThrow(IllegalStateException::new);
     }
 
     /**

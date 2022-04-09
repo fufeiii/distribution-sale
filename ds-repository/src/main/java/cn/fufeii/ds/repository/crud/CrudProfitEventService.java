@@ -55,7 +55,7 @@ public class CrudProfitEventService {
     /**
      * 通过条件获取一个可能存在的实体
      */
-    public Optional<ProfitEvent> selectOneOpt(Wrapper<ProfitEvent> queryWrapper) {
+    public Optional<ProfitEvent> selectOneOptional(Wrapper<ProfitEvent> queryWrapper) {
         return Optional.ofNullable(profitEventDao.selectOne(queryWrapper));
     }
 
@@ -63,7 +63,7 @@ public class CrudProfitEventService {
      * 通过条件获取一个存在的实体
      */
     public ProfitEvent selectOne(Wrapper<ProfitEvent> queryWrapper) {
-        return this.selectOneOpt(queryWrapper).orElseThrow(IllegalStateException::new);
+        return this.selectOneOptional(queryWrapper).orElseThrow(IllegalStateException::new);
     }
 
     /**

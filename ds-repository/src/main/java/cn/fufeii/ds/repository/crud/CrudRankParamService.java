@@ -55,7 +55,7 @@ public class CrudRankParamService {
     /**
      * 通过条件获取一个可能存在的实体
      */
-    public Optional<RankParam> selectOneOpt(Wrapper<RankParam> queryWrapper) {
+    public Optional<RankParam> selectOneOptional(Wrapper<RankParam> queryWrapper) {
         return Optional.ofNullable(rankParamDao.selectOne(queryWrapper));
     }
 
@@ -63,7 +63,7 @@ public class CrudRankParamService {
      * 通过条件获取一个存在的实体
      */
     public RankParam selectOne(Wrapper<RankParam> queryWrapper) {
-        return this.selectOneOpt(queryWrapper).orElseThrow(IllegalStateException::new);
+        return this.selectOneOptional(queryWrapper).orElseThrow(IllegalStateException::new);
     }
 
     /**

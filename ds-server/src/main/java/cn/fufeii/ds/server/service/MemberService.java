@@ -2,6 +2,7 @@ package cn.fufeii.ds.server.service;
 
 import cn.fufeii.ds.common.annotation.GlobalLock;
 import cn.fufeii.ds.common.constant.DsConstant;
+import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.MemberIdentityTypeEnum;
 import cn.fufeii.ds.common.enumerate.biz.MemberRankTypeEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
@@ -14,6 +15,7 @@ import cn.fufeii.ds.repository.entity.Member;
 import cn.fufeii.ds.repository.entity.Platform;
 import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.model.api.request.MemberCreateRequest;
+import cn.fufeii.ds.server.model.api.request.MemberIdentityTypeRequest;
 import cn.fufeii.ds.server.model.api.response.MemberCreateResponse;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.subscribe.event.InviteEvent;
@@ -44,43 +46,53 @@ public class MemberService {
     @GlobalLock(key = DsServerConstant.CURRENT_PLATFORM_USERNAME_SPEL + "#request.username")
     @Transactional
     public MemberCreateResponse create(MemberCreateRequest request) {
+        Platform currentPlatform = CurrentPlatformHelper.self();
+        String platformUsername = currentPlatform.getUsername();
         // 检查用户是否存在
-        if (crudMemberService.existByUsername(request.getUsername())) {
+        Optional<Member> memberOptional = crudMemberService.selectByUsernameOptional(request.getUsername(), platformUsername);
+        if (memberOptional.isPresent()) {
             throw BizException.serverError(String.format("会员[%s]已存在", request.getUsername()));
         }
         // 如果被邀请加入的，则检查邀请人
         boolean isJoinCreate = CharSequenceUtil.isNotBlank(request.getInviteUsername());
-        Member inviteMember = null;
+        Member inviterMember = null;
         if (isJoinCreate) {
-            Optional<Member> inviteMemberOpt = crudMemberService.selectByUsernameOpt(request.getInviteUsername());
+            Optional<Member> inviteMemberOpt = crudMemberService.selectByUsernameOptional(request.getInviteUsername(), platformUsername);
             if (!inviteMemberOpt.isPresent()) {
                 throw BizException.serverError(String.format("邀请人[%s]不存在", request.getInviteUsername()));
             }
-            inviteMember = inviteMemberOpt.get();
+            inviterMember = inviteMemberOpt.get();
         }
 
         // 创建用户
-        Member member = new Member();
-        member.setUsername(request.getUsername());
-        member.setNickname(request.getNickname());
+        Member inviteeMember = new Member();
+        inviteeMember.setUsername(request.getUsername());
+        inviteeMember.setNickname(request.getNickname());
         if (CharSequenceUtil.isBlank(request.getNickname())) {
-            member.setNickname(request.getUsername());
+            inviteeMember.setNickname(request.getUsername());
         }
-        member.setAvatar(StrUtil.isBlank(request.getAvatar()) ? CharSequenceUtil.EMPTY : request.getAvatar());
-        member.setFirstInviterId(DsConstant.NULL_MEMBER_INVITER_ID);
-        member.setSecondInviterId(DsConstant.NULL_MEMBER_INVITER_ID);
-        member.setThirdInviterId(DsConstant.NULL_MEMBER_INVITER_ID);
+        inviteeMember.setAvatar(StrUtil.isBlank(request.getAvatar()) ? CharSequenceUtil.EMPTY : request.getAvatar());
+        inviteeMember.setFirstInviterId(DsConstant.NULL_MEMBER_INVITER_ID);
+        inviteeMember.setSecondInviterId(DsConstant.NULL_MEMBER_INVITER_ID);
+        inviteeMember.setThirdInviterId(DsConstant.NULL_MEMBER_INVITER_ID);
         if (isJoinCreate) {
-            this.setInviterId(member, inviteMember);
+            inviteeMember.setFirstInviterId(inviterMember.getId());
+            Long secondInviterId = inviterMember.getFirstInviterId();
+            if (!DsConstant.NULL_MEMBER_INVITER_ID.equals(secondInviterId)) {
+                inviteeMember.setSecondInviterId(secondInviterId);
+            }
+            Long thirdInviterId = inviterMember.getSecondInviterId();
+            if (!DsConstant.NULL_MEMBER_INVITER_ID.equals(thirdInviterId)) {
+                inviteeMember.setThirdInviterId(thirdInviterId);
+            }
         }
-        member.setIdentityType(MemberIdentityTypeEnum.GENERAL);
-        member.setRankType(MemberRankTypeEnum.BRONZE);
-        member.setState(StateEnum.ENABLE);
-        Platform currentPlatform = CurrentPlatformHelper.self();
-        member.setPlatformUsername(currentPlatform.getUsername());
-        member.setPlatformNickname(currentPlatform.getNickname());
-        crudMemberService.insert(member);
-        Long memberId = member.getId();
+        inviteeMember.setIdentityType(MemberIdentityTypeEnum.GENERAL);
+        inviteeMember.setRankType(MemberRankTypeEnum.BRONZE);
+        inviteeMember.setState(StateEnum.ENABLE);
+        inviteeMember.setPlatformUsername(platformUsername);
+        inviteeMember.setPlatformNickname(currentPlatform.getNickname());
+        crudMemberService.insert(inviteeMember);
+        Long memberId = inviteeMember.getId();
 
         // 创建账户
         Account account = new Account();
@@ -108,20 +120,39 @@ public class MemberService {
         return response;
     }
 
+
     /**
-     * 设置邀请人标识
-     * [被邀请人]的一级是[邀请人]，二级是[邀请人]的一级，三级是[邀请人]的二级
+     * 修改会员状态
+     * 接口是幂等的，目的是为了兼容管理后台的启禁用功能导致上游未同步更新，
+     * 上游系统更改状态走逻辑调会ds系统，此时ds系统兼容此情况
+     *
+     * @param username 会员标识
+     * @param state    状态
      */
-    private void setInviterId(Member member, Member inviteMember) {
-        member.setFirstInviterId(inviteMember.getId());
-        Long secondInviterId = inviteMember.getFirstInviterId();
-        if (!DsConstant.NULL_MEMBER_INVITER_ID.equals(secondInviterId)) {
-            member.setSecondInviterId(secondInviterId);
+    @GlobalLock(key = DsServerConstant.CURRENT_PLATFORM_USERNAME_SPEL + "#username")
+    public void changeState(String username, StateEnum state) {
+        String platformUsername = CurrentPlatformHelper.username();
+        Member member = crudMemberService.selectByUsername(username, platformUsername);
+        if (state != member.getState()) {
+            member.setState(state);
+            crudMemberService.updateById(member);
         }
-        Long thirdInviterId = inviteMember.getSecondInviterId();
-        if (!DsConstant.NULL_MEMBER_INVITER_ID.equals(thirdInviterId)) {
-            member.setThirdInviterId(thirdInviterId);
+    }
+
+    /**
+     * 更新会员身份
+     *
+     * @param request *
+     */
+    @GlobalLock(key = DsServerConstant.CURRENT_PLATFORM_USERNAME_SPEL + "#request.username")
+    public void identityType(MemberIdentityTypeRequest request) {
+        Member member = crudMemberService.selectByUsername(request.getUsername(), CurrentPlatformHelper.username());
+        // 有必要告诉上有系统，提交重复了或者不正确的更新
+        if (request.getIdentityType() == member.getIdentityType()) {
+            throw new BizException(ExceptionEnum.BIZ_COMMON_ERROR, "重复更新会员身份");
         }
+        member.setIdentityType(request.getIdentityType());
+        crudMemberService.updateById(member);
     }
 
 

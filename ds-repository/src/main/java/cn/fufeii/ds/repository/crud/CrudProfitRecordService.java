@@ -55,7 +55,7 @@ public class CrudProfitRecordService {
     /**
      * 通过条件获取一个可能存在的实体
      */
-    public Optional<ProfitRecord> selectOneOpt(Wrapper<ProfitRecord> queryWrapper) {
+    public Optional<ProfitRecord> selectOneOptional(Wrapper<ProfitRecord> queryWrapper) {
         return Optional.ofNullable(profitRecordDao.selectOne(queryWrapper));
     }
 
@@ -63,7 +63,7 @@ public class CrudProfitRecordService {
      * 通过条件获取一个存在的实体
      */
     public ProfitRecord selectOne(Wrapper<ProfitRecord> queryWrapper) {
-        return this.selectOneOpt(queryWrapper).orElseThrow(IllegalStateException::new);
+        return this.selectOneOptional(queryWrapper).orElseThrow(IllegalStateException::new);
     }
 
     /**

@@ -56,7 +56,7 @@ public class CrudAccountService {
     /**
      * 通过条件获取一个可能存在的实体
      */
-    public Optional<Account> selectOneOpt(Wrapper<Account> queryWrapper) {
+    public Optional<Account> selectOneOptional(Wrapper<Account> queryWrapper) {
         return Optional.ofNullable(accountDao.selectOne(queryWrapper));
     }
 
@@ -64,7 +64,7 @@ public class CrudAccountService {
      * 通过条件获取一个存在的实体
      */
     public Account selectOne(Wrapper<Account> queryWrapper) {
-        return this.selectOneOpt(queryWrapper).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "Account"));
+        return this.selectOneOptional(queryWrapper).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "Account"));
     }
 
     /**

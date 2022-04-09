@@ -56,7 +56,7 @@ public class CrudPlatformService {
     /**
      * 通过条件获取一个可能存在的实体
      */
-    public Optional<Platform> selectOneOpt(Wrapper<Platform> queryWrapper) {
+    public Optional<Platform> selectOneOptional(Wrapper<Platform> queryWrapper) {
         return Optional.ofNullable(platformDao.selectOne(queryWrapper));
     }
 
@@ -64,7 +64,7 @@ public class CrudPlatformService {
      * 通过条件获取一个存在的实体
      */
     public Platform selectOne(Wrapper<Platform> queryWrapper) {
-        return this.selectOneOpt(queryWrapper).orElseThrow(IllegalStateException::new);
+        return this.selectOneOptional(queryWrapper).orElseThrow(IllegalStateException::new);
     }
 
     /**

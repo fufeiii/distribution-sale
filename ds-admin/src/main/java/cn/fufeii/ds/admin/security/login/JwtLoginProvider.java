@@ -33,7 +33,7 @@ public class JwtLoginProvider implements AuthenticationProvider {
         String username = token.getPrincipal().toString();
 
         // 查找用户
-        SystemUser systemUser = crudSystemUserService.selectOneOpt(Wrappers.<SystemUser>lambdaQuery().eq(SystemUser::getUsername, username))
+        SystemUser systemUser = crudSystemUserService.selectOneOptional(Wrappers.<SystemUser>lambdaQuery().eq(SystemUser::getUsername, username))
                 .orElseThrow(() -> new BadCredentialsException(String.format("用户[%s]不存在", username)));
         if (StateEnum.DISABLE == systemUser.getState()) {
             throw new DisabledException(String.format("用户[%s]被禁用", username));

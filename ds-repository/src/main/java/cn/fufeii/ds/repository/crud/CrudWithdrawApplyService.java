@@ -55,7 +55,7 @@ public class CrudWithdrawApplyService {
     /**
      * 通过条件获取一个可能存在的实体
      */
-    public Optional<WithdrawApply> selectOneOpt(Wrapper<WithdrawApply> queryWrapper) {
+    public Optional<WithdrawApply> selectOneOptional(Wrapper<WithdrawApply> queryWrapper) {
         return Optional.ofNullable(withdrawApplyDao.selectOne(queryWrapper));
     }
 
@@ -63,7 +63,7 @@ public class CrudWithdrawApplyService {
      * 通过条件获取一个存在的实体
      */
     public WithdrawApply selectOne(Wrapper<WithdrawApply> queryWrapper) {
-        return this.selectOneOpt(queryWrapper).orElseThrow(IllegalStateException::new);
+        return this.selectOneOptional(queryWrapper).orElseThrow(IllegalStateException::new);
     }
 
     /**

@@ -55,7 +55,7 @@ public class CrudSystemUserService {
     /**
      * 通过条件获取一个可能存在的实体
      */
-    public Optional<SystemUser> selectOneOpt(Wrapper<SystemUser> queryWrapper) {
+    public Optional<SystemUser> selectOneOptional(Wrapper<SystemUser> queryWrapper) {
         return Optional.ofNullable(systemUserDao.selectOne(queryWrapper));
     }
 
@@ -63,7 +63,7 @@ public class CrudSystemUserService {
      * 通过条件获取一个存在的实体
      */
     public SystemUser selectOne(Wrapper<SystemUser> queryWrapper) {
-        return this.selectOneOpt(queryWrapper).orElseThrow(IllegalStateException::new);
+        return this.selectOneOptional(queryWrapper).orElseThrow(IllegalStateException::new);
     }
 
     /**

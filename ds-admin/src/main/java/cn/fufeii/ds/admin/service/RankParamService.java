@@ -140,6 +140,7 @@ public class RankParamService {
      */
     public void changeState(Long id, StateEnum stateEnum) {
         RankParam rankParam = crudRankParamService.selectById(id);
+        CurrentUserHelper.checkPlatformThrow(rankParam.getPlatformUsername());
         if (stateEnum == rankParam.getState()) {
             throw new BizException(ExceptionEnum.STATE_COMMON_ERROR);
         }

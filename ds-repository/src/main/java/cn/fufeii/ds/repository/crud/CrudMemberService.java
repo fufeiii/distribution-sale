@@ -2,9 +2,11 @@ package cn.fufeii.ds.repository.crud;
 
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.exception.BizException;
+import cn.fufeii.ds.repository.config.DataAuthorityHelper;
 import cn.fufeii.ds.repository.dao.MemberDao;
 import cn.fufeii.ds.repository.entity.Member;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +52,13 @@ public class CrudMemberService {
      * 通过ID获取一个存在的实体
      */
     public Member selectById(Long id) {
-        return this.selectByIdOptional(id).orElseThrow(IllegalStateException::new);
+        return this.selectByIdOptional(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "id(" + id + ")"));
     }
 
     /**
      * 通过条件获取一个可能存在的实体
      */
-    public Optional<Member> selectOneOpt(Wrapper<Member> queryWrapper) {
+    public Optional<Member> selectOneOptional(Wrapper<Member> queryWrapper) {
         return Optional.ofNullable(memberDao.selectOne(queryWrapper));
     }
 
@@ -64,7 +66,7 @@ public class CrudMemberService {
      * 通过条件获取一个存在的实体
      */
     public Member selectOne(Wrapper<Member> queryWrapper) {
-        return this.selectOneOpt(queryWrapper).orElseThrow(IllegalStateException::new);
+        return this.selectOneOptional(queryWrapper).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST));
     }
 
     /**
@@ -113,13 +115,15 @@ public class CrudMemberService {
     // --------------------------------------------------------------------------------- //
 
 
-    public Optional<Member> selectByUsernameOpt(String username) {
-        return this.selectOneOpt(Wrappers.<Member>lambdaQuery().eq(Member::getUsername, username));
+    public Optional<Member> selectByUsernameOptional(String username, String platformUsername) {
+        LambdaQueryWrapper<Member> lambdaQueryWrapper = Wrappers.<Member>lambdaQuery().eq(Member::getUsername, username);
+        DataAuthorityHelper.setPlatform(lambdaQueryWrapper, platformUsername);
+        return this.selectOneOptional(lambdaQueryWrapper);
     }
 
-    public boolean existByUsername(String username) {
-        Long count = memberDao.selectCount(Wrappers.<Member>lambdaQuery().eq(Member::getUsername, username));
-        return count > 0;
+    public Member selectByUsername(String username, String platformUsername) {
+        return this.selectByUsernameOptional(username, platformUsername).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "username(" + username + ")"));
     }
+
 
 }
