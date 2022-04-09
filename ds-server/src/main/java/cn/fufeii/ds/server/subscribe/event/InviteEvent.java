@@ -15,11 +15,6 @@ public class InviteEvent extends AbstractProfitEvent {
         super(profitType, source);
     }
 
-    @Override
-    public Source getSource() {
-        return (Source) super.getSource();
-    }
-
     @Data
     public static class Source {
 

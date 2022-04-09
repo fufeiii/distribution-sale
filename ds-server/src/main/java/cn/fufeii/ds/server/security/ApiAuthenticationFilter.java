@@ -57,8 +57,13 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationStr = request.getHeader(DsConstant.HEADER_AUTHORIZATION);
+        Boolean enableApiSignature = dsServerProperties.getEnableApiSignature();
         // 没传有效的签名
         if (CharSequenceUtil.isBlank(authorizationStr)) {
+            // 即使关闭验签验证，至少也需要有身份标识数据存在
+            if (log.isDebugEnabled()) {
+                log.debug("请求头参数值不存在, {}", DsConstant.HEADER_AUTHORIZATION);
+            }
             ResponseUtil.write(response, CommonResult.fail(ExceptionEnum.SERVER_API_AUTH_ERROR, DsConstant.HEADER_AUTHORIZATION + "为空"));
             return;
         }
@@ -77,7 +82,7 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         String signature = authorizationParam.getSignature();
-        if (StrUtil.isBlank(signature)) {
+        if (enableApiSignature && StrUtil.isBlank(signature)) {
             ResponseUtil.write(response, CommonResult.fail(ExceptionEnum.SERVER_API_AUTH_ERROR, "signature为空"));
             return;
         }
@@ -98,7 +103,7 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
         HttpServletRequest requestWrapper = request;
         try {
             // 验签，platform.sk
-            if (dsServerProperties.getEnableApiSignature()) {
+            if (enableApiSignature) {
                 ContentReuseRequestWrapper reuseRequestWrapper = new ContentReuseRequestWrapper(request);
                 // 改变引用，以便进一步处理请求体
                 requestWrapper = reuseRequestWrapper;
@@ -135,7 +140,9 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
         // 获取请求体并比较签名
         String digestBase64 = SecureUtil.hmacSha256(sk).digestHex(waitSignStr);
         if (!Objects.equals(digestBase64, signature)) {
-            log.debug("验签失败：待签名字符串[{}]， 签名[{}]，原签名[{}]", waitSignStr, digestBase64, signature);
+            if (log.isDebugEnabled()) {
+                log.debug("验签失败：待签名字符串[{}]， 签名[{}]，原签名[{}]", waitSignStr, digestBase64, signature);
+            }
             return false;
         }
         return true;

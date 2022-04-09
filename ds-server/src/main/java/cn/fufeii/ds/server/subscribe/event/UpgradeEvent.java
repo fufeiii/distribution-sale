@@ -1,6 +1,7 @@
 package cn.fufeii.ds.server.subscribe.event;
 
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
+import lombok.Data;
 
 /**
  * 邀请用户事件
@@ -10,8 +11,15 @@ import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
  */
 public class UpgradeEvent extends AbstractProfitEvent {
 
-    public UpgradeEvent(ProfitTypeEnum profitType, Object source) {
+    public UpgradeEvent(ProfitTypeEnum profitType, Source source) {
         super(profitType, source);
+    }
+
+    @Data
+    public static class Source {
+
+        private Long memberId;
+
     }
 
 }

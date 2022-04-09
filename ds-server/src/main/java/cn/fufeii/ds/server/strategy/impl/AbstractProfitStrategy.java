@@ -9,10 +9,13 @@ import cn.fufeii.ds.repository.crud.*;
 import cn.fufeii.ds.repository.entity.*;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.strategy.ProfitStrategy;
+import cn.fufeii.ds.server.subscribe.event.UpgradeEvent;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -29,11 +32,15 @@ import java.util.Objects;
 @Slf4j
 public abstract class AbstractProfitStrategy implements ProfitStrategy {
     @Autowired
+    protected CrudRankParamService crudRankParamService;
+    @Autowired
     protected CrudMemberService crudMemberService;
     @Autowired
     protected CrudAccountService crudAccountService;
     @Autowired
     protected CrudProfitParamService crudProfitParamService;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
     @Autowired
     protected CrudProfitEventService crudProfitEventService;
     @Autowired
@@ -52,23 +59,37 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
                 .eq(ProfitParam::getMemberIdentityType, mite)
                 .eq(ProfitParam::getMemberRankType, mre)
                 .eq(ProfitParam::getState, StateEnum.ENABLE);
-        DataAuthorityHelper.setPlatform(lambdaQueryWrapper, CurrentPlatformHelper.self().getUsername());
+        DataAuthorityHelper.setPlatform(lambdaQueryWrapper, CurrentPlatformHelper.username());
         List<ProfitParam> profitParamList = crudProfitParamService.selectList(lambdaQueryWrapper);
         if (profitParamList.size() > 1) {
-            throw new BizException(ExceptionEnum.NO_SUITABLE_PARAM, ate.getMessage());
+            throw new BizException(ExceptionEnum.NO_SUITABLE_PARAM, ate.getMessage() + "分润");
         }
         return profitParamList.isEmpty() ? null : profitParamList.get(0);
     }
 
     /**
+     * 获取段位参数
+     */
+    private RankParam getRankParam(MemberRankTypeEnum mre) {
+        LambdaQueryWrapper<RankParam> lambdaQueryWrapper = Wrappers.<RankParam>lambdaQuery()
+                .eq(RankParam::getMemberRankType, mre)
+                .eq(RankParam::getState, StateEnum.ENABLE);
+        DataAuthorityHelper.setPlatform(lambdaQueryWrapper, CurrentPlatformHelper.username());
+        List<RankParam> rankParamList = crudRankParamService.selectList(lambdaQueryWrapper);
+        if (rankParamList.size() > 1) {
+            throw new BizException(ExceptionEnum.NO_SUITABLE_PARAM, "段位");
+        }
+        return rankParamList.isEmpty() ? null : rankParamList.get(0);
+    }
+
+    /**
      * 计算分润数量（四舍五入）
-     * 如果是佣金，baseAmount的单位应该是分
-     * 返回的结果的单位也是分
+     * 如果是佣金，计算单位为分
      *
      * @param profitParam *
-     * @param baseAmount  计算底数
+     * @param baseAmount  基础金额
      */
-    protected Integer calculateProfitAmount(ProfitParam profitParam, Integer baseAmount) {
+    private Integer calculateProfitAmount(ProfitParam profitParam, Integer baseAmount) {
         // 只有是 百分比计算才需要进一步计算，因为其他情况都时固定分润的范畴，直接取分润比列就好了
         if (CalculateModeEnum.PERCENTAGE.equals(profitParam.getCalculateMode())) {
             BigDecimal ratioPercentage = new BigDecimal(profitParam.getProfitRatio().toString()).divide(new BigDecimal("100"), MathContext.DECIMAL64);
@@ -78,6 +99,35 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
             return profitParam.getProfitRatio();
         }
         return 0;
+    }
+
+
+    /**
+     * 如果可能，发送会员段位升级事件
+     *
+     * @param member  *
+     * @param account *
+     */
+    private void publishRankUpgradeEventIfPossible(Member member, Account account) {
+        RankParam rankParam = this.getRankParam(member.getRankType());
+        String platformUsername = CurrentPlatformHelper.username();
+        if (rankParam == null) {
+            if (log.isDebugEnabled()) {
+                log.debug("没有合适的段位参数 {},{}", platformUsername, member.getRankType().getCode());
+            }
+            return;
+        }
+        // 判断当前分数是否在该段位参数区间
+        Integer pointsTotalHistory = account.getPointsTotalHistory();
+        if (rankParam.getBeginPoints() >= pointsTotalHistory && rankParam.getEndPoints() <= pointsTotalHistory) {
+            if (log.isDebugEnabled()) {
+                log.debug("发布会员升级事件 {},{}", platformUsername, member.getUsername());
+            }
+            UpgradeEvent.Source source = new UpgradeEvent.Source();
+            source.setMemberId(member.getId());
+            applicationEventPublisher.publishEvent(new UpgradeEvent(ProfitTypeEnum.UPGRADE, source));
+        }
+
     }
 
 
@@ -96,7 +146,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
             this.doProfit(inviteEvent, member, moneyParam, pointsParam);
         } else {
             if (log.isDebugEnabled()) {
-                log.debug("没有合适的分润参数，跳过当前人员的分润。（{}，{}，{}，{}，{}，{}）", member.getPlatformUsername(), member.getUsername(), pte.getCode(), ple.getCode(), member.getIdentityType(), member.getRankType());
+                log.debug("没有合适的分润参数，跳过分润。（{}，{}，{}，{}，{}，{}）", member.getPlatformUsername(), member.getUsername(), pte.getCode(), ple.getCode(), member.getIdentityType(), member.getRankType());
             }
         }
     }
@@ -106,8 +156,10 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
      * 执行分润逻辑
      * 计算佣金/积分数量，并入对应会员帐户
      */
-    protected void doProfit(ProfitEvent event, Member member, ProfitParam moneyParam, ProfitParam pointsParam) {
-        log.info("开始分润");
+    @Transactional
+    public void doProfit(ProfitEvent event, Member member, ProfitParam moneyParam, ProfitParam pointsParam) {
+        String platformUsername = CurrentPlatformHelper.username();
+        log.info("开始执行分润,人员为{},{}", member.getUsername(), platformUsername);
         Account account = crudAccountService.selectByMemberId(member.getId());
 
         // 计算佣金分润参数的钱
@@ -121,7 +173,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
                 profitRecord.setAccountType(AccountTypeEnum.MONEY);
                 profitRecord.setImpactMemberId(member.getId());
                 profitRecord.setIncomeCount(profitAmount);
-                profitRecord.setMemo(String.format("%s，获得佣金收入%s元", member.getNickname(), DsUtil.fenToYuan(profitAmount)));
+                profitRecord.setMemo(String.format("%s,获得佣金收入%s元", member.getNickname(), DsUtil.fenToYuan(profitAmount)));
                 profitRecord = crudProfitRecordService.insert(profitRecord);
 
                 // 保存佣金入账记录
@@ -140,21 +192,30 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
                 account.setMoneyTotalHistory(account.getMoneyTotalHistory() + profitAmount);
                 account.setMoneyTotal(account.getMoneyTotal() + profitAmount);
                 account.setMoneyAvailable(account.getMoneyAvailable() + profitAmount);
+            } else {
+                if (log.isDebugEnabled()) {
+                    log.debug("佣金收益为0, 参数[{}],基础金额[{}]", moneyParam, event.getEventAmount());
+                }
             }
         }
 
         // 计算积分分润参数的积分
+        boolean isValidPointsParam = false;
         if (pointsParam != null) {
             Integer profitAmount = this.calculateProfitAmount(pointsParam, event.getEventAmount());
             // 大于0才有保存的意义
             if (profitAmount > 0) {
+
+                // 设置标志为rue
+                isValidPointsParam = true;
+
                 // 保存佣金分销记录
                 ProfitRecord profitRecord = new ProfitRecord();
                 profitRecord.setProfitEventId(event.getId());
                 profitRecord.setAccountType(AccountTypeEnum.POINTS);
                 profitRecord.setImpactMemberId(member.getId());
                 profitRecord.setIncomeCount(profitAmount);
-                profitRecord.setMemo(String.format("%s，获得积分收入%s元", member.getNickname(), DsUtil.fenToYuan(profitAmount)));
+                profitRecord.setMemo(String.format("%s,获得积分收入%s元", member.getNickname(), DsUtil.fenToYuan(profitAmount)));
                 profitRecord = crudProfitRecordService.insert(profitRecord);
 
                 // 保存佣金入账记录
@@ -173,12 +234,23 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
                 account.setPointsTotalHistory(account.getPointsTotalHistory() + profitAmount);
                 account.setPointsTotal(account.getPointsTotal() + profitAmount);
                 account.setPointsAvailable(account.getPointsAvailable() + profitAmount);
+            } else {
+                if (log.isDebugEnabled()) {
+                    log.debug("积分收益为0, 参数[{}],基础金额[{}]", moneyParam, event.getEventAmount());
+                }
             }
         }
 
         // 更新账户
         crudAccountService.updateById(account);
 
+        // 更新账户数据后，检查是否达到了段位升级事件
+        if (isValidPointsParam) {
+            this.publishRankUpgradeEventIfPossible(member, account);
+        }
+
+        // 日志
+        log.info("执行分润结束,人员为{},{}", member.getUsername(), platformUsername);
     }
 
 

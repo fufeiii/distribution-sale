@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -18,6 +19,7 @@ import java.util.Optional;
  * @date 2021/8/22
  */
 @Slf4j
+@EnableAsync
 @SpringBootApplication(scanBasePackages = "cn.fufeii.ds")
 public class DsServerApplication {
 

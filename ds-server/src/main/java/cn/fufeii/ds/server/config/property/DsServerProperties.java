@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2022/4/5
  */
 @Data
-@ConfigurationProperties(prefix = "ds.admin")
+@ConfigurationProperties(prefix = "ds.server")
 @Configuration
 public class DsServerProperties {
 

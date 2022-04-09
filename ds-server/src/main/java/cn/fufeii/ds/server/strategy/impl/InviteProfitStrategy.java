@@ -30,9 +30,15 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
 
     @Override
     public void profit(Object source) {
-        log.info("【邀请分润】=====> 开始");
+        String platformUsername = CurrentPlatformHelper.username();
+        log.info("【邀请分润】=====> 开始, 平台[{}]", platformUsername);
         InviteEvent.Source inviteEventInviteEvent = (InviteEvent.Source) source;
+
+        // 查询出主要相关的会员
         Member inviteeMember = crudMemberService.selectById(inviteEventInviteEvent.getMemberId());
+        Member firstInviterMember = crudMemberService.selectById(inviteeMember.getFirstInviterId());
+        log.info("被邀请会员[{}]，邀请会员[{}]", inviteeMember.getUsername(), firstInviterMember.getUsername());
+
 
         // 记录分润事件
         ProfitEvent inviteEvent = this.saveProfitEvent(inviteeMember);
@@ -41,19 +47,24 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
         super.handleProfit(inviteEvent, inviteeMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.SELF);
 
         // 查询一级邀请人，被邀请加入的肯定有一级邀请人
-        Member firstInviterMember = crudMemberService.selectById(inviteeMember.getFirstInviterId());
+
         super.handleProfit(inviteEvent, firstInviterMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.ONE);
 
         // 查询二级邀请人
         Optional<Member> secondInviterMemberOptional = crudMemberService.selectByIdOptional(inviteeMember.getSecondInviterId());
-        secondInviterMemberOptional.ifPresent(secondInviterMember -> super.handleProfit(inviteEvent, secondInviterMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.TWO));
+        secondInviterMemberOptional.ifPresent(secondInviterMember -> {
+            log.info("存在二级邀请人{}", secondInviterMember.getUsername());
+            super.handleProfit(inviteEvent, secondInviterMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.TWO);
+        });
 
         // 查询三级邀请人
         Optional<Member> thirdInviterMemberOptional = crudMemberService.selectByIdOptional(inviteeMember.getThirdInviterId());
-        thirdInviterMemberOptional.ifPresent(thirdInviterMember -> super.handleProfit(inviteEvent, thirdInviterMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.THREE));
+        thirdInviterMemberOptional.ifPresent(thirdInviterMember -> {
+            log.info("存在三级邀请人{}", thirdInviterMember.getUsername());
+            super.handleProfit(inviteEvent, thirdInviterMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.THREE);
+        });
 
-        log.info("【邀请分润】=====> 结束");
-
+        log.info("【邀请分润】<===== 结束, 平台[{}]", platformUsername);
     }
 
 

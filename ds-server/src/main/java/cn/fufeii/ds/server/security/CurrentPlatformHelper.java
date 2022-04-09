@@ -14,5 +14,9 @@ public final class CurrentPlatformHelper {
         return PlatformContextHolder.get();
     }
 
+    public static String username() {
+        return PlatformContextHolder.get().getUsername();
+    }
+
 
 }

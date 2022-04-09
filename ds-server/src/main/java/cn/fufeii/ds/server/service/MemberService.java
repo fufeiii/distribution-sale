@@ -62,6 +62,9 @@ public class MemberService {
         Member member = new Member();
         member.setUsername(request.getUsername());
         member.setNickname(request.getNickname());
+        if (CharSequenceUtil.isBlank(request.getNickname())) {
+            member.setNickname(request.getUsername());
+        }
         member.setAvatar(StrUtil.isBlank(request.getAvatar()) ? CharSequenceUtil.EMPTY : request.getAvatar());
         member.setFirstInviterId(DsConstant.NULL_MEMBER_INVITER_ID);
         member.setSecondInviterId(DsConstant.NULL_MEMBER_INVITER_ID);
