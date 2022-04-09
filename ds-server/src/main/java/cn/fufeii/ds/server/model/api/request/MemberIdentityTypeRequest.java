@@ -19,11 +19,11 @@ import javax.validation.constraints.NotBlank;
 public class MemberIdentityTypeRequest {
 
     @NotBlank
-    @ApiModelProperty("会员标识")
+    @ApiModelProperty(value = "会员标识", required = true)
     private String username;
 
     @NotNull
-    @ApiModelProperty("会员身份")
+    @ApiModelProperty(value = "会员身份", required = true)
     private MemberIdentityTypeEnum identityType;
 
 }

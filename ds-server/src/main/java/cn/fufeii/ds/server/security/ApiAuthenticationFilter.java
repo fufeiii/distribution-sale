@@ -69,7 +69,7 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
         }
 
         // 准备参数
-        authorizationStr = authorizationStr.trim();
+        authorizationStr = authorizationStr.trim().replaceFirst(DsConstant.HEADER_AUTHORIZATION_PREFIX, CharSequenceUtil.EMPTY);
         Map<String, String> authMap = Arrays.stream(authorizationStr.split(StrPool.COMMA)).collect(Collectors.toMap(
                 itKey -> itKey.split(StringPool.EQUALS)[0]
                 , itValue -> itValue.substring(itValue.indexOf(StringPool.EQUALS) + 1)

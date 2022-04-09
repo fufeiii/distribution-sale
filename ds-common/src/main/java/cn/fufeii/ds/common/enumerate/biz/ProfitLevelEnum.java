@@ -7,6 +7,7 @@ import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -49,6 +50,10 @@ public enum ProfitLevelEnum {
      */
     public static List<KeyValuePair<String, String>> getKeyValuePairList() {
         return Arrays.stream(values()).map(it -> new KeyValuePair<>(it.name(), it.getMessage())).collect(Collectors.toList());
+    }
+
+    public static Optional<ProfitLevelEnum> getByNameOptional(String name) {
+        return Arrays.stream(values()).filter(it -> it.name().toLowerCase().equals(name)).findAny();
     }
 
 }

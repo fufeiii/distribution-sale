@@ -1,18 +1,23 @@
 package cn.fufeii.ds.server.controller;
 
 import cn.fufeii.ds.common.annotation.DataValid;
+import cn.fufeii.ds.common.enumerate.ExceptionEnum;
+import cn.fufeii.ds.common.enumerate.biz.ProfitLevelEnum;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
+import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.result.CommonResult;
 import cn.fufeii.ds.server.model.api.request.MemberCreateRequest;
 import cn.fufeii.ds.server.model.api.request.MemberIdentityTypeRequest;
-import cn.fufeii.ds.server.model.api.request.MemberTeamRequest;
 import cn.fufeii.ds.server.model.api.response.MemberCreateResponse;
+import cn.fufeii.ds.server.model.api.response.MemberInfoResponse;
 import cn.fufeii.ds.server.model.api.response.MemberTeamResponse;
 import cn.fufeii.ds.server.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 /**
  * 会员 API controller
@@ -36,15 +41,23 @@ public class MemberApiController {
     }
 
     @ApiOperation("查询会员详情")
-    @PostMapping("/info")
-    public CommonResult<MemberCreateResponse> info(@RequestBody MemberCreateRequest request) {
-        return CommonResult.success();
+    @GetMapping("/info/{username}")
+    public CommonResult<MemberInfoResponse> info(@PathVariable String username) {
+        return CommonResult.success(memberService.info(username));
     }
 
     @ApiOperation("查询会员团队")
-    @PostMapping("/team")
-    public CommonResult<MemberTeamResponse> team(@RequestBody MemberTeamRequest request) {
-        return CommonResult.success();
+    @GetMapping("/team/{level}/{username}")
+    public CommonResult<MemberTeamResponse> team(@PathVariable String level, @PathVariable String username) {
+        Optional<ProfitLevelEnum> profitLevelEnumOptional = ProfitLevelEnum.getByNameOptional(level);
+        if (!profitLevelEnumOptional.isPresent()) {
+            throw new BizException(ExceptionEnum.CLIENT_ERROR, "level参数错误");
+        }
+        ProfitLevelEnum profitLevelEnum = profitLevelEnumOptional.get();
+        if (ProfitLevelEnum.SELF == profitLevelEnum) {
+            throw new BizException(ExceptionEnum.CLIENT_ERROR, "level参数不能为self");
+        }
+        return CommonResult.success(memberService.team(profitLevelEnum, username));
     }
 
     @ApiOperation(value = "更新会员身份")

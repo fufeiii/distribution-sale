@@ -62,9 +62,12 @@ public class MemberService {
                 .collect(Collectors.toSet());
 
         // 邀请人Map
-        Map<Long, Member> inviterMap = crudMemberService.selectList(Wrappers.<Member>lambdaQuery().in(!inviterIdSet.isEmpty(), Member::getId, inviterIdSet))
-                .stream().collect(Collectors.toMap(Member::getId, Function.identity()));
-
+        Map<Long, Member> inviterMapTemp = Collections.emptyMap();
+        if (!inviterIdSet.isEmpty()) {
+            inviterMapTemp = crudMemberService.selectList(Wrappers.<Member>lambdaQuery().in(Member::getId, inviterIdSet))
+                    .stream().collect(Collectors.toMap(Member::getId, Function.identity()));
+        }
+        Map<Long, Member> inviterMap = inviterMapTemp;
         // 组装response对象返回
         return selectPage.convert(it -> {
             MemberResponse response = new MemberResponse();

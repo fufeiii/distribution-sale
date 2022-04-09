@@ -1,5 +1,6 @@
 package cn.fufeii.ds.server.model.api.request;
 
+import cn.fufeii.ds.common.enumerate.biz.ProfitLevelEnum;
 import lombok.Data;
 
 /**
@@ -10,4 +11,6 @@ import lombok.Data;
  */
 @Data
 public class MemberTeamRequest {
+    private ProfitLevelEnum level;
+    private String username;
 }

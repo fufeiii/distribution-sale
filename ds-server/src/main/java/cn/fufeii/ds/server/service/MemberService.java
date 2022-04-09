@@ -3,10 +3,7 @@ package cn.fufeii.ds.server.service;
 import cn.fufeii.ds.common.annotation.GlobalLock;
 import cn.fufeii.ds.common.constant.DsConstant;
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
-import cn.fufeii.ds.common.enumerate.biz.MemberIdentityTypeEnum;
-import cn.fufeii.ds.common.enumerate.biz.MemberRankTypeEnum;
-import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
-import cn.fufeii.ds.common.enumerate.biz.StateEnum;
+import cn.fufeii.ds.common.enumerate.biz.*;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.repository.crud.CrudAccountService;
 import cn.fufeii.ds.repository.crud.CrudMemberService;
@@ -17,16 +14,25 @@ import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.model.api.request.MemberCreateRequest;
 import cn.fufeii.ds.server.model.api.request.MemberIdentityTypeRequest;
 import cn.fufeii.ds.server.model.api.response.MemberCreateResponse;
+import cn.fufeii.ds.server.model.api.response.MemberInfoResponse;
+import cn.fufeii.ds.server.model.api.response.MemberTeamResponse;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.subscribe.event.InviteEvent;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 会员 Service
@@ -156,4 +162,69 @@ public class MemberService {
     }
 
 
+    /**
+     * 查询会员详情
+     *
+     * @param username *
+     */
+    public MemberInfoResponse info(String username) {
+        Member member = crudMemberService.selectByUsername(username, CurrentPlatformHelper.username());
+        Account account = crudAccountService.selectByMemberId(member.getId());
+        MemberInfoResponse response = new MemberInfoResponse();
+        response.setId(member.getId());
+        response.setPlatformUsername(member.getPlatformUsername());
+        response.setPlatformNickname(member.getPlatformNickname());
+        response.setUsername(member.getUsername());
+        response.setNickname(member.getNickname());
+        response.setAvatar(member.getAvatar());
+
+        // 查询邀请人
+        Set<Long> inviterIdSet = Stream.of(member.getFirstInviterId(), member.getSecondInviterId(), member.getThirdInviterId())
+                .filter(it -> !DsConstant.NULL_MEMBER_INVITER_ID.equals(it)).collect(Collectors.toSet());
+        Map<Long, Member> inviterIdMap = Collections.emptyMap();
+        if (!inviterIdSet.isEmpty()) {
+            inviterIdMap = crudMemberService.selectList(Wrappers.<Member>lambdaQuery().in(Member::getId, inviterIdSet))
+                    .stream().collect(Collectors.toMap(Member::getId, Function.identity()));
+        }
+        Optional<Member> firstInviterOptional = Optional.ofNullable(inviterIdMap.get(member.getFirstInviterId()));
+        if (firstInviterOptional.isPresent()) {
+            Member inviter = firstInviterOptional.get();
+            response.setFirstInviterId(inviter.getId());
+            response.setFirstInviterUsername(inviter.getUsername());
+        }
+        Optional<Member> secondInviterOptional = Optional.ofNullable(inviterIdMap.get(member.getSecondInviterId()));
+        if (secondInviterOptional.isPresent()) {
+            Member inviter = secondInviterOptional.get();
+            response.setSecondInviterId(inviter.getId());
+            response.setSecondInviterUsername(inviter.getUsername());
+        }
+        Optional<Member> thirdInviterOptional = Optional.ofNullable(inviterIdMap.get(member.getThirdInviterId()));
+        if (thirdInviterOptional.isPresent()) {
+            Member inviter = thirdInviterOptional.get();
+            response.setThirdInviterId(inviter.getId());
+            response.setThirdInviterUsername(inviter.getUsername());
+        }
+        response.setIdentityType(member.getIdentityType());
+        response.setRankType(member.getRankType());
+        response.setState(member.getState());
+        response.setMoneyTotalHistory(account.getMoneyTotalHistory());
+        response.setMoneyTotal(account.getMoneyTotal());
+        response.setMoneyAvailable(account.getMoneyAvailable());
+        response.setMoneyFrozen(account.getMoneyFrozen());
+        response.setPointsTotalHistory(account.getPointsTotalHistory());
+        response.setPointsTotal(account.getPointsTotal());
+        response.setPointsAvailable(account.getPointsAvailable());
+        response.setPointsFrozen(account.getPointsFrozen());
+        return response;
+    }
+
+    /**
+     * 查询会员下级团队
+     *
+     * @param level    等级枚举
+     * @param username 会员标识
+     */
+    public MemberTeamResponse team(ProfitLevelEnum level, String username) {
+        return null;
+    }
 }

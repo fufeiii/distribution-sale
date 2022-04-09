@@ -1,5 +1,6 @@
 package cn.fufeii.ds.server.model.api.response;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
@@ -9,5 +10,8 @@ import lombok.Data;
  * @date 2022/3/19
  */
 @Data
+@ApiModel
 public class MemberTeamResponse {
+
+
 }
