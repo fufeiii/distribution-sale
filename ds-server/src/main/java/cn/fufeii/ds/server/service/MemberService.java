@@ -53,7 +53,7 @@ public class MemberService {
         if (memberOptional.isPresent()) {
             throw BizException.serverError(String.format("会员[%s]已存在", request.getUsername()));
         }
-        // 如果被邀请加入的，则检查邀请人
+        // 如果被邀请加入的, 则检查邀请人
         boolean isJoinCreate = CharSequenceUtil.isNotBlank(request.getInviteUsername());
         Member inviterMember = null;
         if (isJoinCreate) {
@@ -123,8 +123,8 @@ public class MemberService {
 
     /**
      * 修改会员状态
-     * 接口是幂等的，目的是为了兼容管理后台的启禁用功能导致上游未同步更新，
-     * 上游系统更改状态走逻辑调会ds系统，此时ds系统兼容此情况
+     * 接口是幂等的, 目的是为了兼容管理后台的启禁用功能导致上游未同步更新,
+     * 上游系统更改状态走逻辑调会ds系统, 此时ds系统兼容此情况
      *
      * @param username 会员标识
      * @param state    状态
@@ -147,7 +147,7 @@ public class MemberService {
     @GlobalLock(key = DsServerConstant.CURRENT_PLATFORM_USERNAME_SPEL + "#request.username")
     public void identityType(MemberIdentityTypeRequest request) {
         Member member = crudMemberService.selectByUsername(request.getUsername(), CurrentPlatformHelper.username());
-        // 有必要告诉上有系统，提交重复了或者不正确的更新
+        // 有必要告诉上有系统, 提交重复了或者不正确的更新
         if (request.getIdentityType() == member.getIdentityType()) {
             throw new BizException(ExceptionEnum.BIZ_COMMON_ERROR, "重复更新会员身份");
         }

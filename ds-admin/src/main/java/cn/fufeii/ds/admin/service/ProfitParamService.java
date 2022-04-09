@@ -104,7 +104,7 @@ public class ProfitParamService {
                 throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "该参数已存在");
             }
             ProfitParam profitParam = new ProfitParam();
-            // 建议使用setter，字段类型问题能在编译期发现
+            // 建议使用setter, 字段类型问题能在编译期发现
             BeanCopierUtil.copy(request, profitParam);
             profitParam.setPlatformUsername(currentUser.getPlatformUsername());
             profitParam.setPlatformNickname(currentUser.getPlatformNickname());
@@ -120,7 +120,7 @@ public class ProfitParamService {
         ProfitParam profitParam = crudProfitParamService.selectById(request.getId());
         // 数据权限
         CurrentUserHelper.checkPlatformThrow(profitParam.getPlatformUsername());
-        // 建议使用setter，字段类型问题能在编译期发现
+        // 建议使用setter, 字段类型问题能在编译期发现
         BeanCopierUtil.copy(request, profitParam);
         crudProfitParamService.updateById(profitParam);
     }

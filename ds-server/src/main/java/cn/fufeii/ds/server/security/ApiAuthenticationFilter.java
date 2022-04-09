@@ -60,7 +60,7 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
         Boolean enableApiSignature = dsServerProperties.getEnableApiSignature();
         // 没传有效的签名
         if (CharSequenceUtil.isBlank(authorizationStr)) {
-            // 即使关闭验签验证，至少也需要有身份标识数据存在
+            // 即使关闭验签验证, 至少也需要有身份标识数据存在
             if (log.isDebugEnabled()) {
                 log.debug("请求头参数值不存在, {}", DsConstant.HEADER_AUTHORIZATION);
             }
@@ -102,10 +102,10 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
         // 验签操作
         HttpServletRequest requestWrapper = request;
         try {
-            // 验签，platform.sk
+            // 验签, platform.sk
             if (enableApiSignature) {
                 ContentReuseRequestWrapper reuseRequestWrapper = new ContentReuseRequestWrapper(request);
-                // 改变引用，以便进一步处理请求体
+                // 改变引用, 以便进一步处理请求体
                 requestWrapper = reuseRequestWrapper;
                 String requestBody = StrUtil.utf8Str(reuseRequestWrapper.getContent());
                 // 执行验签逻辑
@@ -141,7 +141,7 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
         String digestBase64 = SecureUtil.hmacSha256(sk).digestHex(waitSignStr);
         if (!Objects.equals(digestBase64, signature)) {
             if (log.isDebugEnabled()) {
-                log.debug("验签失败：待签名字符串[{}]， 签名[{}]，原签名[{}]", waitSignStr, digestBase64, signature);
+                log.debug("验签失败：待签名字符串[{}], 签名[{}],原签名[{}]", waitSignStr, digestBase64, signature);
             }
             return false;
         }

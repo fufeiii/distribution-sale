@@ -11,7 +11,7 @@ import cn.hutool.core.text.StrPool;
 public final class DsUtil {
 
     /**
-     * 分转元，实际就是移动小数点
+     * 分转元, 实际就是移动小数点
      */
     public static String fenToYuan(Integer amount) {
         String amountStr = amount.toString();
@@ -22,7 +22,7 @@ public final class DsUtil {
         if (length == 2) {
             return "0." + amountStr;
         }
-        // 其余的都是大于1元的，直接移动小数点
+        // 其余的都是大于1元的, 直接移动小数点
 
         return amountStr.substring(0, length - 2) + StrPool.DOT + amountStr.substring(length - 2);
     }

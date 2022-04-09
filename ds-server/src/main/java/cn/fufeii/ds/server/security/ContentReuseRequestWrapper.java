@@ -29,7 +29,7 @@ public class ContentReuseRequestWrapper extends HttpServletRequestWrapper {
 
 
     /**
-     * 如果原请求的流没有被消费，则此构造器自动消费
+     * 如果原请求的流没有被消费, 则此构造器自动消费
      */
     public ContentReuseRequestWrapper(HttpServletRequest request) {
         super(request);
@@ -43,7 +43,7 @@ public class ContentReuseRequestWrapper extends HttpServletRequestWrapper {
     }
 
     /**
-     * 如果原请求的流已被消费，则需要外部自行传入
+     * 如果原请求的流已被消费, 则需要外部自行传入
      */
     public ContentReuseRequestWrapper(HttpServletRequest request, byte[] content) {
         super(request);

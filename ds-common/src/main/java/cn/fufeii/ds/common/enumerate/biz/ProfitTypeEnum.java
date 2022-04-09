@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 分润类型枚举，作为分润参数存在。
+ * 分润类型枚举, 作为分润参数存在
  * 并且应该在业务上 应该存在对应的业务实现和相关接口
  *
  * @author Fu Fei

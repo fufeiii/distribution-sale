@@ -47,21 +47,21 @@ public final class SpringUtil implements ApplicationContextAware {
     }
 
     /**
-     * 通过name，以及Clazz返回指定的Bean
+     * 通过name, 以及Clazz返回指定的Bean
      */
     public static <T> T getBean(String name, Class<T> clazz) {
         return applicationContext.getBean(name, clazz);
     }
 
     /**
-     * 获取指定类型对应的所有Bean，包括子类
+     * 获取指定类型对应的所有Bean, 包括子类
      */
     public static <T> Map<String, T> getBeansOfType(Class<T> type) {
         return applicationContext.getBeansOfType(type);
     }
 
     /**
-     * 获取指定类型对应的Bean名称，包括子类
+     * 获取指定类型对应的Bean名称, 包括子类
      */
     public static String[] getBeanNamesForType(Class<?> type) {
         return applicationContext.getBeanNamesForType(type);
@@ -75,14 +75,14 @@ public final class SpringUtil implements ApplicationContextAware {
     }
 
     /**
-     * 获取当前的环境配置，无配置返回null
+     * 获取当前的环境配置, 无配置返回null
      */
     public static String[] getActiveProfiles() {
         return applicationContext.getEnvironment().getActiveProfiles();
     }
 
     /**
-     * 获取当前的环境配置，当有多个环境配置时，只获取第一个
+     * 获取当前的环境配置, 当有多个环境配置时, 只获取第一个
      */
     public static String getActiveProfile() {
         final String[] activeProfiles = getActiveProfiles();

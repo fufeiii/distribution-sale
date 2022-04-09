@@ -85,7 +85,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
 
     /**
      * 计算分润数量（四舍五入）
-     * 如果是佣金，计算单位为分
+     * 如果是佣金, 计算单位为分
      *
      * @param profitParam *
      * @param baseAmount  基础金额
@@ -93,14 +93,14 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
     private Integer calculateProfitAmount(ProfitParam profitParam, Integer baseAmount) {
 
         /*
-         * 邀请分润和升级分润，如果选择了百分比的计算模式，那么基数就为1
-         * 如果是交易分润的百分比计算模式，那么基数就用交易的金额计算
+         * 邀请分润和升级分润, 如果选择了百分比的计算模式, 那么基数就为1
+         * 如果是交易分润的百分比计算模式, 那么基数就用交易的金额计算
          */
         if (DsServerConstant.DEFAULT_EVENT_AMOUNT == baseAmount) {
             baseAmount = 1;
         }
 
-        // 只有是 百分比计算才需要进一步计算，因为其他情况都时固定分润的范畴，直接取分润比列就好了
+        // 只有是 百分比计算才需要进一步计算, 因为其他情况都时固定分润的范畴, 直接取分润比列就好了
         if (CalculateModeEnum.PERCENTAGE.equals(profitParam.getCalculateMode())) {
             BigDecimal ratioPercentage = new BigDecimal(profitParam.getProfitRatio().toString()).divide(new BigDecimal("100"), MathContext.DECIMAL64);
             return new BigDecimal(baseAmount.toString()).multiply(ratioPercentage).setScale(0, RoundingMode.HALF_UP).intValue();
@@ -113,7 +113,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
 
 
     /**
-     * 如果可能，发送会员段位升级事件
+     * 如果可能, 发送会员段位升级事件
      *
      * @param member  *
      * @param account *
@@ -156,7 +156,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
             this.doProfit(inviteEvent, member, moneyParam, pointsParam);
         } else {
             if (log.isDebugEnabled()) {
-                log.debug("没有合适的分润参数，跳过分润。（{}，{}，{}，{}，{}，{}）", member.getUsername(), member.getPlatformUsername(), pte.getCode(), ple.getCode(), member.getIdentityType(), member.getRankType());
+                log.debug("没有合适的分润参数, 跳过分润（{}, {}, {}, {}, {}, {}）", member.getUsername(), member.getPlatformUsername(), pte.getCode(), ple.getCode(), member.getIdentityType(), member.getRankType());
             }
         }
     }
@@ -164,7 +164,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
 
     /**
      * 执行分润逻辑
-     * 计算佣金/积分数量，并入对应会员帐户
+     * 计算佣金/积分数量, 并入对应会员帐户
      */
     @Transactional
     public void doProfit(ProfitEvent event, Member member, ProfitParam moneyParam, ProfitParam pointsParam) {
@@ -255,7 +255,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
         // 更新账户
         crudAccountService.updateById(account);
 
-        // 更新账户数据后，检查是否达到了段位升级事件
+        // 更新账户数据后, 检查是否达到了段位升级事件
         if (isValidPointsParam) {
             this.publishRankUpgradeEventIfPossible(member, account);
         }

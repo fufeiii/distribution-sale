@@ -38,7 +38,7 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
         // 查询出主要相关的会员
         Member inviteeMember = crudMemberService.selectById(inviteEventInviteEvent.getMemberId());
         Member firstInviterMember = crudMemberService.selectById(inviteeMember.getFirstInviterId());
-        log.info("被邀请会员[{}]，邀请会员[{}]", inviteeMember.getUsername(), firstInviterMember.getUsername());
+        log.info("被邀请会员[{}], 邀请会员[{}]", inviteeMember.getUsername(), firstInviterMember.getUsername());
 
         // 记录分润事件
         ProfitEvent inviteEvent = this.saveProfitEvent(inviteeMember);
@@ -46,7 +46,7 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
         // 获取当前会员
         super.handleProfit(inviteEvent, inviteeMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.SELF);
 
-        // 查询一级邀请人，被邀请加入的肯定有一级邀请人
+        // 查询一级邀请人, 被邀请加入的肯定有一级邀请人
         super.handleProfit(inviteEvent, firstInviterMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.ONE);
 
         // 查询二级邀请人

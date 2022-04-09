@@ -91,7 +91,7 @@ public class RankParamService {
                 throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "该参数已存在");
             }
             RankParam rankParam = new RankParam();
-            // 建议使用setter，字段类型问题能在编译期发现
+            // 建议使用setter, 字段类型问题能在编译期发现
             BeanCopierUtil.copy(request, rankParam);
             rankParam.setPlatformUsername(currentUser.getPlatformUsername());
             rankParam.setPlatformNickname(currentUser.getPlatformNickname());
@@ -111,7 +111,7 @@ public class RankParamService {
             throw new BizException(ExceptionEnum.API_FIELD_ERROR, "memberRankType不能修改");
         }
         this.checkPointsRange(request.getBeginPoints(), request.getEndPoints());
-        // 建议使用setter，字段类型问题能在编译期发现
+        // 建议使用setter, 字段类型问题能在编译期发现
         BeanCopierUtil.copy(request, rankParam);
         crudRankParamService.updateById(rankParam);
     }

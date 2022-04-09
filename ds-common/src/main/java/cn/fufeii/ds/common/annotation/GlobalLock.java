@@ -16,14 +16,14 @@ public @interface GlobalLock {
     /**
      * 锁名
      * 支持sp-el表达式
-     * 不填写此值，默认值为被注解的方法所在类的 类名:方法名
+     * 不填写此值, 默认值为被注解的方法所在类的 类名:方法名
      */
     String key() default "";
 
     /**
      * 是否尝试加锁
-     * 注意：底层都是使用的tryLock(long time, TimeUnit unit)，
-     * 若为false，则time为0
+     * 注意：底层都是使用的tryLock(long time, TimeUnit unit),
+     * 若为false, 则time为0
      * 若为true则最多等待{@link #waitTime()}秒
      */
     boolean tryLock() default true;

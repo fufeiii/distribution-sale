@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 会员等级标志，与积分相关
+ * 会员等级标志, 与积分相关
  *
  * @author Fu Fei
  * @date 2020/7/12

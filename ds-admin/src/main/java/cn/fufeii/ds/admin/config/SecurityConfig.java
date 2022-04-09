@@ -67,11 +67,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 添加Provider到AuthenticationProvider列表中
         httpSecurity.authenticationProvider(jwtLoginProvider);
 
-        // 若直到FilterSecurityInterceptor（最后一个filter）没有认证成功或其权限不足，
-        // 则会抛出AuthenticationException或者AccessDeniedException，这时交由JwtAuthenticationEntryPoint处理
+        // 若直到FilterSecurityInterceptor（最后一个filter）没有认证成功或其权限不足, 
+        // 则会抛出AuthenticationException或者AccessDeniedException, 这时交由JwtAuthenticationEntryPoint处理
         httpSecurity.exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint());
 
-        // 关闭session，即不返回cookie（若使用了依赖session的功能(如csrf)则还是会生成cookie到客户端）
+        // 关闭session, 即不返回cookie（若使用了依赖session的功能(如csrf)则还是会生成cookie到客户端）
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // 关闭用不上的默认配置

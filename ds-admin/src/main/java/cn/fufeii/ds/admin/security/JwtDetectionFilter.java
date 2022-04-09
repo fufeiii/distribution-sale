@@ -33,7 +33,7 @@ import java.util.Collections;
 
 /**
  * jwt探测器
- * 若存在jwt则校验并放入，在{@link org.springframework.security.web.access.intercept.FilterSecurityInterceptor}之前
+ * 若存在jwt则校验并放入, 在{@link org.springframework.security.web.access.intercept.FilterSecurityInterceptor}之前
  * 把用户信息放入SecurityContext中
  *
  * @author FuFei
@@ -52,7 +52,7 @@ public class JwtDetectionFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // 只校验token存在的情况，不存在时由FilterSecurityInterceptor去校验匿名用户的合法性
+        // 只校验token存在的情况, 不存在时由FilterSecurityInterceptor去校验匿名用户的合法性
         String jwtStr = request.getHeader(DsConstant.HEADER_AUTHORIZATION);
         if (jwtStr == null || jwtStr.trim().isEmpty()) {
             // 继续向下走
@@ -60,13 +60,13 @@ public class JwtDetectionFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 替换jwt规范种的Bearer，不遵守规范的情况也不影响。。
+        // 替换jwt规范种的Bearer, 不遵守规范的情况也不影响。。
         jwtStr = jwtStr.replaceFirst(DsConstant.HEADER_AUTHORIZATION_PREFIX, CharSequenceUtil.EMPTY);
         JWT jwt;
         try {
             jwt = JWT.of(jwtStr).setSigner(JWTSignerUtil.hs256(signKeyByte));
         } catch (Exception exception) {
-            log.warn("jwt解析错误，内容为[{}]，异常信息[{}]", jwtStr, exception.getMessage());
+            log.warn("jwt解析错误,内容为[{}],异常信息[{}]", jwtStr, exception.getMessage());
             throw new BadCredentialsException("解析错误", exception);
         }
 

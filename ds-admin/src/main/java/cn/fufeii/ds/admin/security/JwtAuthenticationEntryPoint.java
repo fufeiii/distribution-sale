@@ -26,7 +26,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        // 一般到这里都是发现权限不足或者认证有问题，所以不需要再次认证了
+        // 一般到这里都是发现权限不足或者认证有问题, 所以不需要再次认证了
         log.warn("请求:[{} {}], 异常:[{}]", request.getMethod(), request.getServletPath(), authException.getMessage());
         // 响应
         ResponseUtil.write(response, CommonResult.fail(ExceptionEnum.JWT_ERROR, authException.getMessage()));

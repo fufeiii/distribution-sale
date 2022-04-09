@@ -47,7 +47,7 @@ public class LockTemplate {
             isLocked = rLock.tryLock(waitTime, TimeUnit.SECONDS);
             // 加锁失败抛出异常
             if (!isLocked) {
-                throw new IllegalStateException(StrUtil.format("加锁失败，线程{}：{}", Thread.currentThread().getName(), glKey));
+                throw new IllegalStateException(StrUtil.format("加锁失败,线程{}：{}", Thread.currentThread().getName(), glKey));
             }
             // 执行目标方法
             if (log != null) {

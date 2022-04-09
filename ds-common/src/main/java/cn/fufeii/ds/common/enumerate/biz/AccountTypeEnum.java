@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 账户类型。
+ * 账户类型
  * 佣金或者积分
  *
  * @author Fu Fei

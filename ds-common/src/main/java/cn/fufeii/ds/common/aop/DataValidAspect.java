@@ -52,7 +52,7 @@ public class DataValidAspect {
                 if (!result.getOk()) {
                     Logger log = this.logger(joinPoint);
                     if (log.isDebugEnabled()) {
-                        log.debug("参数校验失败:{}，参数:{}", result.getMsg(), args);
+                        log.debug("参数校验失败:{},参数:{}", result.getMsg(), args);
                     }
                     return CommonResult.fail(ExceptionEnum.CLIENT_ERROR.getCode(), result.getMsg());
                 }
