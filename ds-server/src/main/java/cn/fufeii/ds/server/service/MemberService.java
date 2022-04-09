@@ -12,6 +12,7 @@ import cn.fufeii.ds.repository.crud.CrudMemberService;
 import cn.fufeii.ds.repository.entity.Account;
 import cn.fufeii.ds.repository.entity.Member;
 import cn.fufeii.ds.repository.entity.Platform;
+import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.model.api.request.MemberCreateRequest;
 import cn.fufeii.ds.server.model.api.response.MemberCreateResponse;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
@@ -40,8 +41,8 @@ public class MemberService {
     @Autowired
     private CrudAccountService crudAccountService;
 
-    @GlobalLock(key = "#request.username + '-create'")
-    @Transactional(rollbackFor = Exception.class)
+    @GlobalLock(key = DsServerConstant.CURRENT_PLATFORM_USERNAME_SPEL + "#request.username")
+    @Transactional
     public MemberCreateResponse create(MemberCreateRequest request) {
         // 检查用户是否存在
         if (crudMemberService.existByUsername(request.getUsername())) {
@@ -109,14 +110,15 @@ public class MemberService {
 
     /**
      * 设置邀请人标识
+     * [被邀请人]的一级是[邀请人]，二级是[邀请人]的一级，三级是[邀请人]的二级
      */
     private void setInviterId(Member member, Member inviteMember) {
         member.setFirstInviterId(inviteMember.getId());
-        Long secondInviterId = inviteMember.getSecondInviterId();
+        Long secondInviterId = inviteMember.getFirstInviterId();
         if (!DsConstant.NULL_MEMBER_INVITER_ID.equals(secondInviterId)) {
             member.setSecondInviterId(secondInviterId);
         }
-        Long thirdInviterId = inviteMember.getThirdInviterId();
+        Long thirdInviterId = inviteMember.getSecondInviterId();
         if (!DsConstant.NULL_MEMBER_INVITER_ID.equals(thirdInviterId)) {
             member.setThirdInviterId(thirdInviterId);
         }

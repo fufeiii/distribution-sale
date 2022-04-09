@@ -5,6 +5,7 @@ import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import cn.fufeii.ds.repository.entity.Member;
 import cn.fufeii.ds.repository.entity.Platform;
 import cn.fufeii.ds.repository.entity.ProfitEvent;
+import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.subscribe.event.InviteEvent;
 import cn.hutool.core.text.StrPool;
@@ -39,7 +40,6 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
         Member firstInviterMember = crudMemberService.selectById(inviteeMember.getFirstInviterId());
         log.info("被邀请会员[{}]，邀请会员[{}]", inviteeMember.getUsername(), firstInviterMember.getUsername());
 
-
         // 记录分润事件
         ProfitEvent inviteEvent = this.saveProfitEvent(inviteeMember);
 
@@ -47,7 +47,6 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
         super.handleProfit(inviteEvent, inviteeMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.SELF);
 
         // 查询一级邀请人，被邀请加入的肯定有一级邀请人
-
         super.handleProfit(inviteEvent, firstInviterMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.ONE);
 
         // 查询二级邀请人
@@ -79,7 +78,7 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
         profitEvent.setProfitType(ProfitTypeEnum.INVITE);
         profitEvent.setTriggerMemberId(inviteeMember.getFirstInviterId());
         profitEvent.setEventNumber(inviteeMember.getFirstInviterId() + StrPool.DASHED + ProfitTypeEnum.INVITE.name());
-        profitEvent.setEventAmount(0);
+        profitEvent.setEventAmount(DsServerConstant.DEFAULT_EVENT_AMOUNT);
         profitEvent.setMemo(String.format("用户[%s]被邀请加入", inviteeMember.getNickname()));
         return crudProfitEventService.insert(profitEvent);
     }

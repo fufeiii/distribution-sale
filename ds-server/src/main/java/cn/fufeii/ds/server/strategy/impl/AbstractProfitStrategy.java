@@ -7,6 +7,7 @@ import cn.fufeii.ds.common.util.DsUtil;
 import cn.fufeii.ds.repository.config.DataAuthorityHelper;
 import cn.fufeii.ds.repository.crud.*;
 import cn.fufeii.ds.repository.entity.*;
+import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.strategy.ProfitStrategy;
 import cn.fufeii.ds.server.subscribe.event.UpgradeEvent;
@@ -90,6 +91,15 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
      * @param baseAmount  基础金额
      */
     private Integer calculateProfitAmount(ProfitParam profitParam, Integer baseAmount) {
+
+        /*
+         * 邀请分润和升级分润，如果选择了百分比的计算模式，那么基数就为1
+         * 如果是交易分润的百分比计算模式，那么基数就用交易的金额计算
+         */
+        if (DsServerConstant.DEFAULT_EVENT_AMOUNT == baseAmount) {
+            baseAmount = 1;
+        }
+
         // 只有是 百分比计算才需要进一步计算，因为其他情况都时固定分润的范畴，直接取分润比列就好了
         if (CalculateModeEnum.PERCENTAGE.equals(profitParam.getCalculateMode())) {
             BigDecimal ratioPercentage = new BigDecimal(profitParam.getProfitRatio().toString()).divide(new BigDecimal("100"), MathContext.DECIMAL64);
@@ -113,7 +123,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
         String platformUsername = CurrentPlatformHelper.username();
         if (rankParam == null) {
             if (log.isDebugEnabled()) {
-                log.debug("没有合适的段位参数 {},{}", platformUsername, member.getRankType().getCode());
+                log.debug("没有合适的段位参数 {},{}", member.getRankType().getCode(), platformUsername);
             }
             return;
         }
@@ -121,7 +131,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
         Integer pointsTotalHistory = account.getPointsTotalHistory();
         if (rankParam.getBeginPoints() >= pointsTotalHistory && rankParam.getEndPoints() <= pointsTotalHistory) {
             if (log.isDebugEnabled()) {
-                log.debug("发布会员升级事件 {},{}", platformUsername, member.getUsername());
+                log.debug("发布会员升级事件 {},{}", member.getUsername(), platformUsername);
             }
             UpgradeEvent.Source source = new UpgradeEvent.Source();
             source.setMemberId(member.getId());
@@ -146,7 +156,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
             this.doProfit(inviteEvent, member, moneyParam, pointsParam);
         } else {
             if (log.isDebugEnabled()) {
-                log.debug("没有合适的分润参数，跳过分润。（{}，{}，{}，{}，{}，{}）", member.getPlatformUsername(), member.getUsername(), pte.getCode(), ple.getCode(), member.getIdentityType(), member.getRankType());
+                log.debug("没有合适的分润参数，跳过分润。（{}，{}，{}，{}，{}，{}）", member.getUsername(), member.getPlatformUsername(), pte.getCode(), ple.getCode(), member.getIdentityType(), member.getRankType());
             }
         }
     }
@@ -167,6 +177,11 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
             Integer profitAmount = this.calculateProfitAmount(moneyParam, event.getEventAmount());
             // 大于0才有保存的意义
             if (profitAmount > 0) {
+
+                if (log.isDebugEnabled()) {
+                    log.debug("增加佣金收益{}", profitAmount);
+                }
+
                 // 保存佣金分销记录
                 ProfitRecord profitRecord = new ProfitRecord();
                 profitRecord.setProfitEventId(event.getId());
@@ -192,10 +207,6 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
                 account.setMoneyTotalHistory(account.getMoneyTotalHistory() + profitAmount);
                 account.setMoneyTotal(account.getMoneyTotal() + profitAmount);
                 account.setMoneyAvailable(account.getMoneyAvailable() + profitAmount);
-            } else {
-                if (log.isDebugEnabled()) {
-                    log.debug("佣金收益为0, 参数[{}],基础金额[{}]", moneyParam, event.getEventAmount());
-                }
             }
         }
 
@@ -205,6 +216,10 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
             Integer profitAmount = this.calculateProfitAmount(pointsParam, event.getEventAmount());
             // 大于0才有保存的意义
             if (profitAmount > 0) {
+
+                if (log.isDebugEnabled()) {
+                    log.debug("增加积分收益{}", profitAmount);
+                }
 
                 // 设置标志为rue
                 isValidPointsParam = true;
@@ -234,10 +249,6 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
                 account.setPointsTotalHistory(account.getPointsTotalHistory() + profitAmount);
                 account.setPointsTotal(account.getPointsTotal() + profitAmount);
                 account.setPointsAvailable(account.getPointsAvailable() + profitAmount);
-            } else {
-                if (log.isDebugEnabled()) {
-                    log.debug("积分收益为0, 参数[{}],基础金额[{}]", moneyParam, event.getEventAmount());
-                }
             }
         }
 
