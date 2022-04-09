@@ -1,5 +1,6 @@
 package cn.fufeii.ds.common.util;
 
+import cn.fufeii.ds.common.constant.DsConstant;
 import cn.hutool.core.text.StrPool;
 
 /**
@@ -25,6 +26,13 @@ public final class DsUtil {
         // 其余的都是大于1元的, 直接移动小数点
 
         return amountStr.substring(0, length - 2) + StrPool.DOT + amountStr.substring(length - 2);
+    }
+
+    /**
+     * 判断当前会员是否为默认值
+     */
+    public static boolean isValidMemberId(Long memberId) {
+        return !DsConstant.NULL_MEMBER_INVITER_ID.equals(memberId);
     }
 
 }

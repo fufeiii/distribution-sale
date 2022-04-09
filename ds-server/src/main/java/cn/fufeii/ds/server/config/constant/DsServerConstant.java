@@ -10,6 +10,6 @@ public final class DsServerConstant {
 
     public static final int DEFAULT_EVENT_AMOUNT = 0;
 
-    public static final String CURRENT_PLATFORM_USERNAME_SPEL = "T(cn.fufeii.ds.server.security.CurrentPlatformHelper).username() + '-'";
+    public static final String CURRENT_PLATFORM_USERNAME_SPEL = "T(cn.fufeii.ds.server.security.CurrentPlatformHelper).username() + '-' +";
 
 }

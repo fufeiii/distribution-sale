@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -20,6 +21,7 @@ import java.util.Optional;
  */
 @Slf4j
 @EnableAsync
+@EnableAspectJAutoProxy(exposeProxy = true)
 @SpringBootApplication(scanBasePackages = "cn.fufeii.ds")
 public class DsServerApplication {
 

@@ -14,6 +14,7 @@ import cn.fufeii.ds.server.subscribe.event.UpgradeEvent;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
@@ -142,23 +143,30 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
 
 
     /**
-     * 处理分润
-     * 查询分润参数（包括佣金和积分）
-     * 进行分润（如果存在对应分润参数）
+     * 为某个会员执行分润
+     * 注意：不要抛出异常，因为当前会员分润中出现异常，不能让其他会员受到影响
      */
-    protected void handleProfit(ProfitEvent inviteEvent, Member member, ProfitTypeEnum pte, ProfitLevelEnum ple) {
-        // 查询分润参数
-        ProfitParam moneyParam = this.getProfitParam(AccountTypeEnum.MONEY, pte, ple, member.getIdentityType(), member.getRankType());
-        ProfitParam pointsParam = this.getProfitParam(AccountTypeEnum.POINTS, pte, ple, member.getIdentityType(), member.getRankType());
-        // 检查分润参数是否存在
-        if (Objects.nonNull(moneyParam) || Objects.nonNull(pointsParam)) {
-            // 进行分润
-            this.doProfit(inviteEvent, member, moneyParam, pointsParam);
-        } else {
+    protected void executeProfit(ProfitEvent inviteEvent, Member member, ProfitTypeEnum pte, ProfitLevelEnum ple) {
+        try {
+            // 查询分润参数
+            ProfitParam moneyParam = this.getProfitParam(AccountTypeEnum.MONEY, pte, ple, member.getIdentityType(), member.getRankType());
+            ProfitParam pointsParam = this.getProfitParam(AccountTypeEnum.POINTS, pte, ple, member.getIdentityType(), member.getRankType());
+            // 检查分润参数是否存在
+            if (Objects.nonNull(moneyParam) || Objects.nonNull(pointsParam)) {
+                // 进行分润，走AOP才能控制事务
+                ((AbstractProfitStrategy) AopContext.currentProxy()).doProfit(inviteEvent, member, moneyParam, pointsParam);
+                return;
+            }
+
+            // 打印日志
             if (log.isDebugEnabled()) {
                 log.debug("没有合适的分润参数, 跳过分润（{}, {}, {}, {}, {}, {}）", member.getUsername(), member.getPlatformUsername(), pte.getCode(), ple.getCode(), member.getIdentityType(), member.getRankType());
             }
+
+        } catch (Exception e) {
+            log.error("分润异常 {},{}", member.getUsername(), member.getPlatformUsername(), e);
         }
+
     }
 
 

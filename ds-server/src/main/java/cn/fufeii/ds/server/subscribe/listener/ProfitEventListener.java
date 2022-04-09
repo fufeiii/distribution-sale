@@ -39,6 +39,7 @@ public class ProfitEventListener {
     @TransactionalEventListener
     public void handle(UpgradeEvent upgradeEvent) {
         // 执行邀请分润机制
+        profitStrategyHolder.profit(upgradeEvent);
     }
 
 
@@ -48,6 +49,7 @@ public class ProfitEventListener {
     @EventListener
     public void handle(MoneyEvent moneyEvent) {
         // 执行交易分润机制
+        profitStrategyHolder.profit(moneyEvent);
     }
 
 
