@@ -9,7 +9,7 @@ import cn.fufeii.ds.repository.entity.ProfitEvent;
 import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.subscribe.event.InviteEvent;
-import cn.hutool.core.text.StrPool;
+import cn.hutool.core.date.SystemClock;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +70,8 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
 
     /**
      * 保存分销事件
+     *
+     * @param inviteeMember 被邀请人
      */
     private ProfitEvent saveProfitEvent(Member inviteeMember) {
         ProfitEvent profitEvent = new ProfitEvent();
@@ -77,8 +79,8 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
         profitEvent.setPlatformUsername(self.getUsername());
         profitEvent.setPlatformNickname(self.getNickname());
         profitEvent.setProfitType(ProfitTypeEnum.INVITE);
-        profitEvent.setTriggerMemberId(inviteeMember.getFirstInviterId());
-        profitEvent.setEventNumber(inviteeMember.getFirstInviterId() + StrPool.DASHED + ProfitTypeEnum.INVITE.name());
+        profitEvent.setTriggerMemberId(inviteeMember.getId());
+        profitEvent.setEventNumber(inviteeMember.getId() + "V" + (SystemClock.now() / 1000));
         profitEvent.setEventAmount(DsServerConstant.DEFAULT_EVENT_AMOUNT);
         profitEvent.setMemo(String.format("用户[%s]被邀请加入", inviteeMember.getNickname()));
         return crudProfitEventService.insert(profitEvent);

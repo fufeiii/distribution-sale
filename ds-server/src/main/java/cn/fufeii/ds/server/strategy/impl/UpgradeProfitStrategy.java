@@ -9,7 +9,7 @@ import cn.fufeii.ds.repository.entity.ProfitEvent;
 import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.subscribe.event.UpgradeEvent;
-import cn.hutool.core.text.StrPool;
+import cn.hutool.core.date.SystemClock;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -80,8 +80,8 @@ public class UpgradeProfitStrategy extends AbstractProfitStrategy {
         profitEvent.setPlatformUsername(self.getUsername());
         profitEvent.setPlatformNickname(self.getNickname());
         profitEvent.setProfitType(ProfitTypeEnum.UPGRADE);
-        profitEvent.setTriggerMemberId(upgradeMember.getFirstInviterId());
-        profitEvent.setEventNumber(upgradeMember.getFirstInviterId() + StrPool.DASHED + ProfitTypeEnum.INVITE.name());
+        profitEvent.setTriggerMemberId(upgradeMember.getId());
+        profitEvent.setEventNumber(upgradeMember.getId() + "U" + (SystemClock.now() / 1000));
         profitEvent.setEventAmount(DsServerConstant.DEFAULT_EVENT_AMOUNT);
         profitEvent.setMemo(String.format("用户[%s]发生了段位升级", upgradeMember.getNickname()));
         return crudProfitEventService.insert(profitEvent);

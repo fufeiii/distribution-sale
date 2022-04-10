@@ -17,31 +17,31 @@ import lombok.Data;
 @ApiModel
 public class MemberTeamResponse {
 
-    @ApiModelProperty("主键")
+    @ApiModelProperty(value = "主键")
     private Long id;
 
-    @ApiModelProperty("平台标识")
+    @ApiModelProperty(value = "平台标识")
     private String platformUsername;
 
-    @ApiModelProperty("平台名称")
+    @ApiModelProperty(value = "平台名称")
     private String platformNickname;
 
-    @ApiModelProperty("会员标识")
+    @ApiModelProperty(value = "会员标识")
     private String username;
 
-    @ApiModelProperty("会员名称")
+    @ApiModelProperty(value = "会员名称")
     private String nickname;
 
-    @ApiModelProperty("会员头像")
+    @ApiModelProperty(value = "会员头像")
     private String avatar;
 
-    @ApiModelProperty("身份类型")
+    @ApiModelProperty(value = "身份类型")
     private MemberIdentityTypeEnum identityType;
 
-    @ApiModelProperty("段位类型")
+    @ApiModelProperty(value = "段位类型")
     private MemberRankTypeEnum rankType;
 
-    @ApiModelProperty("状态")
+    @ApiModelProperty(value = "状态")
     private StateEnum state;
 
 }

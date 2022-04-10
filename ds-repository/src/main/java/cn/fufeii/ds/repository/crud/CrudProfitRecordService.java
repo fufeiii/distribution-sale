@@ -5,7 +5,9 @@ import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.repository.dao.ProfitRecordDao;
 import cn.fufeii.ds.repository.entity.ProfitRecord;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -111,5 +113,10 @@ public class CrudProfitRecordService {
     // ---------------------------- 下面基础CRUD的扩展 ----------------------------------- //
     // --------------------------------------------------------------------------------- //
 
+
+    public List<ProfitRecord> selectByProfitEventId(Long eventId) {
+        LambdaQueryWrapper<ProfitRecord> lambdaQueryWrapper = Wrappers.<ProfitRecord>lambdaQuery().eq(ProfitRecord::getProfitEventId, eventId);
+        return profitRecordDao.selectList(lambdaQueryWrapper);
+    }
 
 }

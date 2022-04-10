@@ -237,7 +237,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
                 profitRecord.setAccountType(AccountTypeEnum.POINTS);
                 profitRecord.setImpactMemberId(member.getId());
                 profitRecord.setIncomeCount(profitAmount);
-                profitRecord.setMemo(String.format("%s,获得积分收入%s元", member.getNickname(), DsUtil.fenToYuan(profitAmount)));
+                profitRecord.setMemo(String.format("%s,获得积分收入%s个", member.getNickname(), DsUtil.fenToYuan(profitAmount)));
                 profitRecord = crudProfitRecordService.insert(profitRecord);
 
                 // 保存佣金入账记录

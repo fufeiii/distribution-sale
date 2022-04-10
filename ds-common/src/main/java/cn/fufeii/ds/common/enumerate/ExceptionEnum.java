@@ -46,6 +46,7 @@ public enum ExceptionEnum implements ResultDefinition {
 
     /* ========================= 业务异常枚举 ========================= */
     NO_SUITABLE_PARAM(7102, "", "没有合适的[%s]参数"),
+    PROFIT_EVENT_EXIST(7103, "", "交易分销事件[%s]已存在"),
     UNKNOWN_STRATEGY(7101, "", "未知的[%s]的分销策略");
 
 

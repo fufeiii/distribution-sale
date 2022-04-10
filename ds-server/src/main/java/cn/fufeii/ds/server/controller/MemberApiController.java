@@ -48,7 +48,7 @@ public class MemberApiController {
         return CommonResult.success(memberService.info(username));
     }
 
-    @ApiOperation("查询会员团队")
+    @ApiOperation("分页查询会员团队")
     @GetMapping("/team/page/{level}/{username}")
     public PageResult<MemberTeamResponse> team(@PathVariable String level, @PathVariable String username,
                                                @RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
