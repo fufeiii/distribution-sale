@@ -23,7 +23,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.OAS_30)
                 .apiInfo(new ApiInfoBuilder()
                         .title("Ds-Server Api Doc")
-                        .description("管理端接口文档")
+                        .description("服务端接口文档")
                         .termsOfServiceUrl("https://fufeii.cn")
                         .contact(new Contact("fufei", "https://fufeii.com", "fufei.@mail.com"))
                         .version("1.0.0")
