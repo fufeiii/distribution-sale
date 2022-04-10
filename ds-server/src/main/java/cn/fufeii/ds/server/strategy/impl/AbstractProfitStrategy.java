@@ -4,7 +4,6 @@ import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.*;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.util.DsUtil;
-import cn.fufeii.ds.repository.config.DataAuthorityHelper;
 import cn.fufeii.ds.repository.crud.*;
 import cn.fufeii.ds.repository.entity.*;
 import cn.fufeii.ds.server.config.constant.DsServerConstant;
@@ -60,8 +59,8 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
                 .eq(ProfitParam::getProfitLevel, ple)
                 .eq(ProfitParam::getMemberIdentityType, mite)
                 .eq(ProfitParam::getMemberRankType, mre)
+                .eq(ProfitParam::getPlatformUsername, CurrentPlatformHelper.username())
                 .eq(ProfitParam::getState, StateEnum.ENABLE);
-        DataAuthorityHelper.setPlatform(lambdaQueryWrapper, CurrentPlatformHelper.username());
         List<ProfitParam> profitParamList = crudProfitParamService.selectList(lambdaQueryWrapper);
         if (profitParamList.size() > 1) {
             throw new BizException(ExceptionEnum.NO_SUITABLE_PARAM, ate.getMessage() + "分润");
@@ -75,8 +74,8 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
     private RankParam getRankParam(MemberRankTypeEnum mre) {
         LambdaQueryWrapper<RankParam> lambdaQueryWrapper = Wrappers.<RankParam>lambdaQuery()
                 .eq(RankParam::getMemberRankType, mre)
+                .eq(RankParam::getPlatformUsername, CurrentPlatformHelper.username())
                 .eq(RankParam::getState, StateEnum.ENABLE);
-        DataAuthorityHelper.setPlatform(lambdaQueryWrapper, CurrentPlatformHelper.username());
         List<RankParam> rankParamList = crudRankParamService.selectList(lambdaQueryWrapper);
         if (rankParamList.size() > 1) {
             throw new BizException(ExceptionEnum.NO_SUITABLE_PARAM, "段位");
@@ -146,7 +145,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
      * 为某个会员执行分润
      * 注意：不要抛出异常，因为当前会员分润中出现异常，不能让其他会员受到影响
      */
-    protected void executeProfit(ProfitEvent inviteEvent, Member member, ProfitTypeEnum pte, ProfitLevelEnum ple) {
+    protected void tryExecuteProfit(ProfitEvent inviteEvent, Member member, ProfitTypeEnum pte, ProfitLevelEnum ple) {
         try {
             // 查询分润参数
             ProfitParam moneyParam = this.getProfitParam(AccountTypeEnum.MONEY, pte, ple, member.getIdentityType(), member.getRankType());
@@ -160,7 +159,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
 
             // 打印日志
             if (log.isDebugEnabled()) {
-                log.debug("没有合适的分润参数, 跳过分润（{}, {}, {}, {}, {}, {}）", member.getUsername(), member.getPlatformUsername(), pte.getCode(), ple.getCode(), member.getIdentityType(), member.getRankType());
+                log.debug("没有合适的分润参数, 跳过分润（{}, {}, {}, {}, {}, {}）", member.getUsername(), member.getPlatformUsername(), pte, ple, member.getIdentityType(), member.getRankType());
             }
 
         } catch (Exception e) {

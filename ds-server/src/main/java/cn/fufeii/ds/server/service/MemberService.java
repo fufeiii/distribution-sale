@@ -20,7 +20,10 @@ import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.subscribe.event.InviteEvent;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -55,7 +58,7 @@ public class MemberService {
         Platform currentPlatform = CurrentPlatformHelper.self();
         String platformUsername = currentPlatform.getUsername();
         // 检查用户是否存在
-        Optional<Member> memberOptional = crudMemberService.selectByUsernameOptional(request.getUsername(), platformUsername);
+        Optional<Member> memberOptional = crudMemberService.selectByUsernameAndPlatformUsernameOptional(request.getUsername(), platformUsername);
         if (memberOptional.isPresent()) {
             throw BizException.serverError(String.format("会员[%s]已存在", request.getUsername()));
         }
@@ -63,7 +66,7 @@ public class MemberService {
         boolean isJoinCreate = CharSequenceUtil.isNotBlank(request.getInviteUsername());
         Member inviterMember = null;
         if (isJoinCreate) {
-            Optional<Member> inviteMemberOpt = crudMemberService.selectByUsernameOptional(request.getInviteUsername(), platformUsername);
+            Optional<Member> inviteMemberOpt = crudMemberService.selectByUsernameAndPlatformUsernameOptional(request.getInviteUsername(), platformUsername);
             if (!inviteMemberOpt.isPresent()) {
                 throw BizException.serverError(String.format("邀请人[%s]不存在", request.getInviteUsername()));
             }
@@ -138,7 +141,7 @@ public class MemberService {
     @GlobalLock(key = DsServerConstant.CURRENT_PLATFORM_USERNAME_SPEL + "#username")
     public void changeState(String username, StateEnum state) {
         String platformUsername = CurrentPlatformHelper.username();
-        Member member = crudMemberService.selectByUsername(username, platformUsername);
+        Member member = crudMemberService.selectByUsernameAndPlatformUsername(username, platformUsername);
         if (state != member.getState()) {
             member.setState(state);
             crudMemberService.updateById(member);
@@ -152,7 +155,7 @@ public class MemberService {
      */
     @GlobalLock(key = DsServerConstant.CURRENT_PLATFORM_USERNAME_SPEL + "#request.username")
     public void identityType(MemberIdentityTypeRequest request) {
-        Member member = crudMemberService.selectByUsername(request.getUsername(), CurrentPlatformHelper.username());
+        Member member = crudMemberService.selectByUsernameAndPlatformUsername(request.getUsername(), CurrentPlatformHelper.username());
         // 有必要告诉上有系统, 提交重复了或者不正确的更新
         if (request.getIdentityType() == member.getIdentityType()) {
             throw new BizException(ExceptionEnum.BIZ_COMMON_ERROR, "重复更新会员身份");
@@ -168,7 +171,7 @@ public class MemberService {
      * @param username *
      */
     public MemberInfoResponse info(String username) {
-        Member member = crudMemberService.selectByUsername(username, CurrentPlatformHelper.username());
+        Member member = crudMemberService.selectByUsernameAndPlatformUsername(username, CurrentPlatformHelper.username());
         Account account = crudAccountService.selectByMemberId(member.getId());
         MemberInfoResponse response = new MemberInfoResponse();
         response.setId(member.getId());
@@ -223,8 +226,37 @@ public class MemberService {
      *
      * @param level    等级枚举
      * @param username 会员标识
+     * @param page     *
+     * @param size     *
      */
-    public MemberTeamResponse team(ProfitLevelEnum level, String username) {
-        return null;
+    public IPage<MemberTeamResponse> team(ProfitLevelEnum level, String username, Integer page, Integer size) {
+        Member member = crudMemberService.selectByUsernameAndPlatformUsername(username, CurrentPlatformHelper.username());
+        Long inviterId = member.getId();
+        LambdaQueryWrapper<Member> lambdaQueryWrapper = Wrappers.lambdaQuery();
+        if (ProfitLevelEnum.ONE == level) {
+            lambdaQueryWrapper.eq(Member::getFirstInviterId, inviterId);
+        }
+        if (ProfitLevelEnum.TWO == level) {
+            lambdaQueryWrapper.eq(Member::getSecondInviterId, inviterId);
+        }
+        if (ProfitLevelEnum.THREE == level) {
+            lambdaQueryWrapper.eq(Member::getThirdInviterId, inviterId);
+        }
+        IPage<Member> memberIPage = crudMemberService.selectPage(lambdaQueryWrapper, Page.of(page, size));
+        return memberIPage.convert(it -> {
+            MemberTeamResponse response = new MemberTeamResponse();
+            response.setId(it.getId());
+            response.setPlatformUsername(it.getPlatformUsername());
+            response.setPlatformNickname(it.getPlatformNickname());
+            response.setUsername(it.getUsername());
+            response.setNickname(it.getNickname());
+            response.setAvatar(it.getAvatar());
+            response.setIdentityType(it.getIdentityType());
+            response.setRankType(it.getRankType());
+            response.setState(it.getState());
+            return response;
+        });
     }
+
+
 }

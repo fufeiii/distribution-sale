@@ -3,10 +3,11 @@ package cn.fufeii.ds.admin.security;
 import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.exception.BizException;
-import cn.fufeii.ds.repository.config.DataAuthorityHelper;
-import cn.fufeii.ds.repository.entity.SystemUser;
+import cn.fufeii.ds.repository.entity.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.Objects;
 
 /**
  * 当前用户 Helper
@@ -64,15 +65,47 @@ public class CurrentUserHelper {
      * 检查数据权限
      */
     public static void checkPlatformThrow(String dataPlatformUsername) {
-        DataAuthorityHelper.checkPlatformThrow(platformUsername(), dataPlatformUsername);
+        if (!Objects.equals(platformUsername(), dataPlatformUsername)) {
+            throw new BizException(ExceptionEnum.NO_DATA_PERMISSION);
+        }
     }
+
 
     /**
      * 设置平台标识到查询条件中
+     * 注意：通过Wrappers.lambdaQuery(entity)构建的QueryWrapper才有效果
      */
+    @SuppressWarnings("unchecked")
     public static <T> void setPlatformIfPossible(LambdaQueryWrapper<T> queryWrapper) {
         if (isNotAdmin()) {
-            DataAuthorityHelper.setPlatform(queryWrapper, platformUsername());
+            String platformUsername = platformUsername();
+            if (ProfitParam.class.equals(queryWrapper.getEntityClass())) {
+                ((LambdaQueryWrapper<ProfitParam>) queryWrapper).eq(ProfitParam::getPlatformUsername, platformUsername);
+                return;
+            }
+            if (RankParam.class.equals(queryWrapper.getEntityClass())) {
+                ((LambdaQueryWrapper<RankParam>) queryWrapper).eq(RankParam::getPlatformUsername, platformUsername);
+                return;
+            }
+            if (ProfitEvent.class.equals(queryWrapper.getEntityClass())) {
+                ((LambdaQueryWrapper<ProfitEvent>) queryWrapper).eq(ProfitEvent::getPlatformUsername, platformUsername);
+                return;
+            }
+            if (Member.class.equals(queryWrapper.getEntityClass())) {
+                ((LambdaQueryWrapper<Member>) queryWrapper).eq(Member::getPlatformUsername, platformUsername);
+                return;
+            }
+            if (Platform.class.equals(queryWrapper.getEntityClass())) {
+                ((LambdaQueryWrapper<Platform>) queryWrapper).eq(Platform::getUsername, platformUsername);
+                return;
+            }
+            if (WithdrawApply.class.equals(queryWrapper.getEntityClass())) {
+                ((LambdaQueryWrapper<WithdrawApply>) queryWrapper).eq(WithdrawApply::getPlatformUsername, platformUsername);
+                return;
+            }
+            if (SystemUser.class.equals(queryWrapper.getEntityClass())) {
+                ((LambdaQueryWrapper<SystemUser>) queryWrapper).eq(SystemUser::getPlatformUsername, platformUsername);
+            }
         }
     }
 

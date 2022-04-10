@@ -59,7 +59,7 @@ public class MemberInfoResponse {
     @ApiModelProperty("段位类型")
     private MemberRankTypeEnum rankType;
 
-    @ApiModelProperty("段位类型")
+    @ApiModelProperty("状态")
     private StateEnum state;
 
     @ApiModelProperty("历史总金额")

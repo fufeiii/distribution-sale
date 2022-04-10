@@ -2,7 +2,6 @@ package cn.fufeii.ds.repository.crud;
 
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.exception.BizException;
-import cn.fufeii.ds.repository.config.DataAuthorityHelper;
 import cn.fufeii.ds.repository.dao.MemberDao;
 import cn.fufeii.ds.repository.entity.Member;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -115,14 +114,15 @@ public class CrudMemberService {
     // --------------------------------------------------------------------------------- //
 
 
-    public Optional<Member> selectByUsernameOptional(String username, String platformUsername) {
-        LambdaQueryWrapper<Member> lambdaQueryWrapper = Wrappers.<Member>lambdaQuery().eq(Member::getUsername, username);
-        DataAuthorityHelper.setPlatform(lambdaQueryWrapper, platformUsername);
+    public Optional<Member> selectByUsernameAndPlatformUsernameOptional(String username, String platformUsername) {
+        LambdaQueryWrapper<Member> lambdaQueryWrapper = Wrappers.<Member>lambdaQuery()
+                .eq(Member::getUsername, username)
+                .eq(Member::getPlatformUsername, platformUsername);
         return this.selectOneOptional(lambdaQueryWrapper);
     }
 
-    public Member selectByUsername(String username, String platformUsername) {
-        return this.selectByUsernameOptional(username, platformUsername).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "username(" + username + ")"));
+    public Member selectByUsernameAndPlatformUsername(String username, String platformUsername) {
+        return this.selectByUsernameAndPlatformUsernameOptional(username, platformUsername).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "username(" + username + ")"));
     }
 
 

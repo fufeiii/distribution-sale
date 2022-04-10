@@ -48,7 +48,7 @@ logging:
   level:
     cn.fufeii.ds: debug
 
-  # admin配置
+# admin配置
 ds:
   admin:
     jwt-sign-key: ab012345678901234567890123456789

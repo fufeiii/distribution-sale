@@ -4,7 +4,7 @@ import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import lombok.Data;
 
 /**
- * 邀请用户事件
+ * 邀请好友事件
  *
  * @author FuFei
  * @date 2022/3/20

@@ -2,7 +2,7 @@ package cn.fufeii.ds.server.subscribe.listener;
 
 import cn.fufeii.ds.server.strategy.ProfitStrategyHolder;
 import cn.fufeii.ds.server.subscribe.event.InviteEvent;
-import cn.fufeii.ds.server.subscribe.event.MoneyEvent;
+import cn.fufeii.ds.server.subscribe.event.TradeEvent;
 import cn.fufeii.ds.server.subscribe.event.UpgradeEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -44,12 +44,12 @@ public class ProfitEventListener {
 
 
     /**
-     * 监听货币交易事件
+     * 监听金钱交易事件
      */
     @EventListener
-    public void handle(MoneyEvent moneyEvent) {
+    public void handle(TradeEvent tradeEvent) {
         // 执行交易分润机制
-        profitStrategyHolder.profit(moneyEvent);
+        profitStrategyHolder.profit(tradeEvent);
     }
 
 

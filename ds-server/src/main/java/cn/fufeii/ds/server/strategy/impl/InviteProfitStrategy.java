@@ -32,36 +32,36 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
     public void profit(Object source) {
         String platformUsername = CurrentPlatformHelper.username();
         log.info("【邀请分润】=====> 开始, 平台[{}]", platformUsername);
-        InviteEvent.Source inviteEventInviteEvent = (InviteEvent.Source) source;
+        InviteEvent.Source inviteEventSource = (InviteEvent.Source) source;
 
         // 查询出主要相关的会员
-        Member inviteeMember = crudMemberService.selectById(inviteEventInviteEvent.getMemberId());
+        Member inviteeMember = crudMemberService.selectById(inviteEventSource.getMemberId());
         Member firstInviterMember = crudMemberService.selectById(inviteeMember.getFirstInviterId());
-        log.info("被邀请会员[{}], 邀请会员[{}]", inviteeMember.getUsername(), firstInviterMember.getUsername());
+        log.info("【邀请分润】被邀请会员[{}], 邀请会员[{}]", inviteeMember.getUsername(), firstInviterMember.getUsername());
 
         // 记录分润事件
         ProfitEvent inviteEvent = this.saveProfitEvent(inviteeMember);
 
         // 获取当前会员
-        super.executeProfit(inviteEvent, inviteeMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.SELF);
+        super.tryExecuteProfit(inviteEvent, inviteeMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.SELF);
 
         // 查询一级邀请人, 被邀请加入的肯定有一级邀请人
-        super.executeProfit(inviteEvent, firstInviterMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.ONE);
+        super.tryExecuteProfit(inviteEvent, firstInviterMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.ONE);
 
         // 查询二级邀请人
         Long secondInviterId = inviteeMember.getSecondInviterId();
         if (DsUtil.isValidMemberId(secondInviterId)) {
             Member member = crudMemberService.selectById(secondInviterId);
-            log.info("存在二级邀请人{}", member.getUsername());
-            super.executeProfit(inviteEvent, member, ProfitTypeEnum.INVITE, ProfitLevelEnum.TWO);
+            log.info("【邀请分润】存在二级邀请人{}", member.getUsername());
+            super.tryExecuteProfit(inviteEvent, member, ProfitTypeEnum.INVITE, ProfitLevelEnum.TWO);
         }
 
         // 查询三级邀请人
         Long thirdInviterId = inviteeMember.getThirdInviterId();
         if (DsUtil.isValidMemberId(thirdInviterId)) {
             Member member = crudMemberService.selectById(thirdInviterId);
-            log.info("存在三级邀请人{}", member.getUsername());
-            super.executeProfit(inviteEvent, member, ProfitTypeEnum.INVITE, ProfitLevelEnum.THREE);
+            log.info("【邀请分润】存在三级邀请人{}", member.getUsername());
+            super.tryExecuteProfit(inviteEvent, member, ProfitTypeEnum.INVITE, ProfitLevelEnum.THREE);
         }
 
         log.info("【邀请分润】<===== 结束, 平台[{}]", platformUsername);

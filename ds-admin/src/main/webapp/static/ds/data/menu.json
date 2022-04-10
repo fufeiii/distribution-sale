@@ -102,7 +102,7 @@
   {
     "id": 4,
     "title": "基础管理",
-    "icon": "layui-icon layui-icon-template-1",
+    "icon": "layui-icon layui-icon-set",
     "type": 0,
     "href": "",
     "children": [

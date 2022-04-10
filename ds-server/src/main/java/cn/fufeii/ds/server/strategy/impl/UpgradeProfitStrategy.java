@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UpgradeProfitStrategy extends AbstractProfitStrategy {
 
-
     @Override
     public boolean match(ProfitTypeEnum profitType) {
         return ProfitTypeEnum.UPGRADE == profitType;
@@ -32,43 +31,43 @@ public class UpgradeProfitStrategy extends AbstractProfitStrategy {
     @Override
     public void profit(Object source) {
         String platformUsername = CurrentPlatformHelper.username();
-        log.info("【段位分润】=====> 开始, 平台[{}]", platformUsername);
-        UpgradeEvent.Source upgradeEventEventInviteEvent = (UpgradeEvent.Source) source;
+        log.info("【升级分润】=====> 开始, 平台[{}]", platformUsername);
+        UpgradeEvent.Source upgradeEventSource = (UpgradeEvent.Source) source;
 
         // 查询出主要相关的会员
-        Member upgradeMember = crudMemberService.selectById(upgradeEventEventInviteEvent.getMemberId());
+        Member upgradeMember = crudMemberService.selectById(upgradeEventSource.getMemberId());
 
         // 记录分润事件
         ProfitEvent upgradeEvent = this.saveProfitEvent(upgradeMember);
 
         // 当前会员进行分润
-        super.executeProfit(upgradeEvent, upgradeMember, ProfitTypeEnum.UPGRADE, ProfitLevelEnum.SELF);
+        super.tryExecuteProfit(upgradeEvent, upgradeMember, ProfitTypeEnum.UPGRADE, ProfitLevelEnum.SELF);
 
         // 查询一级邀请人
         Long firstInviterId = upgradeMember.getFirstInviterId();
         if (DsUtil.isValidMemberId(firstInviterId)) {
             Member member = crudMemberService.selectById(firstInviterId);
-            log.info("存在一级邀请人{}", member.getUsername());
-            super.executeProfit(upgradeEvent, member, ProfitTypeEnum.UPGRADE, ProfitLevelEnum.ONE);
+            log.info("【升级分润】存在一级邀请人{}", member.getUsername());
+            super.tryExecuteProfit(upgradeEvent, member, ProfitTypeEnum.UPGRADE, ProfitLevelEnum.ONE);
         }
 
         // 查询二级邀请人
         Long secondInviterId = upgradeMember.getSecondInviterId();
         if (DsUtil.isValidMemberId(secondInviterId)) {
             Member member = crudMemberService.selectById(secondInviterId);
-            log.info("存在二级邀请人{}", member.getUsername());
-            super.executeProfit(upgradeEvent, member, ProfitTypeEnum.UPGRADE, ProfitLevelEnum.TWO);
+            log.info("【升级分润】存在二级邀请人{}", member.getUsername());
+            super.tryExecuteProfit(upgradeEvent, member, ProfitTypeEnum.UPGRADE, ProfitLevelEnum.TWO);
         }
 
         // 查询三级邀请人
         Long thirdInviterId = upgradeMember.getThirdInviterId();
         if (DsUtil.isValidMemberId(thirdInviterId)) {
             Member member = crudMemberService.selectById(thirdInviterId);
-            log.info("存在三级邀请人{}", member.getUsername());
-            super.executeProfit(upgradeEvent, member, ProfitTypeEnum.UPGRADE, ProfitLevelEnum.THREE);
+            log.info("【升级分润】存在三级邀请人{}", member.getUsername());
+            super.tryExecuteProfit(upgradeEvent, member, ProfitTypeEnum.UPGRADE, ProfitLevelEnum.THREE);
         }
 
-        log.info("【段位分润】<===== 结束, 平台[{}]", platformUsername);
+        log.info("【升级分润】<===== 结束, 平台[{}]", platformUsername);
     }
 
 
@@ -84,7 +83,7 @@ public class UpgradeProfitStrategy extends AbstractProfitStrategy {
         profitEvent.setTriggerMemberId(upgradeMember.getFirstInviterId());
         profitEvent.setEventNumber(upgradeMember.getFirstInviterId() + StrPool.DASHED + ProfitTypeEnum.INVITE.name());
         profitEvent.setEventAmount(DsServerConstant.DEFAULT_EVENT_AMOUNT);
-        profitEvent.setMemo(String.format("用户[%s]段位升级", upgradeMember.getNickname()));
+        profitEvent.setMemo(String.format("用户[%s]发生了段位升级", upgradeMember.getNickname()));
         return crudProfitEventService.insert(profitEvent);
     }
 

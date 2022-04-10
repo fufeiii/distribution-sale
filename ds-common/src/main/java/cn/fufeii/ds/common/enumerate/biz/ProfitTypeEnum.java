@@ -23,12 +23,12 @@ public enum ProfitTypeEnum {
     /**
      * 交易
      */
-    MONEY(1, "货币交易"),
+    TRADE(1, "金钱交易"),
 
     /**
      * 邀请
      */
-    INVITE(2, "邀请好友"),
+    INVITE(2, "好友邀请"),
 
     /**
      * 升级
