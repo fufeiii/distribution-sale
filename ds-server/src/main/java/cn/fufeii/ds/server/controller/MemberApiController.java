@@ -65,7 +65,7 @@ public class MemberApiController {
     }
 
     @ApiOperation(value = "更新会员身份")
-    @PutMapping("/identity_type")
+    @PutMapping("/identity-type")
     public CommonResult<Void> identityType(@RequestBody MemberIdentityTypeRequest identityType) {
         memberService.identityType(identityType);
         return CommonResult.success();
