@@ -25,7 +25,7 @@ public class SwaggerConfig {
                         .title("Ds-Server Api Doc")
                         .description("服务端接口文档")
                         .termsOfServiceUrl("https://fufeii.cn")
-                        .contact(new Contact("fufei", "https://fufeii.com", "fufei.@mail.com"))
+                        .contact(new Contact("fufei", "https://fufeii.com", "848125851@qq.com"))
                         .version("1.0.0")
                         .build())
                 .groupName("管理后台")
