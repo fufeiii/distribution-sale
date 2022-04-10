@@ -77,12 +77,12 @@ public class ProfitService {
     /**
      * 查询分销记录
      *
-     * @param username 会员标识
-     * @param page     *
-     * @param size     *
+     * @param memberUsername 会员标识
+     * @param page           *
+     * @param size           *
      */
-    public IPage<ProfitRecordInfoResponse> memberRecord(String username, Integer page, Integer size) {
-        Member member = crudMemberService.selectByUsernameAndPlatformUsername(username, CurrentPlatformHelper.username());
+    public IPage<ProfitRecordInfoResponse> memberRecord(String memberUsername, Integer page, Integer size) {
+        Member member = crudMemberService.selectByUsernameAndPlatformUsername(memberUsername, CurrentPlatformHelper.username());
         LambdaQueryWrapper<ProfitRecord> lambdaQueryWrapper = Wrappers.<ProfitRecord>lambdaQuery().eq(ProfitRecord::getImpactMemberId, member.getId());
         IPage<ProfitRecord> profitRecordIPage = crudProfitRecordService.selectPage(lambdaQueryWrapper, Page.of(page, size));
         return profitRecordIPage.convert(it -> {
@@ -91,7 +91,7 @@ public class ProfitService {
             response.setProfitEventId(it.getProfitEventId());
             response.setAccountType(it.getAccountType());
             response.setImpactMemberId(it.getImpactMemberId());
-            response.setImpactMemberUsername(username);
+            response.setImpactMemberUsername(memberUsername);
             response.setIncomeCount(it.getIncomeCount());
             response.setMemo(it.getMemo());
             response.setCreateDateTime(it.getCreateDateTime());
