@@ -81,7 +81,7 @@ public class TradeProfitStrategy extends AbstractProfitStrategy {
         profitEvent.setTriggerMemberId(upgradeMember.getFirstInviterId());
         profitEvent.setEventNumber(source.getTradeNumber());
         profitEvent.setEventAmount(source.getTradeAmount());
-        profitEvent.setMemo(String.format("用户[%s]发生了金钱交易", upgradeMember.getNickname()));
+        profitEvent.setMemo(String.format("会员[%s]发生了金钱交易", upgradeMember.getNickname()));
         return crudProfitEventService.insert(profitEvent);
     }
 

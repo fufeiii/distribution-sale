@@ -47,13 +47,13 @@ public class EnumController {
         return CommonResult.success(ProfitLevelEnum.getKeyValuePairList());
     }
 
-    @ApiOperation("用户段位类型枚举")
+    @ApiOperation("会员段位类型枚举")
     @GetMapping("/member-rank-type")
     public CommonResult<List<KeyValuePair<String, String>>> memberRankTypeEnum() {
         return CommonResult.success(MemberRankTypeEnum.getKeyValuePairList());
     }
 
-    @ApiOperation("用户身份类型枚举")
+    @ApiOperation("会员身份类型枚举")
     @GetMapping("/member-identity-type")
     public CommonResult<List<KeyValuePair<String, String>>> memberIdentityTypeEnum() {
         return CommonResult.success(MemberIdentityTypeEnum.getKeyValuePairList());

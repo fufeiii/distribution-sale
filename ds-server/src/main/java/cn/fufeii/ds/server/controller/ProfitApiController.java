@@ -37,7 +37,7 @@ public class ProfitApiController {
 
     @ApiOperation("分页查询会员分销记录")
     @GetMapping("/record/member/page/{memberUsername}")
-    public PageResult<ProfitRecordInfoResponse> record(@PathVariable String memberUsername, @RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
+    public PageResult<ProfitRecordInfoResponse> memberRecord(@PathVariable String memberUsername, @RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
         IPage<ProfitRecordInfoResponse> pageResult = profitService.memberRecord(memberUsername, page, size);
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
     }

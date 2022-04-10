@@ -77,7 +77,7 @@ layui.use(['table', 'form', 'layer', 'popup', 'easyHttp'], function () {
     Platform.openAddDlg = function () {
         layer.open({
             type: 2,
-            title: '添加用户',
+            title: '添加平台',
             shade: 0.3,
             area: ['550px', '450px'],
             content: '/view/platform/add?tableId=' + Platform.tableId,

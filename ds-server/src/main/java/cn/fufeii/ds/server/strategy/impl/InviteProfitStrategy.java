@@ -82,7 +82,7 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
         profitEvent.setTriggerMemberId(inviteeMember.getId());
         profitEvent.setEventNumber(inviteeMember.getId() + "V" + (SystemClock.now() / 1000));
         profitEvent.setEventAmount(DsServerConstant.DEFAULT_EVENT_AMOUNT);
-        profitEvent.setMemo(String.format("用户[%s]被邀请加入", inviteeMember.getNickname()));
+        profitEvent.setMemo(String.format("会员[%s]被邀请加入", inviteeMember.getNickname()));
         return crudProfitEventService.insert(profitEvent);
     }
 

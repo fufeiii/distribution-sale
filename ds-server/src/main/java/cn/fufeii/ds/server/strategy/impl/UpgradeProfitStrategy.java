@@ -83,7 +83,7 @@ public class UpgradeProfitStrategy extends AbstractProfitStrategy {
         profitEvent.setTriggerMemberId(upgradeMember.getId());
         profitEvent.setEventNumber(upgradeMember.getId() + "U" + (SystemClock.now() / 1000));
         profitEvent.setEventAmount(DsServerConstant.DEFAULT_EVENT_AMOUNT);
-        profitEvent.setMemo(String.format("用户[%s]发生了段位升级", upgradeMember.getNickname()));
+        profitEvent.setMemo(String.format("会员[%s]发生了段位升级", upgradeMember.getNickname()));
         return crudProfitEventService.insert(profitEvent);
     }
 
