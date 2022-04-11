@@ -4,6 +4,7 @@ package cn.fufeii.ds.server.controller;
 import cn.fufeii.ds.common.annotation.DataValid;
 import cn.fufeii.ds.common.result.CommonResult;
 import cn.fufeii.ds.common.result.PageResult;
+import cn.fufeii.ds.server.model.api.request.WithdrawApplyRequest;
 import cn.fufeii.ds.server.model.api.response.WithdrawApplyInfoResponse;
 import cn.fufeii.ds.server.service.WithdrawService;
 import io.swagger.annotations.Api;
@@ -26,7 +27,8 @@ public class WithdrawApiController {
 
     @ApiOperation("发起提现申请")
     @PostMapping("/create")
-    public CommonResult<Object> create() {
+    public CommonResult<Object> create(WithdrawApplyRequest request) {
+        withdrawService.create(request);
         return CommonResult.success();
     }
 

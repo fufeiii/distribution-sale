@@ -43,7 +43,7 @@ public class WithdrawApply {
      * 会员名称
      */
     @TableField
-    private String memberName;
+    private String memberUsername;
 
     /**
      * 提现单号

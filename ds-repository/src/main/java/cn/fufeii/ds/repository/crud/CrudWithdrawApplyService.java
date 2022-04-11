@@ -5,7 +5,9 @@ import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.repository.dao.WithdrawApplyDao;
 import cn.fufeii.ds.repository.entity.WithdrawApply;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -110,6 +112,13 @@ public class CrudWithdrawApplyService {
     // --------------------------------------------------------------------------------- //
     // ---------------------------- 下面基础CRUD的扩展 ----------------------------------- //
     // --------------------------------------------------------------------------------- //
+
+    public WithdrawApply selectByWithdrawNumberAndPlatformUsername(String withdrawNumber, String platformUsername) {
+        LambdaQueryWrapper<WithdrawApply> lambdaQueryWrapper = Wrappers.<WithdrawApply>lambdaQuery()
+                .eq(WithdrawApply::getWithdrawNumber, withdrawNumber)
+                .eq(WithdrawApply::getPlatformUsername, platformUsername);
+        return this.selectOneOptional(lambdaQueryWrapper).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "withdrawNumber(" + withdrawNumber + ")"));
+    }
 
 
 }
