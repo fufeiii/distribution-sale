@@ -33,7 +33,7 @@
     "children": [
       {
         "id": 21,
-        "title": "会员中心",
+        "title": "会员管理",
         "icon": "layui-icon layui-icon-console",
         "type": 1,
         "openType": "_iframe",
@@ -41,7 +41,7 @@
       },
       {
         "id": 22,
-        "title": "平台中心",
+        "title": "平台管理",
         "icon": "layui-icon layui-icon-console",
         "type": 1,
         "openType": "_iframe",
@@ -51,14 +51,14 @@
   },
   {
     "id": 3,
-    "title": "分润管理",
+    "title": "配置管理",
     "icon": "layui-icon layui-icon-auz",
     "type": 0,
     "href": "",
     "children": [
       {
         "id": 31,
-        "title": "分润参数",
+        "title": "分润管理",
         "icon": "layui-icon layui-icon-console",
         "type": 1,
         "openType": "_iframe",
@@ -66,7 +66,7 @@
       },
       {
         "id": 32,
-        "title": "段位参数",
+        "title": "段位管理",
         "icon": "layui-icon layui-icon-console",
         "type": 1,
         "openType": "_iframe",
@@ -83,19 +83,11 @@
     "children": [
       {
         "id": 41,
-        "title": "分销事件",
+        "title": "分润事件",
         "icon": "layui-icon layui-icon-console",
         "type": 1,
         "openType": "_iframe",
         "href": "/view/profit-event/"
-      },
-      {
-        "id": 42,
-        "title": "分销提现",
-        "icon": "layui-icon layui-icon-console",
-        "type": 1,
-        "openType": "_iframe",
-        "href": "/view/withdraw-apply/"
       }
     ]
   },
@@ -108,7 +100,7 @@
     "children": [
       {
         "id": 51,
-        "title": "用户中心",
+        "title": "用户管理",
         "icon": "layui-icon layui-icon-console",
         "type": 1,
         "openType": "_iframe",

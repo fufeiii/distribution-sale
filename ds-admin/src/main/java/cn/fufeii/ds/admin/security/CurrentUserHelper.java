@@ -99,10 +99,6 @@ public class CurrentUserHelper {
                 ((LambdaQueryWrapper<Platform>) queryWrapper).eq(Platform::getUsername, platformUsername);
                 return;
             }
-            if (WithdrawApply.class.equals(queryWrapper.getEntityClass())) {
-                ((LambdaQueryWrapper<WithdrawApply>) queryWrapper).eq(WithdrawApply::getPlatformUsername, platformUsername);
-                return;
-            }
             if (SystemUser.class.equals(queryWrapper.getEntityClass())) {
                 ((LambdaQueryWrapper<SystemUser>) queryWrapper).eq(SystemUser::getPlatformUsername, platformUsername);
             }
