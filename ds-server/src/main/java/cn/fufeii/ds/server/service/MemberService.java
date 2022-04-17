@@ -14,7 +14,7 @@ import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.model.api.request.MemberCreateRequest;
 import cn.fufeii.ds.server.model.api.request.MemberIdentityTypeRequest;
 import cn.fufeii.ds.server.model.api.response.MemberCreateResponse;
-import cn.fufeii.ds.server.model.api.response.MemberInfoResponse;
+import cn.fufeii.ds.server.model.api.response.MemberResponse;
 import cn.fufeii.ds.server.model.api.response.MemberTeamResponse;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.subscribe.event.InviteEvent;
@@ -170,10 +170,10 @@ public class MemberService {
      *
      * @param username *
      */
-    public MemberInfoResponse info(String username) {
+    public MemberResponse info(String username) {
         Member member = crudMemberService.selectByUsernameAndPlatformUsername(username, CurrentPlatformHelper.username());
         Account account = crudAccountService.selectByMemberId(member.getId());
-        MemberInfoResponse response = new MemberInfoResponse();
+        MemberResponse response = new MemberResponse();
         response.setId(member.getId());
         response.setPlatformUsername(member.getPlatformUsername());
         response.setPlatformNickname(member.getPlatformNickname());

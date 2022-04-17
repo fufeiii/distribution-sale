@@ -27,9 +27,6 @@ public class PlatformResponse {
     @ApiModelProperty(value = "签名密钥")
     private String sk;
 
-    @ApiModelProperty(value = "webhook地址")
-    private String webhook;
-
     @ApiModelProperty(value = "状态")
     private String state;
 

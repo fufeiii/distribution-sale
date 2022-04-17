@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 平台 Dao
+ * 平台信息 Dao
  *
  * @author FuFei
  */

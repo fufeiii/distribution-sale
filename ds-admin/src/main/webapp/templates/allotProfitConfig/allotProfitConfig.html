@@ -1,0 +1,108 @@
+@layout("/common/container.html", {bodyAttr:"class=\"pear-container\"", js:["/ds/js/allotProfitConfig/allotProfitConfig.js","/ds/js/allotProfitConfig/allotProfitConfigEnum.js?formId=profitParamQueryForm"]}) {
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form class="layui-form" lay-filter="profitParamQueryForm">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">账户类型</label>
+                    <div class="layui-input-inline">
+                        <select id="accountTypeSelect" name="accountType">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">分润类型</label>
+                    <div class="layui-input-inline">
+                        <select id="profitTypeSelect" name="profitType">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">计算模型</label>
+                    <div class="layui-input-inline">
+                        <select id="calculateModeSelect" name="calculateMode">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">分润等级</label>
+                    <div class="layui-input-inline">
+                        <select id="profitLevelSelect" name="profitLevel">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">会员身份</label>
+                    <div class="layui-input-inline">
+                        <select id="memberIdentityTypeSelect" name="memberIdentityType">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">会员段位</label>
+                    <div class="layui-input-inline">
+                        <select id="memberRankTypeSelect" name="memberRankType">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">状&emsp;&emsp;态</label>
+                    <div class="layui-input-inline">
+                        <select id="stateSelect" name="state">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-inline">
+                        <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="profitParamQueryFormSubmit"
+                                lay-submit><i class="layui-icon layui-icon-search"></i>
+                            搜索
+                        </button>
+                        <button class="pear-btn pear-btn-md" type="reset"><i class="layui-icon layui-icon-refresh"></i>
+                            重置
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table id="profitParamTable" lay-filter="profitParamTable"></table>
+    </div>
+</div>
+
+<script id="stateTpl" type="text/html">
+    <input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="stateBtn"
+           {{ AdminOperator.isAdmin() ? 'disabled' : ''}}
+    {{ d.state=== '启用' ? 'checked' : '' }} />
+</script>
+
+<script id="toolbar" type="text/html">
+    <button id="addButton"
+            class="pear-btn pear-btn-md {{ AdminOperator.isAdmin() ? 'layui-btn-disabled' : 'pear-btn-primary'}}"
+            lay-event="{{ AdminOperator.isAdmin() ? '' : 'add'}}"><i class="layui-icon layui-icon-add-1"></i>
+        新增
+    </button>
+</script>
+
+<script id="rowBar" type="text/html">
+    <button class="pear-btn pear-btn-sm {{ AdminOperator.isAdmin() ? 'layui-btn-disabled' : 'pear-btn-primary' }}"
+            lay-event="{{ AdminOperator.isAdmin() ? '' : 'edit' }}">
+        <i class="layui-icon layui-icon-edit"></i>
+    </button>
+    <button class="pear-btn pear-btn-sm {{ AdminOperator.isAdmin() ? 'layui-btn-disabled' : 'pear-btn-danger' }}"
+            lay-event="{{ AdminOperator.isAdmin() ? '' : 'remove' }}">
+        <i class="layui-icon layui-icon-delete"></i>
+    </button>
+</script>
+@}

@@ -3,9 +3,9 @@ package cn.fufeii.ds.server.strategy.impl;
 import cn.fufeii.ds.common.enumerate.biz.ProfitLevelEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import cn.fufeii.ds.common.util.DsUtil;
+import cn.fufeii.ds.repository.entity.AllotProfitEvent;
 import cn.fufeii.ds.repository.entity.Member;
 import cn.fufeii.ds.repository.entity.Platform;
-import cn.fufeii.ds.repository.entity.ProfitEvent;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.subscribe.event.TradeEvent;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class TradeProfitStrategy extends AbstractProfitStrategy {
         Member tradeMember = crudMemberService.selectById(tradeEventSource.getMemberId());
 
         // 记录分润事件
-        ProfitEvent tradeEvent = this.saveProfitEvent(tradeMember, tradeEventSource);
+        AllotProfitEvent tradeEvent = this.saveProfitEvent(tradeMember, tradeEventSource);
 
         // 当前会员进行分润
         super.tryExecuteProfit(tradeEvent, tradeMember, ProfitTypeEnum.TRADE, ProfitLevelEnum.SELF);
@@ -72,8 +72,8 @@ public class TradeProfitStrategy extends AbstractProfitStrategy {
     /**
      * 保存分销事件
      */
-    private ProfitEvent saveProfitEvent(Member upgradeMember, TradeEvent.Source source) {
-        ProfitEvent profitEvent = new ProfitEvent();
+    private AllotProfitEvent saveProfitEvent(Member upgradeMember, TradeEvent.Source source) {
+        AllotProfitEvent profitEvent = new AllotProfitEvent();
         Platform self = CurrentPlatformHelper.self();
         profitEvent.setPlatformUsername(self.getUsername());
         profitEvent.setPlatformNickname(self.getNickname());
@@ -82,7 +82,7 @@ public class TradeProfitStrategy extends AbstractProfitStrategy {
         profitEvent.setEventNumber(source.getTradeNumber());
         profitEvent.setEventAmount(source.getTradeAmount());
         profitEvent.setMemo(String.format("会员[%s]发生了金钱交易", upgradeMember.getNickname()));
-        return crudProfitEventService.insert(profitEvent);
+        return crudAllotProfitEventService.insert(profitEvent);
     }
 
 }

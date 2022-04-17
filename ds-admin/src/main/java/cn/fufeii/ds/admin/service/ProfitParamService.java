@@ -1,16 +1,16 @@
 package cn.fufeii.ds.admin.service;
 
-import cn.fufeii.ds.admin.model.vo.request.ProfitParamQueryRequest;
-import cn.fufeii.ds.admin.model.vo.request.ProfitParamUpsertRequest;
-import cn.fufeii.ds.admin.model.vo.response.ProfitParamResponse;
+import cn.fufeii.ds.admin.model.vo.request.AllotProfitConfigQueryRequest;
+import cn.fufeii.ds.admin.model.vo.request.AllotProfitConfigUpsertRequest;
+import cn.fufeii.ds.admin.model.vo.response.AllotProfitConfigResponse;
 import cn.fufeii.ds.admin.security.CurrentUserHelper;
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.util.BeanCopierUtil;
 import cn.fufeii.ds.common.util.LockTemplate;
-import cn.fufeii.ds.repository.crud.CrudProfitParamService;
-import cn.fufeii.ds.repository.entity.ProfitParam;
+import cn.fufeii.ds.repository.crud.CrudAllotProfitConfigService;
+import cn.fufeii.ds.repository.entity.AllotProfitConfig;
 import cn.fufeii.ds.repository.entity.SystemUser;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -29,20 +29,20 @@ import org.springframework.stereotype.Service;
 public class ProfitParamService {
 
     @Autowired
-    private CrudProfitParamService crudProfitParamService;
+    private CrudAllotProfitConfigService crudAllotProfitConfigService;
     @Autowired
     private LockTemplate lockTemplate;
 
     /**
      * 分页查询
      */
-    public IPage<ProfitParamResponse> page(ProfitParamQueryRequest pageParam, IPage<ProfitParam> pageable) {
-        LambdaQueryWrapper<ProfitParam> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, ProfitParam.class));
+    public IPage<AllotProfitConfigResponse> page(AllotProfitConfigQueryRequest pageParam, IPage<AllotProfitConfig> pageable) {
+        LambdaQueryWrapper<AllotProfitConfig> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, AllotProfitConfig.class));
         CurrentUserHelper.setPlatformIfPossible(queryWrapper);
-        IPage<ProfitParam> selectPage = crudProfitParamService.selectPage(queryWrapper, pageable);
+        IPage<AllotProfitConfig> selectPage = crudAllotProfitConfigService.selectPage(queryWrapper, pageable);
         // 组装response对象返回
         return selectPage.convert(it -> {
-            ProfitParamResponse response = new ProfitParamResponse();
+            AllotProfitConfigResponse response = new AllotProfitConfigResponse();
             response.setId(it.getId());
             response.setPlatformUsername(it.getPlatformUsername());
             response.setPlatformNickname(it.getPlatformNickname());
@@ -63,12 +63,12 @@ public class ProfitParamService {
     /**
      * 获取
      */
-    public ProfitParamResponse get(Long id) {
-        ProfitParam profitParam = crudProfitParamService.selectById(id);
+    public AllotProfitConfigResponse get(Long id) {
+        AllotProfitConfig profitParam = crudAllotProfitConfigService.selectById(id);
         // 数据权限
         CurrentUserHelper.checkPlatformThrow(profitParam.getPlatformUsername());
         // 响应
-        ProfitParamResponse response = new ProfitParamResponse();
+        AllotProfitConfigResponse response = new AllotProfitConfigResponse();
         response.setId(profitParam.getId());
         response.setPlatformUsername(profitParam.getPlatformUsername());
         response.setPlatformNickname(profitParam.getPlatformNickname());
@@ -88,63 +88,63 @@ public class ProfitParamService {
     /**
      * 保存
      */
-    public void create(ProfitParamUpsertRequest request) {
+    public void create(AllotProfitConfigUpsertRequest request) {
         SystemUser currentUser = CurrentUserHelper.self();
         // 手动加锁并执行逻辑
         lockTemplate.runWithLock(currentUser.getPlatformUsername() + ":pp-create", log, () -> {
             // 检查是否存在并插入数据
-            LambdaQueryWrapper<ProfitParam> queryWrapper = Wrappers.<ProfitParam>lambdaQuery()
-                    .eq(ProfitParam::getPlatformUsername, currentUser.getPlatformUsername())
-                    .eq(ProfitParam::getAccountType, request.getAccountType())
-                    .eq(ProfitParam::getProfitType, request.getProfitType())
-                    .eq(ProfitParam::getProfitLevel, request.getProfitLevel())
-                    .eq(ProfitParam::getMemberIdentityType, request.getMemberIdentityType())
-                    .eq(ProfitParam::getMemberRankType, request.getMemberRankType());
-            if (crudProfitParamService.exist(queryWrapper)) {
+            LambdaQueryWrapper<AllotProfitConfig> queryWrapper = Wrappers.<AllotProfitConfig>lambdaQuery()
+                    .eq(AllotProfitConfig::getPlatformUsername, currentUser.getPlatformUsername())
+                    .eq(AllotProfitConfig::getAccountType, request.getAccountType())
+                    .eq(AllotProfitConfig::getProfitType, request.getProfitType())
+                    .eq(AllotProfitConfig::getProfitLevel, request.getProfitLevel())
+                    .eq(AllotProfitConfig::getMemberIdentityType, request.getMemberIdentityType())
+                    .eq(AllotProfitConfig::getMemberRankType, request.getMemberRankType());
+            if (crudAllotProfitConfigService.exist(queryWrapper)) {
                 throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "该参数已存在");
             }
-            ProfitParam profitParam = new ProfitParam();
+            AllotProfitConfig profitParam = new AllotProfitConfig();
             // 建议使用setter, 字段类型问题能在编译期发现
             BeanCopierUtil.copy(request, profitParam);
             profitParam.setPlatformUsername(currentUser.getPlatformUsername());
             profitParam.setPlatformNickname(currentUser.getPlatformNickname());
             profitParam.setState(StateEnum.ENABLE);
-            crudProfitParamService.insert(profitParam);
+            crudAllotProfitConfigService.insert(profitParam);
         });
     }
 
     /**
      * 更新
      */
-    public void modify(ProfitParamUpsertRequest request) {
-        ProfitParam profitParam = crudProfitParamService.selectById(request.getId());
+    public void modify(AllotProfitConfigUpsertRequest request) {
+        AllotProfitConfig profitParam = crudAllotProfitConfigService.selectById(request.getId());
         // 数据权限
         CurrentUserHelper.checkPlatformThrow(profitParam.getPlatformUsername());
         // 建议使用setter, 字段类型问题能在编译期发现
         BeanCopierUtil.copy(request, profitParam);
-        crudProfitParamService.updateById(profitParam);
+        crudAllotProfitConfigService.updateById(profitParam);
     }
 
     /**
      * 删除
      */
     public void remove(Long id) {
-        ProfitParam profitParam = crudProfitParamService.selectById(id);
+        AllotProfitConfig profitParam = crudAllotProfitConfigService.selectById(id);
         // 数据权限
         CurrentUserHelper.checkPlatformThrow(profitParam.getPlatformUsername());
-        crudProfitParamService.deleteById(id);
+        crudAllotProfitConfigService.deleteById(id);
     }
 
     /**
      * 修改状态
      */
     public void changeState(Long id, StateEnum stateEnum) {
-        ProfitParam profitParam = crudProfitParamService.selectById(id);
+        AllotProfitConfig profitParam = crudAllotProfitConfigService.selectById(id);
         CurrentUserHelper.checkPlatformThrow(profitParam.getPlatformUsername());
         if (stateEnum == profitParam.getState()) {
             throw new BizException(ExceptionEnum.STATE_COMMON_ERROR);
         }
         profitParam.setState(stateEnum);
-        crudProfitParamService.updateById(profitParam);
+        crudAllotProfitConfigService.updateById(profitParam);
     }
 }

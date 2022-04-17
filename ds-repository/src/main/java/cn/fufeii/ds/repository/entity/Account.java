@@ -1,9 +1,9 @@
 package cn.fufeii.ds.repository.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-
-import java.util.Date;
+import lombok.EqualsAndHashCode;
 
 /**
  * 会员账户
@@ -11,14 +11,9 @@ import java.util.Date;
  * @author FuFei
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @TableName(value = "ds_account")
-public class Account {
-
-    /**
-     * 主键
-     */
-    @TableId
-    private Long id;
+public class Account extends BaseEntity {
 
     /**
      * 会员主键
@@ -73,24 +68,5 @@ public class Account {
      */
     @TableField
     private Integer pointsFrozen;
-
-    /**
-     * 乐观锁
-     */
-    @Version
-    @TableField(fill = FieldFill.INSERT)
-    private Integer version;
-
-    /**
-     * 更新时间
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateDateTime;
-
-    /**
-     * 创建时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private Date createDateTime;
 
 }

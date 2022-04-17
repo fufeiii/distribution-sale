@@ -1,0 +1,40 @@
+@layout("/common/container.html", {js:["/ds/js/memberRankConfig/memberRankConfigEdit.js"]}) {
+<form action="" class="layui-form" lay-filter="rankParamTable">
+    <div class="mainBox">
+        <div class="main-container">
+            <input name="id" type="hidden">
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">会员段位</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" lay-verify="required" name="memberRankType" readonly>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">开始积分</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" lay-verify="required|number" name="beginPoints">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">结束积分</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" lay-verify="required|number" name="endPoints">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom">
+        <div class="button-container">
+            <button class="pear-btn pear-btn-primary pear-btn-sm" lay-filter="btnSubmit" lay-submit="" type="submit">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button class="pear-btn pear-btn-sm" onclick="parent.layer.close(parent.layer.getFrameIndex(window.name))">
+                <i class="layui-icon layui-icon-close"></i>
+                取消
+            </button>
+        </div>
+    </div>
+</form>
+@}

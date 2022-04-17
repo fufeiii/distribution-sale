@@ -79,16 +79,16 @@ public class CurrentUserHelper {
     public static <T> void setPlatformIfPossible(LambdaQueryWrapper<T> queryWrapper) {
         if (isNotAdmin()) {
             String platformUsername = platformUsername();
-            if (ProfitParam.class.equals(queryWrapper.getEntityClass())) {
-                ((LambdaQueryWrapper<ProfitParam>) queryWrapper).eq(ProfitParam::getPlatformUsername, platformUsername);
+            if (AllotProfitConfig.class.equals(queryWrapper.getEntityClass())) {
+                ((LambdaQueryWrapper<AllotProfitConfig>) queryWrapper).eq(AllotProfitConfig::getPlatformUsername, platformUsername);
                 return;
             }
-            if (RankParam.class.equals(queryWrapper.getEntityClass())) {
-                ((LambdaQueryWrapper<RankParam>) queryWrapper).eq(RankParam::getPlatformUsername, platformUsername);
+            if (MemberRankConfig.class.equals(queryWrapper.getEntityClass())) {
+                ((LambdaQueryWrapper<MemberRankConfig>) queryWrapper).eq(MemberRankConfig::getPlatformUsername, platformUsername);
                 return;
             }
-            if (ProfitEvent.class.equals(queryWrapper.getEntityClass())) {
-                ((LambdaQueryWrapper<ProfitEvent>) queryWrapper).eq(ProfitEvent::getPlatformUsername, platformUsername);
+            if (AllotProfitEvent.class.equals(queryWrapper.getEntityClass())) {
+                ((LambdaQueryWrapper<AllotProfitEvent>) queryWrapper).eq(AllotProfitEvent::getPlatformUsername, platformUsername);
                 return;
             }
             if (Member.class.equals(queryWrapper.getEntityClass())) {

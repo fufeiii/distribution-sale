@@ -3,10 +3,10 @@ package cn.fufeii.ds.repository.entity;
 import cn.fufeii.ds.common.enumerate.biz.MemberIdentityTypeEnum;
 import cn.fufeii.ds.common.enumerate.biz.MemberRankTypeEnum;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-
-import java.util.Date;
+import lombok.EqualsAndHashCode;
 
 /**
  * 会员信息
@@ -14,14 +14,9 @@ import java.util.Date;
  * @author FuFei
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @TableName(value = "ds_member")
-public class Member {
-
-    /**
-     * 主键
-     */
-    @TableId
-    private Long id;
+public class Member extends BaseEntity {
 
     /**
      * 平台标识
@@ -42,7 +37,7 @@ public class Member {
     private String username;
 
     /**
-     * 会员名称
+     * 会员昵称
      */
     @TableField
     private String nickname;
@@ -54,19 +49,19 @@ public class Member {
     private String avatar;
 
     /**
-     * 第一邀请人
+     * 第一级邀请人主键
      */
     @TableField
     private Long firstInviterId;
 
     /**
-     * 第二邀请人
+     * 第二级邀请人主键
      */
     @TableField
     private Long secondInviterId;
 
     /**
-     * 第三邀请人
+     * 第三级邀请人主键
      */
     @TableField
     private Long thirdInviterId;
@@ -88,24 +83,5 @@ public class Member {
      */
     @TableField
     private StateEnum state;
-
-    /**
-     * 乐观锁
-     */
-    @Version
-    @TableField(fill = FieldFill.INSERT)
-    private Integer version;
-
-    /**
-     * 更新时间
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateDateTime;
-
-    /**
-     * 创建时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private Date createDateTime;
 
 }

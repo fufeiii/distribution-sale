@@ -1,10 +1,10 @@
 package cn.fufeii.ds.repository.entity;
 
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-
-import java.util.Date;
+import lombok.EqualsAndHashCode;
 
 /**
  * 系统用户
@@ -12,14 +12,9 @@ import java.util.Date;
  * @author FuFei
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @TableName(value = "ds_system_user")
-public class SystemUser {
-
-    /**
-     * 主键
-     */
-    @TableId
-    private Long id;
+public class SystemUser extends BaseEntity {
 
     /**
      * 平台标识
@@ -40,7 +35,7 @@ public class SystemUser {
     private String username;
 
     /**
-     * 名称
+     * 用户名
      */
     @TableField
     private String nickname;
@@ -68,24 +63,5 @@ public class SystemUser {
      */
     @TableField
     private StateEnum state;
-
-    /**
-     * 乐观锁
-     */
-    @Version
-    @TableField(fill = FieldFill.INSERT)
-    private Integer version;
-
-    /**
-     * 更新时间
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateDateTime;
-
-    /**
-     * 创建时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private Date createDateTime;
 
 }

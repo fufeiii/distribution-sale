@@ -33,35 +33,35 @@ import java.util.Objects;
 @Slf4j
 public abstract class AbstractProfitStrategy implements ProfitStrategy {
     @Autowired
-    protected CrudRankParamService crudRankParamService;
+    protected CrudMemberRankConfigService crudMemberRankConfigService;
     @Autowired
     protected CrudMemberService crudMemberService;
     @Autowired
     protected CrudAccountService crudAccountService;
     @Autowired
-    protected CrudProfitParamService crudProfitParamService;
+    protected CrudAllotProfitConfigService crudAllotProfitConfigService;
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
     @Autowired
-    protected CrudProfitEventService crudProfitEventService;
+    protected CrudAllotProfitEventService crudAllotProfitEventService;
     @Autowired
-    protected CrudProfitRecordService crudProfitRecordService;
+    protected CrudProfitIncomeRecordService crudProfitIncomeRecordService;
     @Autowired
-    protected CrudAccountRecordService crudAccountRecordService;
+    protected CrudAccountChangeRecordService crudAccountChangeRecordService;
 
     /**
      * 获取分润参数
      */
-    private ProfitParam getProfitParam(AccountTypeEnum ate, ProfitTypeEnum pte, ProfitLevelEnum ple, MemberIdentityTypeEnum mite, MemberRankTypeEnum mre) {
-        LambdaQueryWrapper<ProfitParam> lambdaQueryWrapper = Wrappers.<ProfitParam>lambdaQuery()
-                .eq(ProfitParam::getAccountType, ate)
-                .eq(ProfitParam::getProfitType, pte)
-                .eq(ProfitParam::getProfitLevel, ple)
-                .eq(ProfitParam::getMemberIdentityType, mite)
-                .eq(ProfitParam::getMemberRankType, mre)
-                .eq(ProfitParam::getPlatformUsername, CurrentPlatformHelper.username())
-                .eq(ProfitParam::getState, StateEnum.ENABLE);
-        List<ProfitParam> profitParamList = crudProfitParamService.selectList(lambdaQueryWrapper);
+    private AllotProfitConfig getProfitParam(AccountTypeEnum ate, ProfitTypeEnum pte, ProfitLevelEnum ple, MemberIdentityTypeEnum mite, MemberRankTypeEnum mre) {
+        LambdaQueryWrapper<AllotProfitConfig> lambdaQueryWrapper = Wrappers.<AllotProfitConfig>lambdaQuery()
+                .eq(AllotProfitConfig::getAccountType, ate)
+                .eq(AllotProfitConfig::getProfitType, pte)
+                .eq(AllotProfitConfig::getProfitLevel, ple)
+                .eq(AllotProfitConfig::getMemberIdentityType, mite)
+                .eq(AllotProfitConfig::getMemberRankType, mre)
+                .eq(AllotProfitConfig::getPlatformUsername, CurrentPlatformHelper.username())
+                .eq(AllotProfitConfig::getState, StateEnum.ENABLE);
+        List<AllotProfitConfig> profitParamList = crudAllotProfitConfigService.selectList(lambdaQueryWrapper);
         if (profitParamList.size() > 1) {
             throw new BizException(ExceptionEnum.NO_SUITABLE_PARAM, ate.getMessage() + "分润");
         }
@@ -71,12 +71,12 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
     /**
      * 获取段位参数
      */
-    private RankParam getRankParam(MemberRankTypeEnum mre) {
-        LambdaQueryWrapper<RankParam> lambdaQueryWrapper = Wrappers.<RankParam>lambdaQuery()
-                .eq(RankParam::getMemberRankType, mre)
-                .eq(RankParam::getPlatformUsername, CurrentPlatformHelper.username())
-                .eq(RankParam::getState, StateEnum.ENABLE);
-        List<RankParam> rankParamList = crudRankParamService.selectList(lambdaQueryWrapper);
+    private MemberRankConfig getRankParam(MemberRankTypeEnum mre) {
+        LambdaQueryWrapper<MemberRankConfig> lambdaQueryWrapper = Wrappers.<MemberRankConfig>lambdaQuery()
+                .eq(MemberRankConfig::getMemberRankType, mre)
+                .eq(MemberRankConfig::getPlatformUsername, CurrentPlatformHelper.username())
+                .eq(MemberRankConfig::getState, StateEnum.ENABLE);
+        List<MemberRankConfig> rankParamList = crudMemberRankConfigService.selectList(lambdaQueryWrapper);
         if (rankParamList.size() > 1) {
             throw new BizException(ExceptionEnum.NO_SUITABLE_PARAM, "段位");
         }
@@ -90,7 +90,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
      * @param profitParam *
      * @param baseAmount  基础金额
      */
-    private Integer calculateProfitAmount(ProfitParam profitParam, Integer baseAmount) {
+    private Integer calculateProfitAmount(AllotProfitConfig profitParam, Integer baseAmount) {
 
         /*
          * 邀请分润和升级分润, 如果选择了百分比的计算模式, 那么基数就为1
@@ -119,7 +119,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
      * @param account *
      */
     private void publishRankUpgradeEventIfPossible(Member member, Account account) {
-        RankParam rankParam = this.getRankParam(member.getRankType());
+        MemberRankConfig rankParam = this.getRankParam(member.getRankType());
         String platformUsername = CurrentPlatformHelper.username();
         if (rankParam == null) {
             if (log.isDebugEnabled()) {
@@ -145,11 +145,11 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
      * 为某个会员执行分润
      * 注意：不要抛出异常，因为当前会员分润中出现异常，不能让其他会员受到影响
      */
-    protected void tryExecuteProfit(ProfitEvent inviteEvent, Member member, ProfitTypeEnum pte, ProfitLevelEnum ple) {
+    protected void tryExecuteProfit(AllotProfitEvent inviteEvent, Member member, ProfitTypeEnum pte, ProfitLevelEnum ple) {
         try {
             // 查询分润参数
-            ProfitParam moneyParam = this.getProfitParam(AccountTypeEnum.MONEY, pte, ple, member.getIdentityType(), member.getRankType());
-            ProfitParam pointsParam = this.getProfitParam(AccountTypeEnum.POINTS, pte, ple, member.getIdentityType(), member.getRankType());
+            AllotProfitConfig moneyParam = this.getProfitParam(AccountTypeEnum.MONEY, pte, ple, member.getIdentityType(), member.getRankType());
+            AllotProfitConfig pointsParam = this.getProfitParam(AccountTypeEnum.POINTS, pte, ple, member.getIdentityType(), member.getRankType());
             // 检查分润参数是否存在
             if (Objects.nonNull(moneyParam) || Objects.nonNull(pointsParam)) {
                 // 进行分润，走AOP才能控制事务
@@ -174,7 +174,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
      * 计算佣金/积分数量, 并入对应会员帐户
      */
     @Transactional
-    public void doProfit(ProfitEvent event, Member member, ProfitParam moneyParam, ProfitParam pointsParam) {
+    public void doProfit(AllotProfitEvent event, Member member, AllotProfitConfig moneyParam, AllotProfitConfig pointsParam) {
         String platformUsername = CurrentPlatformHelper.username();
         log.info("开始执行分润,人员为{},{}", member.getUsername(), platformUsername);
         Account account = crudAccountService.selectByMemberId(member.getId());
@@ -190,25 +190,25 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
                 }
 
                 // 保存佣金分销记录
-                ProfitRecord profitRecord = new ProfitRecord();
+                ProfitIncomeRecord profitRecord = new ProfitIncomeRecord();
                 profitRecord.setProfitEventId(event.getId());
                 profitRecord.setAccountType(AccountTypeEnum.MONEY);
                 profitRecord.setImpactMemberId(member.getId());
                 profitRecord.setIncomeCount(profitAmount);
                 profitRecord.setMemo(String.format("%s,获得佣金收入%s元", member.getNickname(), DsUtil.fenToYuan(profitAmount)));
-                profitRecord = crudProfitRecordService.insert(profitRecord);
+                profitRecord = crudProfitIncomeRecordService.insert(profitRecord);
 
                 // 保存佣金入账记录
-                AccountRecord accountRecord = new AccountRecord();
+                AccountChangeRecord accountRecord = new AccountChangeRecord();
                 accountRecord.setMemberId(member.getId());
                 accountRecord.setAccountId(account.getId());
                 accountRecord.setAccountType(AccountTypeEnum.MONEY);
-                accountRecord.setBeforeChangeTotal(account.getMoneyTotal());
-                accountRecord.setAfterChangeTotal(account.getMoneyTotal() + profitAmount);
-                accountRecord.setChangeAmount(profitAmount);
+                accountRecord.setBeforeAvailableTotal(account.getMoneyAvailable());
+                accountRecord.setAfterAvailableTotal(account.getMoneyAvailable() + profitAmount);
+                accountRecord.setChangeCount(profitAmount);
                 accountRecord.setChangeType(ChangeTypeEnum.PROFIT);
-                accountRecord.setChangeRecordId(profitRecord.getId());
-                crudAccountRecordService.insert(accountRecord);
+                accountRecord.setChangeBizNumber(profitRecord.getId().toString());
+                crudAccountChangeRecordService.insert(accountRecord);
 
                 // 更新账户
                 account.setMoneyTotalHistory(account.getMoneyTotalHistory() + profitAmount);
@@ -232,25 +232,25 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
                 isValidPointsParam = true;
 
                 // 保存佣金分销记录
-                ProfitRecord profitRecord = new ProfitRecord();
+                ProfitIncomeRecord profitRecord = new ProfitIncomeRecord();
                 profitRecord.setProfitEventId(event.getId());
                 profitRecord.setAccountType(AccountTypeEnum.POINTS);
                 profitRecord.setImpactMemberId(member.getId());
                 profitRecord.setIncomeCount(profitAmount);
                 profitRecord.setMemo(String.format("%s,获得积分收入%s个", member.getNickname(), DsUtil.fenToYuan(profitAmount)));
-                profitRecord = crudProfitRecordService.insert(profitRecord);
+                profitRecord = crudProfitIncomeRecordService.insert(profitRecord);
 
                 // 保存佣金入账记录
-                AccountRecord accountRecord = new AccountRecord();
+                AccountChangeRecord accountRecord = new AccountChangeRecord();
                 accountRecord.setMemberId(member.getId());
                 accountRecord.setAccountId(account.getId());
                 accountRecord.setAccountType(AccountTypeEnum.POINTS);
-                accountRecord.setBeforeChangeTotal(account.getPointsTotal());
-                accountRecord.setAfterChangeTotal(account.getPointsTotal() + profitAmount);
-                accountRecord.setChangeAmount(profitAmount);
+                accountRecord.setBeforeAvailableTotal(account.getPointsAvailable());
+                accountRecord.setAfterAvailableTotal(account.getPointsAvailable() + profitAmount);
+                accountRecord.setChangeCount(profitAmount);
                 accountRecord.setChangeType(ChangeTypeEnum.PROFIT);
-                accountRecord.setChangeRecordId(profitRecord.getId());
-                crudAccountRecordService.insert(accountRecord);
+                accountRecord.setChangeBizNumber(profitRecord.getId().toString());
+                crudAccountChangeRecordService.insert(accountRecord);
 
                 // 更新账户
                 account.setPointsTotalHistory(account.getPointsTotalHistory() + profitAmount);

@@ -3,9 +3,9 @@ package cn.fufeii.ds.server.strategy.impl;
 import cn.fufeii.ds.common.enumerate.biz.ProfitLevelEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import cn.fufeii.ds.common.util.DsUtil;
+import cn.fufeii.ds.repository.entity.AllotProfitEvent;
 import cn.fufeii.ds.repository.entity.Member;
 import cn.fufeii.ds.repository.entity.Platform;
-import cn.fufeii.ds.repository.entity.ProfitEvent;
 import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.subscribe.event.InviteEvent;
@@ -40,7 +40,7 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
         log.info("【邀请分润】被邀请会员[{}], 邀请会员[{}]", inviteeMember.getUsername(), firstInviterMember.getUsername());
 
         // 记录分润事件
-        ProfitEvent inviteEvent = this.saveProfitEvent(inviteeMember);
+        AllotProfitEvent inviteEvent = this.saveProfitEvent(inviteeMember);
 
         // 获取当前会员
         super.tryExecuteProfit(inviteEvent, inviteeMember, ProfitTypeEnum.INVITE, ProfitLevelEnum.SELF);
@@ -73,8 +73,8 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
      *
      * @param inviteeMember 被邀请人
      */
-    private ProfitEvent saveProfitEvent(Member inviteeMember) {
-        ProfitEvent profitEvent = new ProfitEvent();
+    private AllotProfitEvent saveProfitEvent(Member inviteeMember) {
+        AllotProfitEvent profitEvent = new AllotProfitEvent();
         Platform self = CurrentPlatformHelper.self();
         profitEvent.setPlatformUsername(self.getUsername());
         profitEvent.setPlatformNickname(self.getNickname());
@@ -83,7 +83,7 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
         profitEvent.setEventNumber(inviteeMember.getId() + "V" + (SystemClock.now() / 1000));
         profitEvent.setEventAmount(DsServerConstant.DEFAULT_EVENT_AMOUNT);
         profitEvent.setMemo(String.format("会员[%s]被邀请加入", inviteeMember.getNickname()));
-        return crudProfitEventService.insert(profitEvent);
+        return crudAllotProfitEventService.insert(profitEvent);
     }
 
 }

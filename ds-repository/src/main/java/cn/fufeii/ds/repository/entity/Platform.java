@@ -1,25 +1,20 @@
 package cn.fufeii.ds.repository.entity;
 
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-
-import java.util.Date;
+import lombok.EqualsAndHashCode;
 
 /**
- * 平台
+ * 平台信息
  *
  * @author FuFei
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @TableName(value = "ds_platform")
-public class Platform {
-
-    /**
-     * 主键
-     */
-    @TableId
-    private Long id;
+public class Platform extends BaseEntity {
 
     /**
      * 平台标识
@@ -34,40 +29,21 @@ public class Platform {
     private String nickname;
 
     /**
-     * 平台的webhook
-     */
-    @TableField
-    private String webhook;
-
-    /**
      * 签名密钥
      */
     @TableField
     private String sk;
 
     /**
+     * 回调地址
+     */
+    @TableField
+    private String notifyUrl;
+
+    /**
      * 状态
      */
     @TableField
     private StateEnum state;
-
-    /**
-     * 乐观锁
-     */
-    @Version
-    @TableField(fill = FieldFill.INSERT)
-    private Integer version;
-
-    /**
-     * 更新时间
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateDateTime;
-
-    /**
-     * 创建时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private Date createDateTime;
 
 }

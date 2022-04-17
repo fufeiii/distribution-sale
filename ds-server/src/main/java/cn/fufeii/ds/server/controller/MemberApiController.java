@@ -10,7 +10,7 @@ import cn.fufeii.ds.common.result.PageResult;
 import cn.fufeii.ds.server.model.api.request.MemberCreateRequest;
 import cn.fufeii.ds.server.model.api.request.MemberIdentityTypeRequest;
 import cn.fufeii.ds.server.model.api.response.MemberCreateResponse;
-import cn.fufeii.ds.server.model.api.response.MemberInfoResponse;
+import cn.fufeii.ds.server.model.api.response.MemberResponse;
 import cn.fufeii.ds.server.model.api.response.MemberTeamResponse;
 import cn.fufeii.ds.server.service.MemberService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -44,7 +44,7 @@ public class MemberApiController {
 
     @ApiOperation("查询会员详情")
     @GetMapping("/info/{username}")
-    public CommonResult<MemberInfoResponse> info(@PathVariable String username) {
+    public CommonResult<MemberResponse> info(@PathVariable String username) {
         return CommonResult.success(memberService.info(username));
     }
 

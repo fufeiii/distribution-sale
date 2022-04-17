@@ -42,7 +42,6 @@ public class PlatformService {
             response.setUsername(it.getUsername());
             response.setNickname(it.getNickname());
             response.setSk(it.getSk());
-            response.setWebhook(it.getWebhook());
             response.setState(it.getState().getMessage());
             response.setCreateDateTime(it.getCreateDateTime());
             return response;
@@ -64,7 +63,6 @@ public class PlatformService {
         Platform platform = new Platform();
         platform.setUsername(request.getUsername());
         platform.setNickname(request.getNickname());
-        platform.setWebhook(request.getWebhook());
         platform.setSk(RandomUtil.randomString(32));
         platform.setState(StateEnum.ENABLE);
         crudPlatformService.insert(platform);
