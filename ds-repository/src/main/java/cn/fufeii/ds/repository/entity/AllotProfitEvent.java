@@ -1,5 +1,6 @@
 package cn.fufeii.ds.repository.entity;
 
+import cn.fufeii.ds.common.enumerate.biz.NotifyStateEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -56,7 +57,7 @@ public class AllotProfitEvent extends BaseEntity {
      * 通知状态
      */
     @TableField
-    private Integer notifyState;
+    private NotifyStateEnum notifyState;
 
     /**
      * 备注

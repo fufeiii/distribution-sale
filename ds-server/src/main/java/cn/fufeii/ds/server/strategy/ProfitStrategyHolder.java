@@ -26,7 +26,7 @@ public class ProfitStrategyHolder {
         profitStrategyList.stream().filter(it -> it.match(profitType))
                 .findFirst()
                 .orElseThrow(() -> BizException.serverError(ExceptionEnum.UNKNOWN_STRATEGY, profitType.name()))
-                .profit(profitEvent.getSource());
+                .startAllotProfit(profitEvent.getSource());
     }
 
 }

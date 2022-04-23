@@ -17,6 +17,7 @@ import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -43,11 +44,52 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
     @Autowired
+    private TransactionTemplate transactionTemplate;
+    @Autowired
     protected CrudAllotProfitEventService crudAllotProfitEventService;
     @Autowired
     protected CrudProfitIncomeRecordService crudProfitIncomeRecordService;
     @Autowired
     protected CrudAccountChangeRecordService crudAccountChangeRecordService;
+
+
+    @Override
+    public void startAllotProfit(Object eventSource) {
+        // 保存分润事件
+        AllotProfitEvent allotProfitEvent = this.saveEvent(eventSource);
+        this.allotProfit(eventSource, allotProfitEvent);
+        try {
+            // 传播分润事件
+            this.spreadEvent(allotProfitEvent);
+        } catch (Exception e) {
+            // 打印异常，可能是http调用错误之类的
+            log.error("传播分润事件异常", e);
+        }
+    }
+
+    /**
+     * 保存分销事件
+     *
+     * @param source 事件来源
+     */
+    protected abstract AllotProfitEvent saveEvent(Object source);
+
+    /**
+     * 执行分润
+     *
+     * @param source 事件来源
+     * @param ape    分润事件
+     */
+    protected abstract void allotProfit(Object source, AllotProfitEvent ape);
+
+    /**
+     * 传播分润事件
+     *
+     * @param ape 分润事件
+     */
+    private void spreadEvent(AllotProfitEvent ape) {
+
+    }
 
     /**
      * 获取分润参数
@@ -63,7 +105,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
                 .eq(AllotProfitConfig::getState, StateEnum.ENABLE);
         List<AllotProfitConfig> profitParamList = crudAllotProfitConfigService.selectList(lambdaQueryWrapper);
         if (profitParamList.size() > 1) {
-            throw new BizException(ExceptionEnum.NO_SUITABLE_PARAM, ate.getMessage() + "分润");
+            throw new BizException(ExceptionEnum.NO_SUITABLE_PARAM, ate.getMessage());
         }
         return profitParamList.isEmpty() ? null : profitParamList.get(0);
     }
@@ -111,7 +153,6 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
         return 0;
     }
 
-
     /**
      * 如果可能, 发送会员段位升级事件
      *
@@ -140,12 +181,11 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
 
     }
 
-
     /**
      * 为某个会员执行分润
      * 注意：不要抛出异常，因为当前会员分润中出现异常，不能让其他会员受到影响
      */
-    protected void tryExecuteProfit(AllotProfitEvent inviteEvent, Member member, ProfitTypeEnum pte, ProfitLevelEnum ple) {
+    protected void tryDoAllotProfit(AllotProfitEvent inviteEvent, Member member, ProfitTypeEnum pte, ProfitLevelEnum ple) {
         try {
             // 查询分润参数
             AllotProfitConfig moneyParam = this.getProfitParam(AccountTypeEnum.MONEY, pte, ple, member.getIdentityType(), member.getRankType());
@@ -153,7 +193,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
             // 检查分润参数是否存在
             if (Objects.nonNull(moneyParam) || Objects.nonNull(pointsParam)) {
                 // 进行分润，走AOP才能控制事务
-                ((AbstractProfitStrategy) AopContext.currentProxy()).doProfit(inviteEvent, member, moneyParam, pointsParam);
+                ((AbstractProfitStrategy) AopContext.currentProxy()).doAllotProfit(inviteEvent, member, moneyParam, pointsParam);
                 return;
             }
 
@@ -168,13 +208,13 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
 
     }
 
-
     /**
      * 执行分润逻辑
      * 计算佣金/积分数量, 并入对应会员帐户
+     * FIXME 设置方法级别为private 改为编程式事务
      */
     @Transactional
-    public void doProfit(AllotProfitEvent event, Member member, AllotProfitConfig moneyParam, AllotProfitConfig pointsParam) {
+    public void doAllotProfit(AllotProfitEvent event, Member member, AllotProfitConfig moneyParam, AllotProfitConfig pointsParam) {
         String platformUsername = CurrentPlatformHelper.username();
         log.info("开始执行分润,人员为{},{}", member.getUsername(), platformUsername);
         Account account = crudAccountService.selectByMemberId(member.getId());
@@ -270,6 +310,5 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
         // 日志
         log.info("执行分润结束,人员为{},{}", member.getUsername(), platformUsername);
     }
-
 
 }

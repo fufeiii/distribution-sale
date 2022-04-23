@@ -27,7 +27,24 @@ public class TradeProfitStrategy extends AbstractProfitStrategy {
     }
 
     @Override
-    public void profit(Object source) {
+    protected AllotProfitEvent saveEvent(Object source) {
+        TradeEvent.Source tradeEventSource = (TradeEvent.Source) source;
+        // 查询出主要相关的会员
+        Member tradeMember = crudMemberService.selectById(tradeEventSource.getMemberId());
+        AllotProfitEvent profitEvent = new AllotProfitEvent();
+        Platform self = CurrentPlatformHelper.self();
+        profitEvent.setPlatformUsername(self.getUsername());
+        profitEvent.setPlatformNickname(self.getNickname());
+        profitEvent.setProfitType(ProfitTypeEnum.TRADE);
+        profitEvent.setTriggerMemberId(tradeMember.getId());
+        profitEvent.setEventNumber(tradeEventSource.getTradeNumber());
+        profitEvent.setEventAmount(tradeEventSource.getTradeAmount());
+        profitEvent.setMemo(String.format("会员[%s]发生了金钱交易", tradeMember.getNickname()));
+        return crudAllotProfitEventService.insert(profitEvent);
+    }
+
+    @Override
+    protected void allotProfit(Object source, AllotProfitEvent ape) {
         String platformUsername = CurrentPlatformHelper.username();
         log.info("【交易分润】=====> 开始, 平台[{}]", platformUsername);
         TradeEvent.Source tradeEventSource = (TradeEvent.Source) source;
@@ -35,18 +52,15 @@ public class TradeProfitStrategy extends AbstractProfitStrategy {
         // 查询出主要相关的会员
         Member tradeMember = crudMemberService.selectById(tradeEventSource.getMemberId());
 
-        // 记录分润事件
-        AllotProfitEvent tradeEvent = this.saveProfitEvent(tradeMember, tradeEventSource);
-
         // 当前会员进行分润
-        super.tryExecuteProfit(tradeEvent, tradeMember, ProfitTypeEnum.TRADE, ProfitLevelEnum.SELF);
+        super.tryDoAllotProfit(ape, tradeMember, ProfitTypeEnum.TRADE, ProfitLevelEnum.SELF);
 
         // 查询一级邀请人
         Long firstInviterId = tradeMember.getFirstInviterId();
         if (DsUtil.isValidMemberId(firstInviterId)) {
             Member member = crudMemberService.selectById(firstInviterId);
             log.info("【交易分润】存在一级邀请人{}", member.getUsername());
-            super.tryExecuteProfit(tradeEvent, member, ProfitTypeEnum.TRADE, ProfitLevelEnum.ONE);
+            super.tryDoAllotProfit(ape, member, ProfitTypeEnum.TRADE, ProfitLevelEnum.ONE);
         }
 
         // 查询二级邀请人
@@ -54,7 +68,7 @@ public class TradeProfitStrategy extends AbstractProfitStrategy {
         if (DsUtil.isValidMemberId(secondInviterId)) {
             Member member = crudMemberService.selectById(secondInviterId);
             log.info("【交易分润】存在二级邀请人{}", member.getUsername());
-            super.tryExecuteProfit(tradeEvent, member, ProfitTypeEnum.TRADE, ProfitLevelEnum.TWO);
+            super.tryDoAllotProfit(ape, member, ProfitTypeEnum.TRADE, ProfitLevelEnum.TWO);
         }
 
         // 查询三级邀请人
@@ -62,27 +76,10 @@ public class TradeProfitStrategy extends AbstractProfitStrategy {
         if (DsUtil.isValidMemberId(thirdInviterId)) {
             Member member = crudMemberService.selectById(thirdInviterId);
             log.info("【交易分润】存在三级邀请人{}", member.getUsername());
-            super.tryExecuteProfit(tradeEvent, member, ProfitTypeEnum.TRADE, ProfitLevelEnum.THREE);
+            super.tryDoAllotProfit(ape, member, ProfitTypeEnum.TRADE, ProfitLevelEnum.THREE);
         }
 
         log.info("【交易分润】<===== 结束, 平台[{}]", platformUsername);
-    }
-
-
-    /**
-     * 保存分销事件
-     */
-    private AllotProfitEvent saveProfitEvent(Member upgradeMember, TradeEvent.Source source) {
-        AllotProfitEvent profitEvent = new AllotProfitEvent();
-        Platform self = CurrentPlatformHelper.self();
-        profitEvent.setPlatformUsername(self.getUsername());
-        profitEvent.setPlatformNickname(self.getNickname());
-        profitEvent.setProfitType(ProfitTypeEnum.TRADE);
-        profitEvent.setTriggerMemberId(upgradeMember.getFirstInviterId());
-        profitEvent.setEventNumber(source.getTradeNumber());
-        profitEvent.setEventAmount(source.getTradeAmount());
-        profitEvent.setMemo(String.format("会员[%s]发生了金钱交易", upgradeMember.getNickname()));
-        return crudAllotProfitEventService.insert(profitEvent);
     }
 
 }
