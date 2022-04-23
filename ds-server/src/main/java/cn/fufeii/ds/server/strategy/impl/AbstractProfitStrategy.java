@@ -8,6 +8,7 @@ import cn.fufeii.ds.repository.crud.*;
 import cn.fufeii.ds.repository.entity.*;
 import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
+import cn.fufeii.ds.server.service.PushService;
 import cn.fufeii.ds.server.strategy.ProfitStrategy;
 import cn.fufeii.ds.server.subscribe.event.UpgradeEvent;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -42,15 +43,17 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
     @Autowired
     protected CrudAllotProfitConfigService crudAllotProfitConfigService;
     @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
-    @Autowired
-    private TransactionTemplate transactionTemplate;
-    @Autowired
     protected CrudAllotProfitEventService crudAllotProfitEventService;
     @Autowired
     protected CrudProfitIncomeRecordService crudProfitIncomeRecordService;
     @Autowired
     protected CrudAccountChangeRecordService crudAccountChangeRecordService;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+    @Autowired
+    private TransactionTemplate transactionTemplate;
+    @Autowired
+    private PushService pushService;
 
 
     @Override
@@ -58,13 +61,8 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
         // 保存分润事件
         AllotProfitEvent allotProfitEvent = this.saveEvent(eventSource);
         this.allotProfit(eventSource, allotProfitEvent);
-        try {
-            // 传播分润事件
-            this.spreadEvent(allotProfitEvent);
-        } catch (Exception e) {
-            // 打印异常，可能是http调用错误之类的
-            log.error("传播分润事件异常", e);
-        }
+        // 传播分润事件
+        this.spreadEvent(allotProfitEvent);
     }
 
     /**
@@ -88,7 +86,7 @@ public abstract class AbstractProfitStrategy implements ProfitStrategy {
      * @param ape 分润事件
      */
     private void spreadEvent(AllotProfitEvent ape) {
-
+        pushService.pushAllotProfitEvent(ape);
     }
 
     /**
