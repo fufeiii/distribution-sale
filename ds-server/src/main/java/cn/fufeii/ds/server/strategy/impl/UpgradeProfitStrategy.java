@@ -8,6 +8,7 @@ import cn.fufeii.ds.repository.entity.Member;
 import cn.fufeii.ds.repository.entity.Platform;
 import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
+import cn.fufeii.ds.server.strategy.AllotProfitStrategy;
 import cn.fufeii.ds.server.subscribe.event.UpgradeEvent;
 import cn.hutool.core.date.SystemClock;
 import lombok.extern.slf4j.Slf4j;
@@ -21,15 +22,15 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class UpgradeProfitStrategy extends AbstractProfitStrategy {
+public class UpgradeProfitStrategy extends BaseAllotProfit implements AllotProfitStrategy {
 
     @Override
-    public boolean match(ProfitTypeEnum profitType) {
+    public boolean support(ProfitTypeEnum profitType) {
         return ProfitTypeEnum.UPGRADE == profitType;
     }
 
     @Override
-    protected AllotProfitEvent saveEvent(Object source) {
+    public AllotProfitEvent saveEvent(Object source) {
         UpgradeEvent.Source upgradeEventSource = (UpgradeEvent.Source) source;
         // 查询出主要相关的会员
         Member upgradeMember = crudMemberService.selectById(upgradeEventSource.getMemberId());
@@ -46,7 +47,7 @@ public class UpgradeProfitStrategy extends AbstractProfitStrategy {
     }
 
     @Override
-    protected void allotProfit(Object source, AllotProfitEvent ape) {
+    public void allotProfit(Object source, AllotProfitEvent ape) {
         String platformUsername = CurrentPlatformHelper.username();
         log.info("【升级分润】=====> 开始, 平台[{}]", platformUsername);
         UpgradeEvent.Source upgradeEventSource = (UpgradeEvent.Source) source;

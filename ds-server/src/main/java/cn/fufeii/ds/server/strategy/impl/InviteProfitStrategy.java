@@ -8,6 +8,7 @@ import cn.fufeii.ds.repository.entity.Member;
 import cn.fufeii.ds.repository.entity.Platform;
 import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
+import cn.fufeii.ds.server.strategy.AllotProfitStrategy;
 import cn.fufeii.ds.server.subscribe.event.InviteEvent;
 import cn.hutool.core.date.SystemClock;
 import lombok.extern.slf4j.Slf4j;
@@ -17,19 +18,18 @@ import org.springframework.stereotype.Service;
  * 邀请分润策略
  *
  * @author FuFei
- * @date 2022/3/22
  */
 @Slf4j
 @Service
-public class InviteProfitStrategy extends AbstractProfitStrategy {
+public class InviteProfitStrategy extends BaseAllotProfit implements AllotProfitStrategy {
 
     @Override
-    public boolean match(ProfitTypeEnum profitType) {
+    public boolean support(ProfitTypeEnum profitType) {
         return ProfitTypeEnum.INVITE == profitType;
     }
 
     @Override
-    protected AllotProfitEvent saveEvent(Object source) {
+    public AllotProfitEvent saveEvent(Object source) {
         InviteEvent.Source inviteEventSource = (InviteEvent.Source) source;
         Member inviteeMember = crudMemberService.selectById(inviteEventSource.getMemberId());
         AllotProfitEvent profitEvent = new AllotProfitEvent();
@@ -46,7 +46,7 @@ public class InviteProfitStrategy extends AbstractProfitStrategy {
 
 
     @Override
-    protected void allotProfit(Object source, AllotProfitEvent ape) {
+    public void allotProfit(Object source, AllotProfitEvent ape) {
         String platformUsername = CurrentPlatformHelper.username();
         log.info("【邀请分润】=====> 开始, 平台[{}]", platformUsername);
         InviteEvent.Source inviteEventSource = (InviteEvent.Source) source;

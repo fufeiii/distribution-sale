@@ -1,6 +1,6 @@
 package cn.fufeii.ds.server.subscribe.listener;
 
-import cn.fufeii.ds.server.strategy.ProfitStrategyHolder;
+import cn.fufeii.ds.server.strategy.AllotProfitStrategyService;
 import cn.fufeii.ds.server.subscribe.event.InviteEvent;
 import cn.fufeii.ds.server.subscribe.event.TradeEvent;
 import cn.fufeii.ds.server.subscribe.event.UpgradeEvent;
@@ -20,7 +20,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class ProfitEventListener {
 
     @Autowired
-    private ProfitStrategyHolder profitStrategyHolder;
+    private AllotProfitStrategyService allotProfitStrategyService;
 
     /**
      * 监听会员邀请事件
@@ -29,7 +29,7 @@ public class ProfitEventListener {
     @TransactionalEventListener
     public void handle(InviteEvent inviteEvent) {
         // 执行邀请分润机制
-        profitStrategyHolder.profit(inviteEvent);
+        allotProfitStrategyService.startAllotProfit(inviteEvent);
     }
 
     /**
@@ -39,7 +39,7 @@ public class ProfitEventListener {
     @TransactionalEventListener
     public void handle(UpgradeEvent upgradeEvent) {
         // 执行邀请分润机制
-        profitStrategyHolder.profit(upgradeEvent);
+        allotProfitStrategyService.startAllotProfit(upgradeEvent);
     }
 
 
@@ -49,7 +49,7 @@ public class ProfitEventListener {
     @EventListener
     public void handle(TradeEvent tradeEvent) {
         // 执行交易分润机制
-        profitStrategyHolder.profit(tradeEvent);
+        allotProfitStrategyService.startAllotProfit(tradeEvent);
     }
 
 

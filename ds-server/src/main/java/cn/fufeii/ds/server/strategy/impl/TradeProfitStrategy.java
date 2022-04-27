@@ -7,6 +7,7 @@ import cn.fufeii.ds.repository.entity.AllotProfitEvent;
 import cn.fufeii.ds.repository.entity.Member;
 import cn.fufeii.ds.repository.entity.Platform;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
+import cn.fufeii.ds.server.strategy.AllotProfitStrategy;
 import cn.fufeii.ds.server.subscribe.event.TradeEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,15 +20,15 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class TradeProfitStrategy extends AbstractProfitStrategy {
+public class TradeProfitStrategy extends BaseAllotProfit implements AllotProfitStrategy {
 
     @Override
-    public boolean match(ProfitTypeEnum profitType) {
+    public boolean support(ProfitTypeEnum profitType) {
         return ProfitTypeEnum.TRADE == profitType;
     }
 
     @Override
-    protected AllotProfitEvent saveEvent(Object source) {
+    public AllotProfitEvent saveEvent(Object source) {
         TradeEvent.Source tradeEventSource = (TradeEvent.Source) source;
         // 查询出主要相关的会员
         Member tradeMember = crudMemberService.selectById(tradeEventSource.getMemberId());
@@ -44,7 +45,7 @@ public class TradeProfitStrategy extends AbstractProfitStrategy {
     }
 
     @Override
-    protected void allotProfit(Object source, AllotProfitEvent ape) {
+    public void allotProfit(Object source, AllotProfitEvent ape) {
         String platformUsername = CurrentPlatformHelper.username();
         log.info("【交易分润】=====> 开始, 平台[{}]", platformUsername);
         TradeEvent.Source tradeEventSource = (TradeEvent.Source) source;
