@@ -5,8 +5,9 @@ import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitLevelEnum;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.exception.BizException;
-import cn.fufeii.ds.common.result.CommonResult;
-import cn.fufeii.ds.common.result.PageResult;
+import cn.fufeii.ds.common.model.CommonResult;
+import cn.fufeii.ds.common.model.PageRequest;
+import cn.fufeii.ds.common.model.PageResult;
 import cn.fufeii.ds.server.model.api.request.MemberCreateRequest;
 import cn.fufeii.ds.server.model.api.request.MemberIdentityTypeRequest;
 import cn.fufeii.ds.server.model.api.response.MemberCreateResponse;
@@ -50,8 +51,7 @@ public class MemberApiController {
 
     @ApiOperation("分页查询会员团队")
     @GetMapping("/team/page/{level}/{username}")
-    public PageResult<MemberTeamResponse> team(@PathVariable String level, @PathVariable String username,
-                                               @RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
+    public PageResult<MemberTeamResponse> team(@PathVariable String level, @PathVariable String username, PageRequest pageRequest) {
         Optional<ProfitLevelEnum> profitLevelEnumOptional = ProfitLevelEnum.getByNameOptional(level);
         if (!profitLevelEnumOptional.isPresent()) {
             throw new BizException(ExceptionEnum.CLIENT_ERROR, "level参数错误");
@@ -60,7 +60,7 @@ public class MemberApiController {
         if (ProfitLevelEnum.SELF == profitLevelEnum) {
             throw new BizException(ExceptionEnum.CLIENT_ERROR, "level参数不能为self");
         }
-        IPage<MemberTeamResponse> pageResult = memberService.team(profitLevelEnum, username, page, size);
+        IPage<MemberTeamResponse> pageResult = memberService.team(profitLevelEnum, username, pageRequest.getPage(), pageRequest.getSize());
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
     }
 

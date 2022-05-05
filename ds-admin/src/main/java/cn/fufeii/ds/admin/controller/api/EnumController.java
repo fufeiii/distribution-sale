@@ -2,7 +2,7 @@ package cn.fufeii.ds.admin.controller.api;
 
 import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
 import cn.fufeii.ds.common.enumerate.biz.*;
-import cn.fufeii.ds.common.result.CommonResult;
+import cn.fufeii.ds.common.model.CommonResult;
 import cn.fufeii.ds.common.util.KeyValuePair;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

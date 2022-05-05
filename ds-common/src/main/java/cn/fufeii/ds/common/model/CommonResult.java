@@ -1,4 +1,4 @@
-package cn.fufeii.ds.common.result;
+package cn.fufeii.ds.common.model;
 
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.ResultDefinition;

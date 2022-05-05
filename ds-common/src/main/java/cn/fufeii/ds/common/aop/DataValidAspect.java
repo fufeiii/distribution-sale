@@ -1,7 +1,7 @@
 package cn.fufeii.ds.common.aop;
 
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
-import cn.fufeii.ds.common.result.CommonResult;
+import cn.fufeii.ds.common.model.CommonResult;
 import cn.fufeii.ds.common.util.ValidationUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;

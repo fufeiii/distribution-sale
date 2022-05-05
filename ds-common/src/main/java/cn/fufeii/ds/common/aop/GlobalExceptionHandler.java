@@ -2,7 +2,7 @@ package cn.fufeii.ds.common.aop;
 
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.exception.BizException;
-import cn.fufeii.ds.common.result.CommonResult;
+import cn.fufeii.ds.common.model.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;

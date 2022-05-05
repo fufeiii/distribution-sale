@@ -1,7 +1,7 @@
 package cn.fufeii.ds.admin.security.login;
 
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
-import cn.fufeii.ds.common.result.CommonResult;
+import cn.fufeii.ds.common.model.CommonResult;
 import cn.fufeii.ds.common.util.ObjectMapperUtil;
 import cn.fufeii.ds.common.util.ResponseUtil;
 import cn.fufeii.ds.repository.entity.SystemUser;

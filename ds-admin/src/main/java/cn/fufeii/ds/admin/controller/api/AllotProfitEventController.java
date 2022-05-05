@@ -4,7 +4,7 @@ import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
 import cn.fufeii.ds.admin.model.vo.request.AllotProfitEventQueryRequest;
 import cn.fufeii.ds.admin.model.vo.response.AllotProfitEventResponse;
 import cn.fufeii.ds.admin.service.AllotProfitEventService;
-import cn.fufeii.ds.common.result.PageResult;
+import cn.fufeii.ds.common.model.PageResult;
 import cn.fufeii.ds.repository.entity.AllotProfitEvent;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;

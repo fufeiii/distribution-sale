@@ -1,6 +1,6 @@
 package cn.fufeii.ds.admin.security.logout;
 
-import cn.fufeii.ds.common.result.CommonResult;
+import cn.fufeii.ds.common.model.CommonResult;
 import cn.fufeii.ds.common.util.ResponseUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;

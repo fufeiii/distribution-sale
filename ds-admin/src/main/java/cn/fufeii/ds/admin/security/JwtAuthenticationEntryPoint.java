@@ -1,7 +1,7 @@
 package cn.fufeii.ds.admin.security;
 
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
-import cn.fufeii.ds.common.result.CommonResult;
+import cn.fufeii.ds.common.model.CommonResult;
 import cn.fufeii.ds.common.util.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;

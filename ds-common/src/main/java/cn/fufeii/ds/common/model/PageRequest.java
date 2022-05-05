@@ -1,15 +1,14 @@
-package cn.fufeii.ds.common.result;
+package cn.fufeii.ds.common.model;
 
 import lombok.Data;
 
 /**
- * 基础分页
+ * 分页请求
  *
  * @author FuFei
- * @date 2021/9/6
  */
 @Data
-public class BasePage {
+public class PageRequest {
 
     /**
      * 页码数

@@ -1,8 +1,9 @@
 package cn.fufeii.ds.server.controller;
 
 import cn.fufeii.ds.common.annotation.DataValid;
-import cn.fufeii.ds.common.result.CommonResult;
-import cn.fufeii.ds.common.result.PageResult;
+import cn.fufeii.ds.common.model.CommonResult;
+import cn.fufeii.ds.common.model.PageRequest;
+import cn.fufeii.ds.common.model.PageResult;
 import cn.fufeii.ds.server.model.api.request.ProfitTradeRequest;
 import cn.fufeii.ds.server.model.api.response.AllotProfitEventInfoResponse;
 import cn.fufeii.ds.server.model.api.response.ProfitIncomeRecordResponse;
@@ -37,8 +38,8 @@ public class AllotProfitApiController {
 
     @ApiOperation("分页查询会员分销记录")
     @GetMapping("/record/member/page/{memberUsername}")
-    public PageResult<ProfitIncomeRecordResponse> memberRecord(@PathVariable String memberUsername, @RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
-        IPage<ProfitIncomeRecordResponse> pageResult = allotProfitService.memberRecord(memberUsername, page, size);
+    public PageResult<ProfitIncomeRecordResponse> memberRecord(@PathVariable String memberUsername, PageRequest pageRequest) {
+        IPage<ProfitIncomeRecordResponse> pageResult = allotProfitService.memberRecord(memberUsername, pageRequest.getPage(), pageRequest.getSize());
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
     }
 
