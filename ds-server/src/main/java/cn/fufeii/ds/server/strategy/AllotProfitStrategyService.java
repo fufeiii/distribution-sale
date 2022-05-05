@@ -3,13 +3,11 @@ package cn.fufeii.ds.server.strategy;
 import cn.fufeii.ds.server.subscribe.event.AbstractProfitEvent;
 
 /**
- * AllotProfitService
+ * 分润策略服务
  *
  * @author FuFei
- * @date 2022/4/27
  */
 public interface AllotProfitStrategyService {
-
 
     /**
      * 开始分润
@@ -17,6 +15,5 @@ public interface AllotProfitStrategyService {
      * @param profitEvent 引发分润的来源
      */
     void startAllotProfit(AbstractProfitEvent profitEvent);
-
 
 }

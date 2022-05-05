@@ -13,7 +13,6 @@ import java.util.List;
 
 /**
  * @author FuFei
- * @date 2022/3/22
  */
 @Service
 public class AllotProfitStrategyServiceImpl implements AllotProfitStrategyService {
