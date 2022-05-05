@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
  * @author FuFei
  */
 @Service
-public class ProfitRecordService {
+public class ProfitIncomeRecordService {
 
     @Autowired
     private CrudProfitIncomeRecordService crudProfitIncomeRecordService;

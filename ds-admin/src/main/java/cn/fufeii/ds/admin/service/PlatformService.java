@@ -1,14 +1,18 @@
 package cn.fufeii.ds.admin.service;
 
+import cn.fufeii.ds.admin.config.property.DsAdminProperties;
 import cn.fufeii.ds.admin.model.vo.request.PlatformQueryRequest;
 import cn.fufeii.ds.admin.model.vo.request.PlatformUpsertRequest;
 import cn.fufeii.ds.admin.model.vo.response.PlatformResponse;
 import cn.fufeii.ds.admin.security.CurrentUserHelper;
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
+import cn.fufeii.ds.common.enumerate.biz.MemberRankTypeEnum;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.util.BeanCopierUtil;
+import cn.fufeii.ds.repository.crud.CrudMemberRankConfigService;
 import cn.fufeii.ds.repository.crud.CrudPlatformService;
+import cn.fufeii.ds.repository.entity.MemberRankConfig;
 import cn.fufeii.ds.repository.entity.Platform;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -16,6 +20,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 平台信息 Service
@@ -24,9 +29,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PlatformService {
-
+    @Autowired
+    private DsAdminProperties dsAdminProperties;
     @Autowired
     private CrudPlatformService crudPlatformService;
+    @Autowired
+    private CrudMemberRankConfigService crudMemberRankConfigService;
 
     /**
      * 分页查询
@@ -51,6 +59,7 @@ public class PlatformService {
     /**
      * 创建平台
      */
+    @Transactional
     public void create(PlatformUpsertRequest request) {
         // 查看平台是否已存在
         boolean present = crudPlatformService.selectOneOptional(Wrappers.<Platform>lambdaQuery().eq(Platform::getUsername, request.getUsername()))
@@ -63,9 +72,28 @@ public class PlatformService {
         Platform platform = new Platform();
         platform.setUsername(request.getUsername());
         platform.setNickname(request.getNickname());
+        platform.setNotifyUrl(request.getNotifyUrl());
         platform.setSk(RandomUtil.randomString(32));
         platform.setState(StateEnum.ENABLE);
-        crudPlatformService.insert(platform);
+        platform = crudPlatformService.insert(platform);
+
+        // 创建段位配置
+        final int step = dsAdminProperties.getMemberRankTypeStep();
+        int beginPoints = 0;
+        for (MemberRankTypeEnum memberRankTypeEnum : MemberRankTypeEnum.values()) {
+            MemberRankConfig memberRankConfig = new MemberRankConfig();
+            memberRankConfig.setPlatformUsername(platform.getUsername());
+            memberRankConfig.setPlatformNickname(platform.getNickname());
+            memberRankConfig.setMemberRankType(memberRankTypeEnum);
+            memberRankConfig.setBeginPoints(beginPoints);
+            memberRankConfig.setState(StateEnum.ENABLE);
+            // 初始化下一次的参数范围
+            int endPoints = beginPoints + step;
+            beginPoints = endPoints + 1;
+            memberRankConfig.setEndPoints(endPoints);
+            crudMemberRankConfigService.insert(memberRankConfig);
+        }
+
     }
 
     /**

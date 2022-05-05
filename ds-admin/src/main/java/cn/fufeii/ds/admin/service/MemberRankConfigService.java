@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class RankParamService {
+public class MemberRankConfigService {
 
     @Autowired
     private CrudMemberRankConfigService crudMemberRankConfigService;
@@ -123,6 +123,9 @@ public class RankParamService {
         if (begin > end) {
             throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "起始分数必须大于结束分数");
         }
+        // FIXME 需要检查begin和end没有占用其他人的分段
+        // where ((this.begin >= begin and this.begin <= end) or (this.end >= begin and this.end <= end)) and member_type != 自己
+        // 这个条件为true时则校验不通过
     }
 
     /**

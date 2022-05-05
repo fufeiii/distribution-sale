@@ -65,7 +65,7 @@ public class BaseAllotProfit {
     }
 
     /**
-     * 获取段位参数
+     * 获取段位配置
      */
     private MemberRankConfig getRankParam(MemberRankTypeEnum mre) {
         LambdaQueryWrapper<MemberRankConfig> lambdaQueryWrapper = Wrappers.<MemberRankConfig>lambdaQuery()
@@ -118,11 +118,11 @@ public class BaseAllotProfit {
         String platformUsername = CurrentPlatformHelper.username();
         if (rankParam == null) {
             if (log.isDebugEnabled()) {
-                log.debug("没有合适的段位参数 {},{}", member.getRankType().getCode(), platformUsername);
+                log.debug("没有合适的段位配置 {},{}", member.getRankType().getCode(), platformUsername);
             }
             return;
         }
-        // 判断当前分数是否在该段位参数区间
+        // 判断当前分数是否在该段位配置区间
         Integer pointsTotalHistory = account.getPointsTotalHistory();
         if (rankParam.getBeginPoints() >= pointsTotalHistory && rankParam.getEndPoints() <= pointsTotalHistory) {
             if (log.isDebugEnabled()) {

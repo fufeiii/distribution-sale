@@ -27,7 +27,7 @@ public class PlatformUpsertRequest {
     private String nickname;
 
     @Size(max = 255)
-    @ApiModelProperty(value = "webhook地址")
-    private String webhook;
+    @ApiModelProperty(value = "后台通知地址")
+    private String notifyUrl;
 
 }

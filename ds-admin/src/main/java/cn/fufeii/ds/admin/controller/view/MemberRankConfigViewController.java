@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * 段位参数 VIEW Controller
+ * 段位配置 VIEW Controller
  *
  * @author FuFei
  */

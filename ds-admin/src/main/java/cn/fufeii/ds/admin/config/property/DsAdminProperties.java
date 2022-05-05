@@ -33,11 +33,19 @@ public class DsAdminProperties implements InitializingBean {
      */
     private Integer loginErrorLimit = 5;
 
+    /**
+     * 会员段位类型步长
+     */
+    private Integer memberRankTypeStep = 100;
+
 
     @Override
     public void afterPropertiesSet() throws Exception {
         if (jwtSignKey.length() != 32) {
             throw new IllegalArgumentException("jwt签名密钥长度应为32个字符");
+        }
+        if (memberRankTypeStep < 1) {
+            throw new IllegalArgumentException("会员段位类型步长应大于0");
         }
     }
 

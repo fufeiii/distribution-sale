@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 分润参数 Request
+ * 分润配置 Request
  *
  * @author FuFei
  */

@@ -4,7 +4,7 @@ import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
 import cn.fufeii.ds.admin.model.vo.request.AllotProfitConfigQueryRequest;
 import cn.fufeii.ds.admin.model.vo.request.AllotProfitConfigUpsertRequest;
 import cn.fufeii.ds.admin.model.vo.response.AllotProfitConfigResponse;
-import cn.fufeii.ds.admin.service.ProfitParamService;
+import cn.fufeii.ds.admin.service.AllotProfitConfigService;
 import cn.fufeii.ds.common.annotation.DataValid;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.model.CommonResult;
@@ -30,53 +30,53 @@ import org.springframework.web.bind.annotation.*;
 public class AllotProfitConfigController {
 
     @Autowired
-    private ProfitParamService profitParamService;
+    private AllotProfitConfigService allotProfitConfigService;
 
     @ApiOperation("分页查询")
     @PostMapping("/page")
     public PageResult<AllotProfitConfigResponse> page(@RequestBody AllotProfitConfigQueryRequest pageParam) {
-        IPage<AllotProfitConfigResponse> pageResult = profitParamService.page(pageParam, new Page<AllotProfitConfig>(pageParam.getPage(), pageParam.getSize()).addOrder(OrderItem.desc("id")));
+        IPage<AllotProfitConfigResponse> pageResult = allotProfitConfigService.page(pageParam, new Page<AllotProfitConfig>(pageParam.getPage(), pageParam.getSize()).addOrder(OrderItem.desc("id")));
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
     }
 
     @ApiOperation("详情查询")
     @GetMapping("/get/{id}")
     public CommonResult<AllotProfitConfigResponse> get(@PathVariable Long id) {
-        return CommonResult.success(profitParamService.get(id));
+        return CommonResult.success(allotProfitConfigService.get(id));
     }
 
     @ApiOperation("新增")
     @PostMapping("/create")
     public CommonResult<Void> create(@RequestBody AllotProfitConfigUpsertRequest createParam) {
-        profitParamService.create(createParam);
+        allotProfitConfigService.create(createParam);
         return CommonResult.success();
     }
 
     @ApiOperation("修改")
     @PutMapping("/modify")
     public CommonResult<Void> modify(@RequestBody AllotProfitConfigUpsertRequest modifyParam) {
-        profitParamService.modify(modifyParam);
+        allotProfitConfigService.modify(modifyParam);
         return CommonResult.success();
     }
 
     @ApiOperation("删除")
     @DeleteMapping("/remove/{id}")
     public CommonResult<Void> remove(@PathVariable Long id) {
-        profitParamService.remove(id);
+        allotProfitConfigService.remove(id);
         return CommonResult.success();
     }
 
     @ApiOperation("启用")
     @PutMapping("/enable/{id}")
     public CommonResult<Void> enable(@PathVariable Long id) {
-        profitParamService.changeState(id, StateEnum.ENABLE);
+        allotProfitConfigService.changeState(id, StateEnum.ENABLE);
         return CommonResult.success();
     }
 
     @ApiOperation("禁用")
     @PutMapping("/disable/{id}")
     public CommonResult<Void> disable(@PathVariable Long id) {
-        profitParamService.changeState(id, StateEnum.DISABLE);
+        allotProfitConfigService.changeState(id, StateEnum.DISABLE);
         return CommonResult.success();
     }
 

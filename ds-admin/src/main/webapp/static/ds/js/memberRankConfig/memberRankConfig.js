@@ -74,7 +74,7 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
     RankParam.openEditDlg = function (id) {
         layer.open({
             type: 2,
-            title: '编辑段位参数',
+            title: '编辑段位配置',
             shade: 0.3,
             area: ['500px', '310px'],
             content: '/view/member-rank-config/edit?tableId=' + RankParam.tableId + '&id=' + id,

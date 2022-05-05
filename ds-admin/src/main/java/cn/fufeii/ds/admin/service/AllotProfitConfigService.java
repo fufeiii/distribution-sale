@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class ProfitParamService {
+public class AllotProfitConfigService {
 
     @Autowired
     private CrudAllotProfitConfigService crudAllotProfitConfigService;
