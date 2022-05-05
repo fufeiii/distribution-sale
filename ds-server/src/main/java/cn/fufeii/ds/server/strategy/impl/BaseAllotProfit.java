@@ -185,7 +185,7 @@ public class BaseAllotProfit {
                     log.debug("增加佣金收益{}", profitAmount);
                 }
 
-                // 保存佣金分销记录
+                // 保存佣金分润记录
                 ProfitIncomeRecord profitRecord = new ProfitIncomeRecord();
                 profitRecord.setProfitEventId(event.getId());
                 profitRecord.setAccountType(AccountTypeEnum.MONEY);
@@ -228,7 +228,7 @@ public class BaseAllotProfit {
                 // 设置标志为rue
                 isValidPointsParam = true;
 
-                // 保存佣金分销记录
+                // 保存佣金分润记录
                 ProfitIncomeRecord profitRecord = new ProfitIncomeRecord();
                 profitRecord.setProfitEventId(event.getId());
                 profitRecord.setAccountType(AccountTypeEnum.POINTS);

@@ -36,7 +36,7 @@ public class AllotProfitApiController {
         return CommonResult.success(allotProfitService.trade(request));
     }
 
-    @ApiOperation("分页查询会员分销记录")
+    @ApiOperation("分页查询会员分润记录")
     @GetMapping("/record/member/page/{memberUsername}")
     public PageResult<ProfitIncomeRecordResponse> memberRecord(@PathVariable String memberUsername, PageRequest pageRequest) {
         IPage<ProfitIncomeRecordResponse> pageResult = allotProfitService.memberRecord(memberUsername, pageRequest.getPage(), pageRequest.getSize());

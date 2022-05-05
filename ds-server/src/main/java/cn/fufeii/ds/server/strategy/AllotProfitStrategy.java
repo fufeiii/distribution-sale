@@ -19,7 +19,7 @@ public interface AllotProfitStrategy {
 
 
     /**
-     * 保存分销事件
+     * 保存分润事件
      *
      * @param eventSource 事件来源
      * @return 对应的分润事件

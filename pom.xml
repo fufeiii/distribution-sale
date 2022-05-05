@@ -14,7 +14,6 @@
         <module>ds-repository</module>
     </modules>
     <packaging>pom</packaging>
-    <description>微服务架构下的分销中心</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

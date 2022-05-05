@@ -66,8 +66,8 @@ public class AllotProfitService {
         // 发布事件
         applicationEventPublisher.publishEvent(new TradeEvent(ProfitTypeEnum.TRADE, source));
 
-        // FIXME 分销成功异步通知
-        // 这里是临时代码，任何分销成功后应该异步通知上游系统分销成功了，以便上游系统调用[分销事件查询]接口获取分销事件的详情
+        // FIXME 分润成功异步通知
+        // 这里是临时代码，任何分润成功后应该异步通知上游系统分润成功了，以便上游系统调用[分润事件查询]接口获取分润事件的详情
         ProfitTradeResponse response = new ProfitTradeResponse();
         AllotProfitEvent profitEvent = crudAllotProfitEventService.selectOne(lambdaQueryWrapper);
         response.setEventId(profitEvent.getId());
@@ -75,7 +75,7 @@ public class AllotProfitService {
     }
 
     /**
-     * 查询分销记录
+     * 查询分润记录
      *
      * @param memberUsername 会员标识
      * @param page           *
@@ -115,7 +115,7 @@ public class AllotProfitService {
         response.setEventAmount(profitEvent.getEventAmount());
         response.setMemo(profitEvent.getMemo());
         response.setCreateDateTime(profitEvent.getCreateDateTime());
-        // 组装分销记录
+        // 组装分润记录
         List<ProfitIncomeRecord> profitRecordList = crudProfitIncomeRecordService.selectByProfitEventId(eventId);
         List<AllotProfitEventInfoResponse.ProfitRecordInfo> profitRecordInfoList = new ArrayList<>(profitRecordList.size());
         for (ProfitIncomeRecord profitRecord : profitRecordList) {

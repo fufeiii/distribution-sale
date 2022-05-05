@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 分销事件 API Controller
+ * 分润事件 API Controller
  *
  * @author FuFei
  */
-@Api(tags = "分销事件")
+@Api(tags = "分润事件")
 @RestController
 @RequestMapping(DsAdminConstant.API_PATH_PREFIX + "/allot-profit-event")
 public class AllotProfitEventController {

@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 分销事件 Response
+ * 分润事件 Response
  *
  * @author FuFei
  */
@@ -39,7 +39,7 @@ public class AllotProfitEventInfoResponse {
     @ApiModelProperty(value = "创建事件")
     private Date createDateTime;
 
-    @ApiModelProperty(value = "分销记录")
+    @ApiModelProperty(value = "分润记录")
     private List<ProfitRecordInfo> profitRecordInfoList;
 
     @Data

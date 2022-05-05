@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 分销事件 Request
+ * 分润事件 Request
  *
  * @author FuFei
  */

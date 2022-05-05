@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 分销记录 Request
+ * 分润记录 Request
  *
  * @author FuFei
  */

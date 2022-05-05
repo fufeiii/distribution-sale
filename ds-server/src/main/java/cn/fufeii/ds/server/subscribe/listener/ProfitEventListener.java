@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
- * 分销事件监听器
+ * 分润事件监听器
  *
  * @author FuFei
  * @date 2022/3/20

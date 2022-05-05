@@ -31,9 +31,9 @@ public class PushService {
 
 
     /**
-     * 推送分销事件到业务系统
+     * 推送分润事件到业务系统
      *
-     * @param ape 分销事件
+     * @param ape 分润事件
      */
     @Async
     public void pushAllotProfitEvent(AllotProfitEvent ape) {

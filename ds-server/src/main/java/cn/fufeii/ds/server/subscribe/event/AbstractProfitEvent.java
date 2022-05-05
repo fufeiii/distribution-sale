@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 /**
- * 基础的分销事件
+ * 基础的分润事件
  *
  * @author FuFei
  * @date 2022/3/24

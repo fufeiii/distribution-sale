@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * 分销事件 VIEW Controller
+ * 分润事件 VIEW Controller
  *
  * @author FuFei
  */

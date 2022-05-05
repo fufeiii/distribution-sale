@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * 分销事件 Service
+ * 分润事件 Service
  *
  * @author FuFei
  */

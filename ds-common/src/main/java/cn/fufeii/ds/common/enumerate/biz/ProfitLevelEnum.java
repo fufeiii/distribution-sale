@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * 分销等级枚举
+ * 分润等级枚举
  * 将作为分润的参数
  *
  * @author Fu Fei
