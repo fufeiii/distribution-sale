@@ -13,14 +13,11 @@ import cn.fufeii.ds.repository.entity.ProfitIncomeRecord;
 import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.model.api.request.ProfitTradeRequest;
 import cn.fufeii.ds.server.model.api.response.AllotProfitEventInfoResponse;
-import cn.fufeii.ds.server.model.api.response.ProfitIncomeRecordResponse;
 import cn.fufeii.ds.server.model.api.response.ProfitTradeResponse;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.subscribe.event.TradeEvent;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -74,31 +71,6 @@ public class AllotProfitService {
         return response;
     }
 
-    /**
-     * 查询分润记录
-     *
-     * @param memberUsername 会员标识
-     * @param page           *
-     * @param size           *
-     */
-    public IPage<ProfitIncomeRecordResponse> memberRecord(String memberUsername, Integer page, Integer size) {
-        Member member = crudMemberService.selectByUsernameAndPlatformUsername(memberUsername, CurrentPlatformHelper.username());
-        LambdaQueryWrapper<ProfitIncomeRecord> lambdaQueryWrapper = Wrappers.<ProfitIncomeRecord>lambdaQuery().eq(ProfitIncomeRecord::getImpactMemberId, member.getId());
-        IPage<ProfitIncomeRecord> profitRecordIPage = crudProfitIncomeRecordService.selectPage(lambdaQueryWrapper, Page.of(page, size));
-        return profitRecordIPage.convert(it -> {
-            ProfitIncomeRecordResponse response = new ProfitIncomeRecordResponse();
-            response.setId(it.getId());
-            response.setProfitEventId(it.getProfitEventId());
-            response.setAccountType(it.getAccountType());
-            response.setImpactMemberId(it.getImpactMemberId());
-            response.setImpactMemberUsername(memberUsername);
-            response.setIncomeCount(it.getIncomeCount());
-            response.setMemo(it.getMemo());
-            response.setCreateDateTime(it.getCreateDateTime());
-            return response;
-        });
-    }
-
 
     /**
      * 查询分润事件
@@ -132,6 +104,5 @@ public class AllotProfitService {
         response.setProfitRecordInfoList(profitRecordInfoList);
         return response;
     }
-
 
 }

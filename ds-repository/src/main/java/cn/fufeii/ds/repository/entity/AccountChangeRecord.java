@@ -51,13 +51,13 @@ public class AccountChangeRecord extends BaseEntity {
      * 变动前可用总数
      */
     @TableField
-    private Integer beforeAvailableTotal;
+    private Integer beforeAvailableCount;
 
     /**
      * 变动后可用总数
      */
     @TableField
-    private Integer afterAvailableTotal;
+    private Integer afterAvailableCount;
 
     /**
      * 变动数

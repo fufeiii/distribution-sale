@@ -4,8 +4,6 @@ import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import lombok.Data;
 
 /**
- * AllotEventNotifyDTO
- *
  * @author FuFei
  * @date 2022/4/23
  */

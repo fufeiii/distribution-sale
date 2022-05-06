@@ -1,5 +1,6 @@
 package cn.fufeii.ds.server.strategy.impl;
 
+import cn.fufeii.ds.common.annotation.GlobalLock;
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.*;
 import cn.fufeii.ds.common.exception.BizException;
@@ -46,7 +47,7 @@ public class BaseAllotProfit {
     private ApplicationEventPublisher applicationEventPublisher;
 
     /**
-     * 获取分润参数
+     * 获取分润配置
      */
     private AllotProfitConfig getProfitParam(AccountTypeEnum ate, ProfitTypeEnum pte, ProfitLevelEnum ple, MemberIdentityTypeEnum mite, MemberRankTypeEnum mre) {
         LambdaQueryWrapper<AllotProfitConfig> lambdaQueryWrapper = Wrappers.<AllotProfitConfig>lambdaQuery()
@@ -141,10 +142,10 @@ public class BaseAllotProfit {
      */
     protected void tryDoAllotProfit(AllotProfitEvent inviteEvent, Member member, ProfitTypeEnum pte, ProfitLevelEnum ple) {
         try {
-            // 查询分润参数
+            // 查询分润配置
             AllotProfitConfig moneyParam = this.getProfitParam(AccountTypeEnum.MONEY, pte, ple, member.getIdentityType(), member.getRankType());
             AllotProfitConfig pointsParam = this.getProfitParam(AccountTypeEnum.POINTS, pte, ple, member.getIdentityType(), member.getRankType());
-            // 检查分润参数是否存在
+            // 检查分润配置是否存在
             if (Objects.nonNull(moneyParam) || Objects.nonNull(pointsParam)) {
                 // 进行分润，走AOP才能控制事务
                 ((BaseAllotProfit) AopContext.currentProxy()).doAllotProfit(inviteEvent, member, moneyParam, pointsParam);
@@ -153,7 +154,7 @@ public class BaseAllotProfit {
 
             // 打印日志
             if (log.isDebugEnabled()) {
-                log.debug("没有合适的分润参数, 跳过分润（{}, {}, {}, {}, {}, {}）", member.getUsername(), member.getPlatformUsername(), pte, ple, member.getIdentityType(), member.getRankType());
+                log.debug("没有合适的分润配置, 跳过分润（{}, {}, {}, {}, {}, {}）", member.getUsername(), member.getPlatformUsername(), pte, ple, member.getIdentityType(), member.getRankType());
             }
 
         } catch (Exception e) {
@@ -166,6 +167,7 @@ public class BaseAllotProfit {
      * 执行分润逻辑
      * 计算佣金/积分数量, 并入对应会员帐户
      */
+    @GlobalLock(key = DsServerConstant.CURRENT_PLATFORM_USERNAME_SPEL + "#request.memberUsername")
     @Transactional
     public void doAllotProfit(AllotProfitEvent event, Member member, AllotProfitConfig moneyParam, AllotProfitConfig pointsParam) {
 
@@ -174,7 +176,7 @@ public class BaseAllotProfit {
         Account account = crudAccountService.selectByMemberId(member.getId());
         boolean accountChanged = false;
 
-        // 计算佣金分润参数的钱
+        // 计算佣金分润的钱
         if (moneyParam != null) {
             Integer profitAmount = this.calculateProfitAmount(moneyParam, event.getEventAmount());
             // 大于0才有保存的意义
@@ -199,8 +201,8 @@ public class BaseAllotProfit {
                 accountRecord.setMemberId(member.getId());
                 accountRecord.setAccountId(account.getId());
                 accountRecord.setAccountType(AccountTypeEnum.MONEY);
-                accountRecord.setBeforeAvailableTotal(account.getMoneyAvailable());
-                accountRecord.setAfterAvailableTotal(account.getMoneyAvailable() + profitAmount);
+                accountRecord.setBeforeAvailableCount(account.getMoneyAvailable());
+                accountRecord.setAfterAvailableCount(account.getMoneyAvailable() + profitAmount);
                 accountRecord.setChangeCount(profitAmount);
                 accountRecord.setChangeType(ChangeTypeEnum.PROFIT);
                 accountRecord.setChangeBizNumber(profitRecord.getId().toString());
@@ -213,7 +215,7 @@ public class BaseAllotProfit {
             }
         }
 
-        // 计算积分分润参数的积分
+        // 计算积分分润配置的积分
         boolean isValidPointsParam = false;
         if (pointsParam != null) {
             Integer profitAmount = this.calculateProfitAmount(pointsParam, event.getEventAmount());
@@ -242,8 +244,8 @@ public class BaseAllotProfit {
                 accountRecord.setMemberId(member.getId());
                 accountRecord.setAccountId(account.getId());
                 accountRecord.setAccountType(AccountTypeEnum.POINTS);
-                accountRecord.setBeforeAvailableTotal(account.getPointsAvailable());
-                accountRecord.setAfterAvailableTotal(account.getPointsAvailable() + profitAmount);
+                accountRecord.setBeforeAvailableCount(account.getPointsAvailable());
+                accountRecord.setAfterAvailableCount(account.getPointsAvailable() + profitAmount);
                 accountRecord.setChangeCount(profitAmount);
                 accountRecord.setChangeType(ChangeTypeEnum.PROFIT);
                 accountRecord.setChangeBizNumber(profitRecord.getId().toString());

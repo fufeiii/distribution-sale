@@ -6,6 +6,7 @@ import cn.fufeii.ds.repository.dao.AccountChangeRecordDao;
 import cn.fufeii.ds.repository.entity.AccountChangeRecord;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -111,5 +112,11 @@ public class CrudAccountChangeRecordService {
     // ---------------------------- 下面基础CRUD的扩展 ----------------------------------- //
     // --------------------------------------------------------------------------------- //
 
+    /**
+     * 分页查询账户变动记录
+     */
+    public IPage<AccountChangeRecord> selectByMemberIdPage(Long memberId, IPage<AccountChangeRecord> pageable) {
+        return this.selectPage(Wrappers.<AccountChangeRecord>lambdaQuery().eq(AccountChangeRecord::getMemberId, memberId), pageable);
+    }
 
 }

@@ -20,19 +20,24 @@ public enum ChangeTypeEnum {
     PROFIT(1, "分润获利"),
 
     /**
-     * 提现取出
+     * 存入
      */
-    WITHDRAW_DEPOSIT(2, "提现取出"),
+    INCREASE(2, "增加"),
+
+    /**
+     * 取出
+     */
+    DECREASE(3, "减少"),
 
     /**
      * 提现冻结
      */
-    WITHDRAW_FREEZE(3, "提现冻结"),
+    FREEZE(4, "冻结"),
 
     /**
      * 提现解冻
      */
-    WITHDRAW_UNFREEZE(4, "提现解冻");
+    UNFREEZE(5, "解冻");
 
     @EnumValue
     private final Integer code;

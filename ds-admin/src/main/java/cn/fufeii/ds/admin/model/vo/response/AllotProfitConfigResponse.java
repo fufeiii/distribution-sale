@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 分润参数 Response
+ * 分润配置 Response
  *
  * @author FuFei
  */

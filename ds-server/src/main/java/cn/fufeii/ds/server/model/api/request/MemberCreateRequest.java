@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * 创建会员
+ * 创建会员请求
  *
  * @author FuFei
  * @date 2022/3/19

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * 分润参数 VIEW Controller
+ * 分润配置 VIEW Controller
  *
  * @author FuFei
  */

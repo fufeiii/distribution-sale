@@ -19,11 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 分润参数 API Controller
+ * 分润配置 API Controller
  *
  * @author FuFei
  */
-@Api(tags = "分润参数")
+@Api(tags = "分润配置")
 @DataValid
 @RestController
 @RequestMapping(DsAdminConstant.API_PATH_PREFIX + "/allot-profit-config")

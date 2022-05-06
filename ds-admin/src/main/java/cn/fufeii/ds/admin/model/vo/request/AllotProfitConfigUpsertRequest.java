@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.NotNull;
 
 /**
- * 分润参数 Request
+ * 分润配置 Request
  *
  * @author FuFei
  */

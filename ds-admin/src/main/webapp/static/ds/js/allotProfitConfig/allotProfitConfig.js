@@ -101,7 +101,7 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
     ProfitParam.openAddDlg = function () {
         layer.open({
             type: 2,
-            title: '添加分润参数',
+            title: '添加分润配置',
             shade: 0.3,
             area: ['500px', '610px'],
             content: '/view/allot-profit-config/add?tableId=' + ProfitParam.tableId,
@@ -114,7 +114,7 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
     ProfitParam.openEditDlg = function (id) {
         layer.open({
             type: 2,
-            title: '编辑分润参数',
+            title: '编辑分润配置',
             shade: 0.3,
             area: ['500px', '610px'],
             content: '/view/allot-profit-config/edit?tableId=' + ProfitParam.tableId + '&id=' + id,

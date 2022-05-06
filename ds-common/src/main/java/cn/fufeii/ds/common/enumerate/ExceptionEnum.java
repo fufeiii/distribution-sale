@@ -35,7 +35,7 @@ public enum ExceptionEnum implements ResultDefinition {
     // 业务创建类错误
     USER_CREATE_ERROR(6201, "", "创建用户错误: %s"),
     PLATFORM_CREATE_ERROR(6301, "", "创建平台错误: %s"),
-    PROFIT_PARAM_CREATE_ERROR(6401, "", "创建分润参数错误: %s"),
+    PROFIT_PARAM_CREATE_ERROR(6401, "", "创建分润配置错误: %s"),
     RANK_PARAM_CREATE_ERROR(6501, "", "创建段位数错误: %s"),
 
     /* ========================= 通用枚举 ========================= */

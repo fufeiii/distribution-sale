@@ -84,7 +84,7 @@ create table ds_profit_param
     version              int      not null comment '乐观锁',
     update_date_time     datetime not null comment '更新时间',
     create_date_time     datetime not null comment '创建时间'
-) comment '分润参数';
+) comment '分润配置';
 
 create table ds_profit_record
 (

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * 分润参数
+ * 分润配置
  * CRUD AllotProfitConfig Service
  *
  * @author FuFei

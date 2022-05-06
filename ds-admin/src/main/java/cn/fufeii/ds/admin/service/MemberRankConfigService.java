@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * 分润参数 Service
+ * 分润配置 Service
  *
  * @author FuFei
  */
