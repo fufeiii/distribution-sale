@@ -61,7 +61,7 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
     RankParam.openAddDlg = function () {
         layer.open({
             type: 2,
-            title: '添加分润配置',
+            title: '添加段位配置',
             shade: 0.3,
             area: ['500px', '410px'],
             content: '/view/member-rank-config/add?tableId=' + RankParam.tableId,
