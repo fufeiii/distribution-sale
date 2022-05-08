@@ -39,7 +39,7 @@ public class AccountService {
      *
      * @param request -
      */
-    @GlobalLock(key = DsServerConstant.CURRENT_PLATFORM_USERNAME_SPEL + "#request.memberUsername")
+    @GlobalLock(key = DsServerConstant.CPUS + "#request.memberUsername")
     @Transactional
     public void alter(AccountAlterRequest request) {
         // 校验参数

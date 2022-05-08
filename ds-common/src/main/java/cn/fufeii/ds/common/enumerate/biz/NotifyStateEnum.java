@@ -1,5 +1,6 @@
 package cn.fufeii.ds.common.enumerate.biz;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,7 +18,8 @@ public enum NotifyStateEnum {
     SUCCESS(2, "成功"),
     FAIL(3, "失败");
 
-    private final int code;
+    @EnumValue
+    private final Integer code;
     private final String msg;
 
 }

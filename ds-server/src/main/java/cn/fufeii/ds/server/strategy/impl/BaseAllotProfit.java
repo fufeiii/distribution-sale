@@ -167,7 +167,7 @@ public class BaseAllotProfit {
      * 执行分润逻辑
      * 计算佣金/积分数量, 并入对应会员帐户
      */
-    @GlobalLock(key = DsServerConstant.CURRENT_PLATFORM_USERNAME_SPEL + "#request.memberUsername")
+    @GlobalLock(key = DsServerConstant.CPUS + "#request.memberUsername")
     @Transactional
     public void doAllotProfit(AllotProfitEvent event, Member member, AllotProfitConfig moneyParam, AllotProfitConfig pointsParam) {
 

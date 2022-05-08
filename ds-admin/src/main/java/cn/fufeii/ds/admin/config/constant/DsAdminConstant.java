@@ -20,4 +20,9 @@ public final class DsAdminConstant {
 
     public static final String ADMIN_USERNAME = "admin";
 
+    /**
+     * CURRENT_PLATFORM_USERNAME_SPEL
+     */
+    public static final String CPUS = "T(cn.fufeii.ds.admin.security.CurrentUserHelper).platformUsername() + ':' + ";
+
 }

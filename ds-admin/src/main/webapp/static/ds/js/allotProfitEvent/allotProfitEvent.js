@@ -40,7 +40,7 @@ layui.use(['table', 'form'], function () {
                     align: 'center'
                 },
                 {
-                    title: '历史总积分',
+                    title: '创建日期',
                     field: 'createDateTime',
                     align: 'center'
                 },

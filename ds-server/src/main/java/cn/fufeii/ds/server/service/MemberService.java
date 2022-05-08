@@ -57,7 +57,7 @@ public class MemberService {
     @Autowired
     private CrudAccountChangeRecordService crudAccountChangeRecordService;
 
-    @GlobalLock(key = DsServerConstant.CURRENT_PLATFORM_USERNAME_SPEL + "#request.username")
+    @GlobalLock(key = DsServerConstant.CPUS + "#request.username")
     @Transactional
     public MemberCreateResponse create(MemberCreateRequest request) {
         Platform currentPlatform = CurrentPlatformHelper.self();
@@ -143,7 +143,7 @@ public class MemberService {
      * @param username 会员标识
      * @param state    状态
      */
-    @GlobalLock(key = DsServerConstant.CURRENT_PLATFORM_USERNAME_SPEL + "#username")
+    @GlobalLock(key = DsServerConstant.CPUS + "#username")
     public void changeState(String username, StateEnum state) {
         String platformUsername = CurrentPlatformHelper.username();
         Member member = crudMemberService.selectByUsernameAndPlatformUsername(username, platformUsername);
@@ -158,7 +158,7 @@ public class MemberService {
      *
      * @param request *
      */
-    @GlobalLock(key = DsServerConstant.CURRENT_PLATFORM_USERNAME_SPEL + "#request.username")
+    @GlobalLock(key = DsServerConstant.CPUS + "#request.username")
     public void identityType(MemberIdentityTypeRequest request) {
         Member member = crudMemberService.selectByUsernameAndPlatformUsername(request.getUsername(), CurrentPlatformHelper.username());
         // 有必要告诉上有系统, 提交重复了或者不正确的更新

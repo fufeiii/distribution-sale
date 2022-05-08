@@ -1,9 +1,11 @@
 package cn.fufeii.ds.admin.service;
 
+import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
 import cn.fufeii.ds.admin.model.vo.request.AllotProfitConfigQueryRequest;
 import cn.fufeii.ds.admin.model.vo.request.AllotProfitConfigUpsertRequest;
 import cn.fufeii.ds.admin.model.vo.response.AllotProfitConfigResponse;
 import cn.fufeii.ds.admin.security.CurrentUserHelper;
+import cn.fufeii.ds.common.annotation.GlobalLock;
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.exception.BizException;
@@ -88,29 +90,27 @@ public class AllotProfitConfigService {
     /**
      * 保存
      */
+    @GlobalLock(key = DsAdminConstant.CPUS + ":apc-create")
     public void create(AllotProfitConfigUpsertRequest request) {
         SystemUser currentUser = CurrentUserHelper.self();
-        // 手动加锁并执行逻辑
-        lockTemplate.runWithLock(currentUser.getPlatformUsername() + ":pp-create", log, () -> {
-            // 检查是否存在并插入数据
-            LambdaQueryWrapper<AllotProfitConfig> queryWrapper = Wrappers.<AllotProfitConfig>lambdaQuery()
-                    .eq(AllotProfitConfig::getPlatformUsername, currentUser.getPlatformUsername())
-                    .eq(AllotProfitConfig::getAccountType, request.getAccountType())
-                    .eq(AllotProfitConfig::getProfitType, request.getProfitType())
-                    .eq(AllotProfitConfig::getProfitLevel, request.getProfitLevel())
-                    .eq(AllotProfitConfig::getMemberIdentityType, request.getMemberIdentityType())
-                    .eq(AllotProfitConfig::getMemberRankType, request.getMemberRankType());
-            if (crudAllotProfitConfigService.exist(queryWrapper)) {
-                throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "该参数已存在");
-            }
-            AllotProfitConfig profitParam = new AllotProfitConfig();
-            // 建议使用setter, 字段类型问题能在编译期发现
-            BeanCopierUtil.copy(request, profitParam);
-            profitParam.setPlatformUsername(currentUser.getPlatformUsername());
-            profitParam.setPlatformNickname(currentUser.getPlatformNickname());
-            profitParam.setState(StateEnum.ENABLE);
-            crudAllotProfitConfigService.insert(profitParam);
-        });
+        // 检查是否存在并插入数据
+        LambdaQueryWrapper<AllotProfitConfig> queryWrapper = Wrappers.<AllotProfitConfig>lambdaQuery()
+                .eq(AllotProfitConfig::getPlatformUsername, currentUser.getPlatformUsername())
+                .eq(AllotProfitConfig::getAccountType, request.getAccountType())
+                .eq(AllotProfitConfig::getProfitType, request.getProfitType())
+                .eq(AllotProfitConfig::getProfitLevel, request.getProfitLevel())
+                .eq(AllotProfitConfig::getMemberIdentityType, request.getMemberIdentityType())
+                .eq(AllotProfitConfig::getMemberRankType, request.getMemberRankType());
+        if (crudAllotProfitConfigService.exist(queryWrapper)) {
+            throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "该参数已存在");
+        }
+        AllotProfitConfig profitParam = new AllotProfitConfig();
+        // 建议使用setter, 字段类型问题能在编译期发现
+        BeanCopierUtil.copy(request, profitParam);
+        profitParam.setPlatformUsername(currentUser.getPlatformUsername());
+        profitParam.setPlatformNickname(currentUser.getPlatformNickname());
+        profitParam.setState(StateEnum.ENABLE);
+        crudAllotProfitConfigService.insert(profitParam);
     }
 
     /**

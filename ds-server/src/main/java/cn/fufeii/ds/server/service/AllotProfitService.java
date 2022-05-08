@@ -45,7 +45,7 @@ public class AllotProfitService {
     /**
      * 金钱交易-分润请求
      */
-    @GlobalLock(key = DsServerConstant.CURRENT_PLATFORM_USERNAME_SPEL + "#request.tradeNumber")
+    @GlobalLock(key = DsServerConstant.CPUS + "#request.tradeNumber")
     public ProfitTradeResponse trade(ProfitTradeRequest request) {
         // 检查是否已经存在了该事件
         LambdaQueryWrapper<AllotProfitEvent> lambdaQueryWrapper = Wrappers.<AllotProfitEvent>lambdaQuery()

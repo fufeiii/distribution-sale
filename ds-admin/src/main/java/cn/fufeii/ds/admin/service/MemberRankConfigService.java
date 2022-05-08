@@ -1,14 +1,15 @@
 package cn.fufeii.ds.admin.service;
 
+import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
 import cn.fufeii.ds.admin.model.vo.request.MemberRankConfigQueryRequest;
 import cn.fufeii.ds.admin.model.vo.request.MemberRankConfigUpsertRequest;
 import cn.fufeii.ds.admin.model.vo.response.MemberRankConfigResponse;
 import cn.fufeii.ds.admin.security.CurrentUserHelper;
+import cn.fufeii.ds.common.annotation.GlobalLock;
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.util.BeanCopierUtil;
-import cn.fufeii.ds.common.util.LockTemplate;
 import cn.fufeii.ds.repository.crud.CrudMemberRankConfigService;
 import cn.fufeii.ds.repository.entity.MemberRankConfig;
 import cn.fufeii.ds.repository.entity.SystemUser;
@@ -30,8 +31,6 @@ public class MemberRankConfigService {
 
     @Autowired
     private CrudMemberRankConfigService crudMemberRankConfigService;
-    @Autowired
-    private LockTemplate lockTemplate;
 
     /**
      * 分页查询
@@ -75,29 +74,27 @@ public class MemberRankConfigService {
     /**
      * 保存
      */
+    @GlobalLock(key = DsAdminConstant.CPUS + "':mrc-create'")
     public void create(MemberRankConfigUpsertRequest request) {
         if (request.getMemberRankType() == null) {
             throw new BizException(ExceptionEnum.API_FIELD_ERROR, "memberRankType不能为空");
         }
-        this.checkPointsRange(request.getBeginPoints(), request.getEndPoints());
+        this.checkPointsRange(request);
         SystemUser currentUser = CurrentUserHelper.self();
-        // 手动加锁并执行逻辑
-        lockTemplate.runWithLock(currentUser.getPlatformUsername() + ":rp-create", log, () -> {
-            // 检查是否存在并插入数据
-            LambdaQueryWrapper<MemberRankConfig> queryWrapper = Wrappers.<MemberRankConfig>lambdaQuery()
-                    .eq(MemberRankConfig::getPlatformUsername, currentUser.getPlatformUsername())
-                    .eq(MemberRankConfig::getMemberRankType, request.getMemberRankType());
-            if (crudMemberRankConfigService.exist(queryWrapper)) {
-                throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "该参数已存在");
-            }
-            MemberRankConfig rankParam = new MemberRankConfig();
-            // 建议使用setter, 字段类型问题能在编译期发现
-            BeanCopierUtil.copy(request, rankParam);
-            rankParam.setPlatformUsername(currentUser.getPlatformUsername());
-            rankParam.setPlatformNickname(currentUser.getPlatformNickname());
-            rankParam.setState(StateEnum.ENABLE);
-            crudMemberRankConfigService.insert(rankParam);
-        });
+        // 检查是否存在并插入数据
+        LambdaQueryWrapper<MemberRankConfig> queryWrapper = Wrappers.<MemberRankConfig>lambdaQuery()
+                .eq(MemberRankConfig::getPlatformUsername, currentUser.getPlatformUsername())
+                .eq(MemberRankConfig::getMemberRankType, request.getMemberRankType());
+        if (crudMemberRankConfigService.exist(queryWrapper)) {
+            throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "该参数已存在");
+        }
+        MemberRankConfig rankParam = new MemberRankConfig();
+        // 建议使用setter, 字段类型问题能在编译期发现
+        BeanCopierUtil.copy(request, rankParam);
+        rankParam.setPlatformUsername(currentUser.getPlatformUsername());
+        rankParam.setPlatformNickname(currentUser.getPlatformNickname());
+        rankParam.setState(StateEnum.ENABLE);
+        crudMemberRankConfigService.insert(rankParam);
     }
 
     /**
@@ -110,22 +107,30 @@ public class MemberRankConfigService {
         if (request.getMemberRankType() != null) {
             throw new BizException(ExceptionEnum.API_FIELD_ERROR, "memberRankType不能修改");
         }
-        this.checkPointsRange(request.getBeginPoints(), request.getEndPoints());
+        this.checkPointsRange(request);
         // 建议使用setter, 字段类型问题能在编译期发现
         BeanCopierUtil.copy(request, rankParam);
         crudMemberRankConfigService.updateById(rankParam);
     }
 
     /**
-     * 检查分数
+     * 检查分数范围
      */
-    private void checkPointsRange(Integer begin, Integer end) {
-        if (begin > end) {
+    private void checkPointsRange(MemberRankConfigUpsertRequest request) {
+        Integer begin = request.getBeginPoints();
+        Integer end = request.getEndPoints();
+        if (begin > end || begin.equals(end)) {
             throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "起始分数必须大于结束分数");
         }
-        // FIXME 需要检查begin和end没有占用其他人的分段
-        // where ((this.begin >= begin and this.begin <= end) or (this.end >= begin and this.end <= end)) and member_type != 自己
-        // 这个条件为true时则校验不通过
+        // 需要检查begin和end没有占用其他配置的分段
+        LambdaQueryWrapper<MemberRankConfig> queryWrapper = Wrappers.<MemberRankConfig>lambdaQuery()
+                .ne(MemberRankConfig::getMemberRankType, request.getMemberRankType())
+                .eq(MemberRankConfig::getPlatformUsername, CurrentUserHelper.platformUsername())
+                .and(it -> it.le(MemberRankConfig::getBeginPoints, begin).ge(MemberRankConfig::getEndPoints, begin)
+                        .or().le(MemberRankConfig::getBeginPoints, end).ge(MemberRankConfig::getEndPoints, end));
+        if (crudMemberRankConfigService.exist(queryWrapper)) {
+            throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "此分段已被其他配置占用");
+        }
     }
 
     /**

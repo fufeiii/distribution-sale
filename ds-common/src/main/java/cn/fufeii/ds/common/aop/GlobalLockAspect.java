@@ -107,8 +107,8 @@ public class GlobalLockAspect {
         }
 
         // 不是sp-el表达式直接返回
-        String spElFlag = "#";
-        if (!rawKey.contains(spElFlag)) {
+        String[] spElFlagArray = {"#", "T("};
+        if (!StrUtil.containsAny(rawKey, spElFlagArray)) {
             return keyPrefix + rawKey;
         }
 

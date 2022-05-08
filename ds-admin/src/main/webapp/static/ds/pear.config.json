@@ -17,10 +17,10 @@
 		"tabMax": 30,
 		"session": true,
 		"index": {
-          "id": "0",
-          "href": "/view/workspace/dashboard",
-          "title": "分销总览"
-        }
+			"id": "-1",
+			"href": "/view/common/welcome",
+			"title": "欢迎"
+		}
 	},
 	"theme": {
 		"defaultColor": "2",
