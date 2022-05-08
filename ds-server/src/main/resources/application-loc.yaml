@@ -9,5 +9,5 @@ spring:
     host: localhost
     password: 123456
 
-  liquibase:
-    enabled: false
+#  liquibase:
+#    enabled: true

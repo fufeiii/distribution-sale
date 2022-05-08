@@ -61,14 +61,16 @@ public class MemberRankConfigService {
     /**
      * 通用响应设置
      */
-    public void setResponse(MemberRankConfig rankParam, MemberRankConfigResponse response) {
-        response.setId(rankParam.getId());
-        response.setMemberRankType(rankParam.getMemberRankType().getMessage());
-        response.setBeginPoints(rankParam.getBeginPoints());
-        response.setEndPoints(rankParam.getEndPoints());
-        response.setState(rankParam.getState().getMessage());
-        response.setCreateDateTime(rankParam.getCreateDateTime());
-        response.setUpdateDateTime(rankParam.getUpdateDateTime());
+    public void setResponse(MemberRankConfig memberRankConfig, MemberRankConfigResponse response) {
+        response.setId(memberRankConfig.getId());
+        response.setPlatformUsername(memberRankConfig.getPlatformUsername());
+        response.setPlatformNickname(memberRankConfig.getPlatformNickname());
+        response.setMemberRankType(memberRankConfig.getMemberRankType().getMessage());
+        response.setBeginPoints(memberRankConfig.getBeginPoints());
+        response.setEndPoints(memberRankConfig.getEndPoints());
+        response.setState(memberRankConfig.getState().getMessage());
+        response.setCreateDateTime(memberRankConfig.getCreateDateTime());
+        response.setUpdateDateTime(memberRankConfig.getUpdateDateTime());
     }
 
     /**
