@@ -11,3 +11,7 @@ spring:
 
 #  liquibase:
 #    enabled: true
+
+ds:
+  server:
+    enable-api-signature: false

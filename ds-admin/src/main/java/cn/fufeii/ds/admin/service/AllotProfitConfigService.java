@@ -90,7 +90,7 @@ public class AllotProfitConfigService {
     /**
      * 保存
      */
-    @GlobalLock(key = DsAdminConstant.CPUS + ":apc-create")
+    @GlobalLock(key = DsAdminConstant.CPUS + "':apc-create'")
     public void create(AllotProfitConfigUpsertRequest request) {
         SystemUser currentUser = CurrentUserHelper.self();
         // 检查是否存在并插入数据

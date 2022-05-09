@@ -8,14 +8,14 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
     /**
      * 页面实体对象
      */
-    let ProfitParam = {
+    let AllotProfitConfig = {
         tableId: 'profitParamTable'
     }
 
     /**
      * 初始化表列
      */
-    ProfitParam.initCols = function () {
+    AllotProfitConfig.initCols = function () {
         return [
             [
                 {
@@ -81,7 +81,7 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
     /**
      * 搜索操作
      */
-    ProfitParam.onSearch = function () {
+    AllotProfitConfig.onSearch = function () {
         let query = form.val('profitParamQueryForm');
         Object.keys(query).forEach(function (key) {
             let value = query[key];
@@ -89,7 +89,7 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
                 query[key] = null;
             }
         });
-        table.reload(ProfitParam.tableId, {
+        table.reload(AllotProfitConfig.tableId, {
             where: query,
             page: {curr: 1}
         });
@@ -98,37 +98,37 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
     /**
      * 弹出添加对话框
      */
-    ProfitParam.openAddDlg = function () {
+    AllotProfitConfig.openAddDlg = function () {
         layer.open({
             type: 2,
             title: '添加分润配置',
             shade: 0.3,
-            area: ['500px', '610px'],
-            content: '/view/allot-profit-config/add?tableId=' + ProfitParam.tableId,
+            area: ['500px', '500px'],
+            content: '/view/allot-profit-config/add?tableId=' + AllotProfitConfig.tableId,
         });
     };
 
     /**
      * 弹出编辑对话框
      */
-    ProfitParam.openEditDlg = function (id) {
+    AllotProfitConfig.openEditDlg = function (id) {
         layer.open({
             type: 2,
             title: '编辑分润配置',
             shade: 0.3,
-            area: ['500px', '610px'],
-            content: '/view/allot-profit-config/edit?tableId=' + ProfitParam.tableId + '&id=' + id,
+            area: ['500px', '500px'],
+            content: '/view/allot-profit-config/edit?tableId=' + AllotProfitConfig.tableId + '&id=' + id,
         });
     };
 
     /**
      * 移除操作
      */
-    ProfitParam.onRemove = function (id) {
+    AllotProfitConfig.onRemove = function (id) {
         layer.confirm('确认删除吗', {icon: 3, title: '提示'}, function (index) {
             easyHttp.execute({url: '/admin/allot-profit-config/remove/' + id, method: 'DELETE'}, function (resp) {
                 popup.success('操作成功');
-                table.reload(ProfitParam.tableId);
+                table.reload(AllotProfitConfig.tableId);
             });
             layer.close(index);
         });
@@ -138,7 +138,7 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
      * 表格渲染配置
      */
     table.render({
-        elem: '#' + ProfitParam.tableId,
+        elem: '#' + AllotProfitConfig.tableId,
         skin: 'line',
         size: 'lg',
         url: '/admin/allot-profit-config/page',
@@ -147,7 +147,7 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
         contentType: 'application/json',
         request: {pageName: 'page', limitName: 'size'},
         response: {countName: 'total'},
-        cols: ProfitParam.initCols(),
+        cols: AllotProfitConfig.initCols(),
         toolbar: '#toolbar',
         defaultToolbar: ['filter', 'print', 'exports']
     });
@@ -155,20 +155,20 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
     /**
      * 监听表格上方按钮 toolbar
      */
-    table.on('toolbar(' + ProfitParam.tableId + ')', function (obj) {
+    table.on('toolbar(' + AllotProfitConfig.tableId + ')', function (obj) {
         if (obj.event === 'add') {
-            ProfitParam.openAddDlg();
+            AllotProfitConfig.openAddDlg();
         }
     });
 
     /**
      * 监听数据行末尾按钮 rowBar
      */
-    table.on('tool(' + ProfitParam.tableId + ')', function (obj) {
+    table.on('tool(' + AllotProfitConfig.tableId + ')', function (obj) {
         if (obj.event === 'remove') {
-            ProfitParam.onRemove(obj.data.id);
+            AllotProfitConfig.onRemove(obj.data.id);
         } else if (obj.event === 'edit') {
-            ProfitParam.openEditDlg(obj.data.id);
+            AllotProfitConfig.openEditDlg(obj.data.id);
         }
     });
 
@@ -177,7 +177,7 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
      * 搜索按钮点击事件
      */
     form.on('submit(profitParamQueryFormSubmit)', function (data) {
-        ProfitParam.onSearch(data);
+        AllotProfitConfig.onSearch(data);
         return false;
     });
 

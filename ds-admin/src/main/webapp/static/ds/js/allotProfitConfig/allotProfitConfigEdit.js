@@ -15,7 +15,7 @@ layui.use(['form', 'layer', 'easyHttp', 'popup'], function () {
     form.on('submit(btnSubmit)', function (data) {
         console.log(data.field)
         easyHttp.execute({
-            url: '/admin/profit-param/modify',
+            url: '/admin/allot-profit-config/modify',
             method: 'PUT',
             data: JSON.stringify(data.field)
         }, function (resp) {

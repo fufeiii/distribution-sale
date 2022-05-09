@@ -1,5 +1,6 @@
 package cn.fufeii.ds.server.strategy.impl;
 
+import cn.fufeii.ds.common.enumerate.biz.NotifyStateEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitLevelEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import cn.fufeii.ds.common.util.DsUtil;
@@ -39,7 +40,8 @@ public class UpgradeProfitStrategy extends BaseAllotProfit implements AllotProfi
         profitEvent.setPlatformNickname(self.getNickname());
         profitEvent.setProfitType(ProfitTypeEnum.UPGRADE);
         profitEvent.setTriggerMemberId(upgradeMember.getId());
-        profitEvent.setEventNumber(upgradeMember.getId() + "U" + (SystemClock.now() / 1000));
+        profitEvent.setNotifyState(NotifyStateEnum.INIT);
+        profitEvent.setEventNumber(upgradeMember.getId() + "UPG" + (SystemClock.now() / 1000));
         profitEvent.setEventAmount(DsServerConstant.DEFAULT_EVENT_AMOUNT);
         profitEvent.setMemo(String.format("会员[%s]发生了段位升级", upgradeMember.getNickname()));
         return crudAllotProfitEventService.insert(profitEvent);

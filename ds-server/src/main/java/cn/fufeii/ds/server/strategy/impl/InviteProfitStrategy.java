@@ -1,5 +1,6 @@
 package cn.fufeii.ds.server.strategy.impl;
 
+import cn.fufeii.ds.common.enumerate.biz.NotifyStateEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitLevelEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import cn.fufeii.ds.common.util.DsUtil;
@@ -31,16 +32,18 @@ public class InviteProfitStrategy extends BaseAllotProfit implements AllotProfit
     @Override
     public AllotProfitEvent saveEvent(Object source) {
         InviteEvent.Source inviteEventSource = (InviteEvent.Source) source;
-        Member inviteeMember = crudMemberService.selectById(inviteEventSource.getMemberId());
+        Member inviteeMember = crudMemberService.selectById(inviteEventSource.getInviteeMemberId());
+        Member inviteMember = crudMemberService.selectById(inviteEventSource.getInviteMemberId());
         AllotProfitEvent profitEvent = new AllotProfitEvent();
         Platform self = CurrentPlatformHelper.self();
         profitEvent.setPlatformUsername(self.getUsername());
         profitEvent.setPlatformNickname(self.getNickname());
         profitEvent.setProfitType(ProfitTypeEnum.INVITE);
         profitEvent.setTriggerMemberId(inviteeMember.getId());
-        profitEvent.setEventNumber(inviteeMember.getId() + "V" + (SystemClock.now() / 1000));
+        profitEvent.setNotifyState(NotifyStateEnum.INIT);
+        profitEvent.setEventNumber(inviteeMember.getId() + "IVT" + (SystemClock.now() / 1000));
         profitEvent.setEventAmount(DsServerConstant.DEFAULT_EVENT_AMOUNT);
-        profitEvent.setMemo(String.format("会员[%s]被邀请加入", inviteeMember.getNickname()));
+        profitEvent.setMemo(String.format("会员[%s]邀请了[%s]加入", inviteeMember.getNickname(), inviteMember.getNickname()));
         return crudAllotProfitEventService.insert(profitEvent);
     }
 
@@ -52,7 +55,7 @@ public class InviteProfitStrategy extends BaseAllotProfit implements AllotProfit
         InviteEvent.Source inviteEventSource = (InviteEvent.Source) source;
 
         // 查询出主要相关的会员
-        Member inviteeMember = crudMemberService.selectById(inviteEventSource.getMemberId());
+        Member inviteeMember = crudMemberService.selectById(inviteEventSource.getInviteeMemberId());
         Member firstInviterMember = crudMemberService.selectById(inviteeMember.getFirstInviterId());
         log.info("【邀请分润】被邀请会员[{}], 邀请会员[{}]", inviteeMember.getUsername(), firstInviterMember.getUsername());
 

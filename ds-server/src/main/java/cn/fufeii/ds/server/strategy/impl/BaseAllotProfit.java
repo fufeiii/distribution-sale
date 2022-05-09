@@ -167,7 +167,7 @@ public class BaseAllotProfit {
      * 执行分润逻辑
      * 计算佣金/积分数量, 并入对应会员帐户
      */
-    @GlobalLock(key = DsServerConstant.CPUS + "#request.memberUsername")
+    @GlobalLock(key = DsServerConstant.CPUS + "#member.username")
     @Transactional
     public void doAllotProfit(AllotProfitEvent event, Member member, AllotProfitConfig moneyParam, AllotProfitConfig pointsParam) {
 
@@ -188,25 +188,26 @@ public class BaseAllotProfit {
                 }
 
                 // 保存佣金分润记录
-                ProfitIncomeRecord profitRecord = new ProfitIncomeRecord();
-                profitRecord.setProfitEventId(event.getId());
-                profitRecord.setAccountType(AccountTypeEnum.MONEY);
-                profitRecord.setImpactMemberId(member.getId());
-                profitRecord.setIncomeCount(profitAmount);
-                profitRecord.setMemo(String.format("%s,获得佣金收入%s元", member.getNickname(), DsUtil.fenToYuan(profitAmount)));
-                profitRecord = crudProfitIncomeRecordService.insert(profitRecord);
+                ProfitIncomeRecord profitIncomeRecord = new ProfitIncomeRecord();
+                profitIncomeRecord.setProfitEventId(event.getId());
+                profitIncomeRecord.setAccountType(AccountTypeEnum.MONEY);
+                profitIncomeRecord.setImpactMemberId(member.getId());
+                profitIncomeRecord.setIncomeCount(profitAmount);
+                profitIncomeRecord.setMemo(String.format("%s,获得佣金收入%s元", member.getNickname(), DsUtil.fenToYuan(profitAmount)));
+                profitIncomeRecord = crudProfitIncomeRecordService.insert(profitIncomeRecord);
 
                 // 保存佣金入账记录
-                AccountChangeRecord accountRecord = new AccountChangeRecord();
-                accountRecord.setMemberId(member.getId());
-                accountRecord.setAccountId(account.getId());
-                accountRecord.setAccountType(AccountTypeEnum.MONEY);
-                accountRecord.setBeforeAvailableCount(account.getMoneyAvailable());
-                accountRecord.setAfterAvailableCount(account.getMoneyAvailable() + profitAmount);
-                accountRecord.setChangeCount(profitAmount);
-                accountRecord.setChangeType(ChangeTypeEnum.PROFIT);
-                accountRecord.setChangeBizNumber(profitRecord.getId().toString());
-                crudAccountChangeRecordService.insert(accountRecord);
+                AccountChangeRecord accountChangeRecord = new AccountChangeRecord();
+                accountChangeRecord.setMemberId(member.getId());
+                accountChangeRecord.setAccountId(account.getId());
+                accountChangeRecord.setAccountType(AccountTypeEnum.MONEY);
+                accountChangeRecord.setBeforeAvailableCount(account.getMoneyAvailable());
+                accountChangeRecord.setAfterAvailableCount(account.getMoneyAvailable() + profitAmount);
+                accountChangeRecord.setChangeCount(profitAmount);
+                accountChangeRecord.setChangeType(ChangeTypeEnum.PROFIT);
+                accountChangeRecord.setChangeBizNumber(profitIncomeRecord.getId().toString());
+                accountChangeRecord.setMemo("分润获得佣金");
+                crudAccountChangeRecordService.insert(accountChangeRecord);
 
                 // 更新账户
                 account.setMoneyTotalHistory(account.getMoneyTotalHistory() + profitAmount);
@@ -240,16 +241,17 @@ public class BaseAllotProfit {
                 profitRecord = crudProfitIncomeRecordService.insert(profitRecord);
 
                 // 保存佣金入账记录
-                AccountChangeRecord accountRecord = new AccountChangeRecord();
-                accountRecord.setMemberId(member.getId());
-                accountRecord.setAccountId(account.getId());
-                accountRecord.setAccountType(AccountTypeEnum.POINTS);
-                accountRecord.setBeforeAvailableCount(account.getPointsAvailable());
-                accountRecord.setAfterAvailableCount(account.getPointsAvailable() + profitAmount);
-                accountRecord.setChangeCount(profitAmount);
-                accountRecord.setChangeType(ChangeTypeEnum.PROFIT);
-                accountRecord.setChangeBizNumber(profitRecord.getId().toString());
-                crudAccountChangeRecordService.insert(accountRecord);
+                AccountChangeRecord accountChangeRecord = new AccountChangeRecord();
+                accountChangeRecord.setMemberId(member.getId());
+                accountChangeRecord.setAccountId(account.getId());
+                accountChangeRecord.setAccountType(AccountTypeEnum.POINTS);
+                accountChangeRecord.setBeforeAvailableCount(account.getPointsAvailable());
+                accountChangeRecord.setAfterAvailableCount(account.getPointsAvailable() + profitAmount);
+                accountChangeRecord.setChangeCount(profitAmount);
+                accountChangeRecord.setChangeType(ChangeTypeEnum.PROFIT);
+                accountChangeRecord.setChangeBizNumber(profitRecord.getId().toString());
+                accountChangeRecord.setMemo("分润获得积分");
+                crudAccountChangeRecordService.insert(accountChangeRecord);
 
                 // 更新账户
                 account.setPointsTotalHistory(account.getPointsTotalHistory() + profitAmount);

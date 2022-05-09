@@ -163,7 +163,7 @@ create table ds_system_user
 -- 初始化数据
 INSERT INTO ds_system_user(`id`, `platform_username`, `platform_nickname`, `username`, `nickname`, `avatar`, `password`,
                            `slat`, `state`, `version`, `update_date_time`, `create_date_time`)
-VALUES (1, '', '0', 'admin', '超级管理员1', '', '96864683d80a0d1768b3c8b90f818191', 'abcdefgh', 1, 1, now(), now());
+VALUES (1, '', '0', 'admin', '超级管理员', '', '96864683d80a0d1768b3c8b90f818191', 'abcdefgh', 1, 1, now(), now());
 
 
 

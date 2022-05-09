@@ -18,7 +18,15 @@ public class InviteEvent extends AbstractProfitEvent {
     @Data
     public static class Source {
 
-        private Long memberId;
+        /**
+         * 被邀请人
+         */
+        private Long inviteeMemberId;
+
+        /**
+         * 邀请人
+         */
+        private Long inviteMemberId;
 
     }
 

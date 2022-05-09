@@ -55,4 +55,4 @@ logging:
 
 ds:
   server:
-    enable-api-signature: false
+    enable-api-signature: true

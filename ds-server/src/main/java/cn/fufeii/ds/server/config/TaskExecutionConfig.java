@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @date 2022/3/12
  */
 @Configuration
-public class TaskExecutionConfig implements AsyncConfigurer {
+public class TaskExecutionConfig {
 
     /**
      * 配置spring任务线程池
@@ -32,9 +32,15 @@ public class TaskExecutionConfig implements AsyncConfigurer {
         };
     }
 
-    @Override
-    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return new SimpleAsyncUncaughtExceptionHandler();
+
+    @Bean
+    public AsyncConfigurer asyncConfigurer() {
+        return new AsyncConfigurer() {
+            @Override
+            public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+                return new SimpleAsyncUncaughtExceptionHandler();
+            }
+        };
     }
 
 }

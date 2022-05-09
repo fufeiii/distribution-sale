@@ -124,7 +124,8 @@ public class MemberService {
         // 发布邀请事件
         if (isJoinCreate) {
             InviteEvent.Source source = new InviteEvent.Source();
-            source.setMemberId(memberId);
+            source.setInviteMemberId(memberId);
+            source.setInviteeMemberId(inviterMember.getId());
             applicationEventPublisher.publishEvent(new InviteEvent(ProfitTypeEnum.INVITE, source));
         }
 

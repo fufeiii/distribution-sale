@@ -8,6 +8,8 @@ import cn.fufeii.ds.repository.entity.Platform;
 import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.model.api.request.AllotEventNotifyRequest;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
+import cn.hutool.core.text.CharSequenceUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
  * @author FuFei
  * @date 2022/4/17
  */
+@Slf4j
 @Service
 public class PushService {
     @Autowired
@@ -39,6 +42,10 @@ public class PushService {
     public void pushAllotProfitEvent(AllotProfitEvent ape) {
         Platform selfPlatform = CurrentPlatformHelper.self();
         String notifyUrl = selfPlatform.getNotifyUrl();
+        if (CharSequenceUtil.isBlank(notifyUrl)) {
+            log.warn("平台[{}]未设置分润通知地址", selfPlatform.getUsername());
+            return;
+        }
 
         // 组装参数
         AllotEventNotifyRequest allotEventNotifyRequest = new AllotEventNotifyRequest();

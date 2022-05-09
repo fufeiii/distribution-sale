@@ -1,5 +1,6 @@
 package cn.fufeii.ds.server.strategy.impl;
 
+import cn.fufeii.ds.common.enumerate.biz.NotifyStateEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitLevelEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import cn.fufeii.ds.common.util.DsUtil;
@@ -37,6 +38,7 @@ public class TradeProfitStrategy extends BaseAllotProfit implements AllotProfitS
         profitEvent.setPlatformNickname(self.getNickname());
         profitEvent.setProfitType(ProfitTypeEnum.TRADE);
         profitEvent.setTriggerMemberId(tradeMember.getId());
+        profitEvent.setNotifyState(NotifyStateEnum.INIT);
         profitEvent.setEventNumber(tradeEventSource.getTradeNumber());
         profitEvent.setEventAmount(tradeEventSource.getTradeAmount());
         profitEvent.setMemo(String.format("会员[%s]发生了金钱交易", tradeMember.getNickname()));
