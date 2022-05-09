@@ -106,11 +106,11 @@ public class MemberService {
         inviteeMember.setPlatformUsername(platformUsername);
         inviteeMember.setPlatformNickname(currentPlatform.getNickname());
         crudMemberService.insert(inviteeMember);
-        Long memberId = inviteeMember.getId();
+        Long inviteeMemberId = inviteeMember.getId();
 
         // 创建账户
         Account account = new Account();
-        account.setMemberId(memberId);
+        account.setMemberId(inviteeMemberId);
         account.setMoneyTotalHistory(0);
         account.setMoneyTotal(0);
         account.setMoneyAvailable(0);
@@ -124,14 +124,14 @@ public class MemberService {
         // 发布邀请事件
         if (isJoinCreate) {
             InviteEvent.Source source = new InviteEvent.Source();
-            source.setInviteMemberId(memberId);
-            source.setInviteeMemberId(inviterMember.getId());
+            source.setInviteMemberId(inviterMember.getId());
+            source.setInviteeMemberId(inviteeMemberId);
             applicationEventPublisher.publishEvent(new InviteEvent(ProfitTypeEnum.INVITE, source));
         }
 
         // 返回
         MemberCreateResponse response = new MemberCreateResponse();
-        response.setMemberId(memberId);
+        response.setMemberId(inviteeMemberId);
         return response;
     }
 
