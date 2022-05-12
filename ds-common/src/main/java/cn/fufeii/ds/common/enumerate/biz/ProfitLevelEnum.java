@@ -53,7 +53,7 @@ public enum ProfitLevelEnum {
     }
 
     public static Optional<ProfitLevelEnum> getByNameOptional(String name) {
-        return Arrays.stream(values()).filter(it -> it.name().toLowerCase().equals(name)).findAny();
+        return Arrays.stream(values()).filter(it -> it.name().equalsIgnoreCase(name)).findAny();
     }
 
 }

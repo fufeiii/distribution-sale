@@ -3,15 +3,16 @@ package cn.fufeii.ds.server.controller;
 import cn.fufeii.ds.common.annotation.DataValid;
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitLevelEnum;
-import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.model.CommonResult;
 import cn.fufeii.ds.common.model.PageRequest;
 import cn.fufeii.ds.common.model.PageResult;
+import cn.fufeii.ds.server.model.api.request.MemberChangeStateRequest;
 import cn.fufeii.ds.server.model.api.request.MemberCreateRequest;
 import cn.fufeii.ds.server.model.api.request.MemberIdentityTypeRequest;
 import cn.fufeii.ds.server.model.api.response.*;
 import cn.fufeii.ds.server.service.MemberService;
+import cn.hutool.core.util.BooleanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,8 +43,8 @@ public class MemberApiController {
 
     @ApiOperation("查询会员详情")
     @GetMapping("/info/{username}")
-    public CommonResult<MemberResponse> info(@PathVariable String username, @RequestParam(defaultValue = "false") Boolean includeAccount) {
-        return CommonResult.success(memberService.info(username, includeAccount));
+    public CommonResult<MemberResponse> info(@PathVariable String username, @RequestParam(defaultValue = "false") String includeAccount) {
+        return CommonResult.success(memberService.info(username, BooleanUtil.toBoolean(includeAccount)));
     }
 
     @ApiOperation("分页查询会员团队")
@@ -62,14 +63,14 @@ public class MemberApiController {
     }
 
     @ApiOperation("分页查询会员分润记录")
-    @GetMapping("/{username}/profit-income-record/page/")
+    @GetMapping("/{username}/profit-income-record/page")
     public PageResult<ProfitIncomeRecordResponse> profitIncomeRecordRecordPage(@PathVariable String username, PageRequest pageRequest) {
         IPage<ProfitIncomeRecordResponse> pageResult = memberService.profitIncomeRecordRecordPage(username, pageRequest.getPage(), pageRequest.getSize());
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
     }
 
     @ApiOperation("分页查询会员账户变动记录")
-    @GetMapping("/{username}/account-change-record/page/")
+    @GetMapping("/{username}/account-change-record/page")
     public PageResult<AccountChangeRecordResponse> accountChangeRecordRecordPage(@PathVariable String username, PageRequest pageRequest) {
         IPage<AccountChangeRecordResponse> pageResult = memberService.accountChangeRecordRecordPage(username, pageRequest.getPage(), pageRequest.getSize());
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
@@ -77,24 +78,16 @@ public class MemberApiController {
 
     @ApiOperation(value = "更新会员身份")
     @PutMapping("/identity-type")
-    public CommonResult<Void> identityType(@RequestBody MemberIdentityTypeRequest identityType) {
-        memberService.identityType(identityType);
+    public CommonResult<Void> identityType(@RequestBody MemberIdentityTypeRequest request) {
+        memberService.identityType(request);
         return CommonResult.success();
     }
 
-    @ApiOperation(value = "启用会员")
-    @PutMapping("/enable/{username}")
-    public CommonResult<Void> enable(@PathVariable String username) {
-        memberService.changeState(username, StateEnum.ENABLE);
+    @ApiOperation(value = "更新会员状态")
+    @PutMapping("/change-state")
+    public CommonResult<Void> changeState(@RequestBody MemberChangeStateRequest request) {
+        memberService.changeState(request);
         return CommonResult.success();
     }
-
-    @ApiOperation("禁用会员")
-    @PutMapping("/disable/{username}")
-    public CommonResult<Void> disable(@PathVariable String username) {
-        memberService.changeState(username, StateEnum.DISABLE);
-        return CommonResult.success();
-    }
-
 
 }

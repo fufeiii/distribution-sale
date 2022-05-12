@@ -1,6 +1,6 @@
 package cn.fufeii.ds.server.model.api.request;
 
-import cn.fufeii.ds.common.enumerate.biz.MemberIdentityTypeEnum;
+import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -9,21 +9,18 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * 会员身份请求
- *
  * @author FuFei
- * @date 2022/3/19
  */
 @Data
 @ApiModel
-public class MemberIdentityTypeRequest {
+public class MemberChangeStateRequest {
 
     @NotBlank
     @ApiModelProperty(value = "会员标识", required = true)
     private String username;
 
     @NotNull
-    @ApiModelProperty(value = "会员身份", required = true)
-    private MemberIdentityTypeEnum identityType;
+    @ApiModelProperty(value = "状态", required = true)
+    private StateEnum state;
 
 }

@@ -5,6 +5,7 @@ import cn.fufeii.ds.common.constant.DsConstant;
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.*;
 import cn.fufeii.ds.common.exception.BizException;
+import cn.fufeii.ds.common.util.PageUtil;
 import cn.fufeii.ds.repository.crud.CrudAccountChangeRecordService;
 import cn.fufeii.ds.repository.crud.CrudAccountService;
 import cn.fufeii.ds.repository.crud.CrudMemberService;
@@ -14,6 +15,7 @@ import cn.fufeii.ds.repository.entity.Member;
 import cn.fufeii.ds.repository.entity.Platform;
 import cn.fufeii.ds.repository.entity.ProfitIncomeRecord;
 import cn.fufeii.ds.server.config.constant.DsServerConstant;
+import cn.fufeii.ds.server.model.api.request.MemberChangeStateRequest;
 import cn.fufeii.ds.server.model.api.request.MemberCreateRequest;
 import cn.fufeii.ds.server.model.api.request.MemberIdentityTypeRequest;
 import cn.fufeii.ds.server.model.api.response.*;
@@ -24,7 +26,6 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -141,13 +142,13 @@ public class MemberService {
      * 接口是幂等的, 目的是为了兼容管理后台的启禁用功能导致上游未同步更新,
      * 上游系统更改状态走逻辑调会ds系统, 此时ds系统兼容此情况
      *
-     * @param username 会员标识
-     * @param state    状态
+     * @param request *
      */
-    @GlobalLock(key = DsServerConstant.CPUS + "#username")
-    public void changeState(String username, StateEnum state) {
+    @GlobalLock(key = DsServerConstant.CPUS + "#request.username")
+    public void changeState(MemberChangeStateRequest request) {
         String platformUsername = CurrentPlatformHelper.username();
-        Member member = crudMemberService.selectByUsernameAndPlatformUsername(username, platformUsername);
+        Member member = crudMemberService.selectByUsernameAndPlatformUsername(request.getUsername(), platformUsername);
+        StateEnum state = request.getState();
         if (state != member.getState()) {
             member.setState(state);
             crudMemberService.updateById(member);
@@ -253,7 +254,7 @@ public class MemberService {
         if (ProfitLevelEnum.THREE == level) {
             lambdaQueryWrapper.eq(Member::getThirdInviterId, inviterId);
         }
-        IPage<Member> memberIPage = crudMemberService.selectPage(lambdaQueryWrapper, Page.of(page, size));
+        IPage<Member> memberIPage = crudMemberService.selectPage(lambdaQueryWrapper, PageUtil.pageAndOrderByIdDesc(page, size));
         return memberIPage.convert(it -> {
             MemberTeamResponse response = new MemberTeamResponse();
             response.setId(it.getId());
@@ -280,7 +281,7 @@ public class MemberService {
     public IPage<ProfitIncomeRecordResponse> profitIncomeRecordRecordPage(String memberUsername, Integer page, Integer size) {
         Member member = crudMemberService.selectByUsernameAndPlatformUsername(memberUsername, CurrentPlatformHelper.username());
         LambdaQueryWrapper<ProfitIncomeRecord> lambdaQueryWrapper = Wrappers.<ProfitIncomeRecord>lambdaQuery().eq(ProfitIncomeRecord::getImpactMemberId, member.getId());
-        IPage<ProfitIncomeRecord> profitRecordIPage = crudProfitIncomeRecordService.selectPage(lambdaQueryWrapper, Page.of(page, size));
+        IPage<ProfitIncomeRecord> profitRecordIPage = crudProfitIncomeRecordService.selectPage(lambdaQueryWrapper, PageUtil.pageAndOrderByIdDesc(page, size));
         return profitRecordIPage.convert(it -> {
             ProfitIncomeRecordResponse response = new ProfitIncomeRecordResponse();
             response.setId(it.getId());
@@ -303,7 +304,7 @@ public class MemberService {
      */
     public IPage<AccountChangeRecordResponse> accountChangeRecordRecordPage(String memberUsername, Integer page, Integer size) {
         Member member = crudMemberService.selectByUsernameAndPlatformUsername(memberUsername, CurrentPlatformHelper.username());
-        return crudAccountChangeRecordService.selectByMemberIdPage(member.getId(), Page.of(page, size))
+        return crudAccountChangeRecordService.selectByMemberIdPage(member.getId(), PageUtil.pageAndOrderByIdDesc(page, size))
                 .convert(it -> {
                     AccountChangeRecordResponse response = new AccountChangeRecordResponse();
                     response.setId(it.getId());

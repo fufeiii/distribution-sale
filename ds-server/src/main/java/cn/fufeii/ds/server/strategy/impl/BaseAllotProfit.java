@@ -249,6 +249,7 @@ public class BaseAllotProfit {
                 accountChangeRecord.setAfterAvailableCount(account.getPointsAvailable() + profitAmount);
                 accountChangeRecord.setChangeCount(profitAmount);
                 accountChangeRecord.setChangeType(ChangeTypeEnum.PROFIT);
+                // 这里设置为分润记录ID
                 accountChangeRecord.setChangeBizNumber(profitRecord.getId().toString());
                 accountChangeRecord.setMemo("分润获得积分");
                 crudAccountChangeRecordService.insert(accountChangeRecord);

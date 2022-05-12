@@ -60,6 +60,11 @@
             <artifactId>mybatis-plus-annotation</artifactId>
             <version>${mybatis.plus.starter.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
+            <version>${mybatis.plus.starter.version}</version>
+        </dependency>
         <!-- sl4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
