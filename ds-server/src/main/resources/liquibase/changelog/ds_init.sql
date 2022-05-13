@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset fufeii:database_init.sql_1
+--changeset fufeii:1
 /*
     建库参考！！！！
     CREATE DATABASE `ds` DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_general_ci;
@@ -21,7 +21,7 @@ create table ds_account
     version              int      not null comment '乐观锁',
     update_date_time     datetime not null comment '更新时间',
     create_date_time     datetime not null comment '创建时间',
-    constraint uk_MemberId unique (member_id)
+    constraint uq_MemberId unique (member_id)
 ) comment '会员账户';
 
 create table ds_account_change_record
@@ -39,7 +39,7 @@ create table ds_account_change_record
     version                int          not null comment '乐观锁',
     update_date_time       datetime     not null comment '更新时间',
     create_date_time       datetime     not null comment '创建时间',
-    constraint uk_ChangeBizNumber unique (change_biz_number)
+    constraint uq_ChangeBizNumber unique (change_biz_number)
 ) comment '账户变动记录';
 
 create table ds_allot_profit_config
@@ -58,7 +58,7 @@ create table ds_allot_profit_config
     version              int         not null comment '乐观锁',
     update_date_time     datetime    not null comment '更新时间',
     create_date_time     datetime    not null comment '创建时间',
-    constraint uk_PS_AT_PT_PL_MIT_MRT unique (platform_username, account_type, profit_type, profit_level,
+    constraint uq_PS_AT_PT_PL_MIT_MRT unique (platform_username, account_type, profit_type, profit_level,
                                               member_identity_type, member_rank_type)
 ) comment '分润配置';
 
@@ -76,7 +76,7 @@ create table ds_allot_profit_event
     version           int          not null comment '乐观锁',
     create_date_time  datetime     not null comment '创建时间',
     update_date_time  datetime     not null comment '更新时间',
-    constraint uk_PlatformUsername_EventNumber unique (platform_username, event_number)
+    constraint uq_PlatformUsername_EventNumber unique (platform_username, event_number)
 ) comment '分润事件';
 
 create table ds_member
@@ -96,7 +96,7 @@ create table ds_member
     version           int          not null comment '乐观锁',
     update_date_time  datetime     not null comment '更新时间',
     create_date_time  datetime     not null comment '创建时间',
-    constraint uk_PlatformUsername_Username unique (platform_username, username)
+    constraint uq_PlatformUsername_Username unique (platform_username, username)
 ) comment '会员信息';
 
 create table ds_member_rank_config
@@ -111,7 +111,7 @@ create table ds_member_rank_config
     version           int         not null comment '乐观锁',
     update_date_time  datetime    not null comment '更新时间',
     create_date_time  datetime    not null comment '创建时间',
-    constraint uk_PlatformUsername_MemberRankType unique (platform_username, member_rank_type)
+    constraint uq_PlatformUsername_MemberRankType unique (platform_username, member_rank_type)
 ) comment '会员段位配置';
 
 create table ds_platform
@@ -125,7 +125,7 @@ create table ds_platform
     version          int          not null comment '乐观锁',
     update_date_time datetime     not null comment '更新时间',
     create_date_time datetime     not null comment '创建时间',
-    constraint uk_username unique (username)
+    constraint uq_username unique (username)
 ) comment '平台信息';
 
 create table ds_profit_income_record
@@ -156,7 +156,7 @@ create table ds_system_user
     version           int          not null comment '乐观锁',
     update_date_time  datetime     not null comment '更新时间',
     create_date_time  datetime     not null comment '创建时间',
-    constraint uk_username unique (username)
+    constraint uq_username unique (username)
 ) comment '系统用户';
 
 
