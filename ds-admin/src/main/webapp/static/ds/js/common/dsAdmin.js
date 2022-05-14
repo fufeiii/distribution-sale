@@ -1,5 +1,6 @@
 let Constant = {
     defaultAvatar: '/ds/images/avatar.jpg',
+    defaultAdminAvatar: '/ds/images/admin-avatar.jpg',
 }
 
 let JwtOperator = {

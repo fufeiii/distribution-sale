@@ -91,7 +91,7 @@
         easyHttp.execute({url: '/admin/system-user/current', method: 'GET'}, function (resp) {
             let avatar = resp.data.avatar;
             if (!Util.isLegalImgSrc(avatar)) {
-                avatar = Constant.defaultAvatar;
+                avatar = Constant.defaultAdminAvatar;
             }
             AdminOperator.setAdmin(resp.data.isAdmin);
             admin.setAvatar(avatar, resp.data.nickname);
