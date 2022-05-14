@@ -7,9 +7,7 @@ import cn.fufeii.ds.common.util.ResponseUtil;
 import cn.fufeii.ds.repository.entity.SystemUser;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.signers.JWTSignerUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,14 +30,11 @@ public class JwtLoginFilterHandler {
 
     @Slf4j
     public static class FailureHandler implements AuthenticationFailureHandler {
-        private final ObjectMapper objectMapper = new ObjectMapper();
 
         @Override
         public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
             // 响应登录错误信息
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            response.getWriter().write(objectMapper.writeValueAsString(CommonResult.fail(ExceptionEnum.LOGIN_ERROR, exception.getMessage())));
+            ResponseUtil.write(response, CommonResult.fail(ExceptionEnum.LOGIN_ERROR, exception.getMessage()));
         }
     }
 
