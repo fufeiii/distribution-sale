@@ -4,7 +4,7 @@ import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.repository.entity.AllotProfitEvent;
-import cn.fufeii.ds.server.service.PushService;
+import cn.fufeii.ds.server.push.PushService;
 import cn.fufeii.ds.server.subscribe.event.AbstractProfitEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class AllotProfitStrategyServiceImpl implements AllotProfitStrategyServic
         allotProfitStrategy.allotProfit(eventSource, allotProfitEvent);
 
         // 3. 推送分润事件
-        pushService.pushAllotProfitEvent(allotProfitEvent);
+        pushService.pushAllotProfitEvent(allotProfitEvent.getId());
     }
 
 }

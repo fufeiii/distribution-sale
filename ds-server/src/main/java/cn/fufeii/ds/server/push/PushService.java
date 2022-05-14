@@ -1,22 +1,16 @@
-package cn.fufeii.ds.server.service;
+package cn.fufeii.ds.server.push;
 
 import cn.fufeii.ds.common.enumerate.biz.NotifyStateEnum;
-import cn.fufeii.ds.common.util.ObjectMapperUtil;
 import cn.fufeii.ds.repository.crud.CrudAllotProfitEventService;
 import cn.fufeii.ds.repository.entity.AllotProfitEvent;
 import cn.fufeii.ds.repository.entity.Platform;
-import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.model.api.request.AllotEventNotifyRequest;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.hutool.core.text.CharSequenceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * 推送服务
@@ -28,18 +22,19 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class PushService {
     @Autowired
-    private RestTemplate restTemplate;
-    @Autowired
     private CrudAllotProfitEventService crudAllotProfitEventService;
+    @Autowired
+    private PushHandler pushHandler;
 
 
     /**
      * 推送分润事件到业务系统
      *
-     * @param ape 分润事件
+     * @param eventId 分润事件Id
      */
     @Async
-    public void pushAllotProfitEvent(AllotProfitEvent ape) {
+    public void pushAllotProfitEvent(Long eventId) {
+        AllotProfitEvent ape = crudAllotProfitEventService.selectById(eventId);
         Platform selfPlatform = CurrentPlatformHelper.self();
         String notifyUrl = selfPlatform.getNotifyUrl();
         if (CharSequenceUtil.isBlank(notifyUrl)) {
@@ -55,20 +50,17 @@ public class PushService {
         allotEventNotifyRequest.setEventAmount(ape.getEventAmount());
         allotEventNotifyRequest.setMemo(allotEventNotifyRequest.getMemo());
 
-        // 通知上游系统
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> httpEntity = new HttpEntity<>(ObjectMapperUtil.toJsonString(allotEventNotifyRequest), header);
-        String response = restTemplate.postForObject(notifyUrl, httpEntity, String.class);
+        // 发送数据
+        NotifyStateEnum notifyStateEnum = NotifyStateEnum.FAIL;
+        try {
+            notifyStateEnum = pushHandler.push(notifyUrl, allotEventNotifyRequest);
+        } catch (Exception e) {
+            log.warn("分润事件推送失败", e);
+        }
 
         // 更新通知状态
-        NotifyStateEnum notifyStateEnum = NotifyStateEnum.FAIL;
-        if (DsServerConstant.NOTIFY_SUCCESS_FLAG.equals(response)) {
-            notifyStateEnum = NotifyStateEnum.SUCCESS;
-        }
         ape.setNotifyState(notifyStateEnum);
         crudAllotProfitEventService.updateById(ape);
-
     }
 
 
