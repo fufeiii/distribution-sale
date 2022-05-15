@@ -3,7 +3,7 @@ MAINTAINER FuFei
 WORKDIR /runtime
 COPY ds-admin-*.jar app.jar
 
-ENV ACTIVE=prod
+ENV ACTIVE=""
 ENV TZ=Asia/Shanghai
 ENV JAVA_OPTS="-XX:+PrintCommandLineFlags -XX:+UseContainerSupport -XX:MaxRAMPercentage=80.0 -XX:MinRAMPercentage=80.0 -XX:InitialRAMPercentage=80.0 -XX:+HeapDumpOnOutOfMemoryError"
 ENV JAVA_OPTS_EXT=""
@@ -16,4 +16,4 @@ RUN apk add --no-cache openssl wget ca-certificates
 RUN apk add --no-cache ttf-dejavu fontconfig && rm -rf /var/cache/apk/*
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-ENTRYPOINT ["tini", "--", "java", "${JAVA_OPTS}", "${JAVA_OPTS_EXT}", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/runtime/app.jar", "--spring.profiles.active=${ACTIVE}"]
+ENTRYPOINT ["tini", "--", "java", "-jar", "/runtime/app.jar", "${JAVA_OPTS}", "-Djava.security.egd=file:/dev/./urandom", "${JAVA_OPTS_EXT}", "--spring.profiles.active=${ACTIVE}"]

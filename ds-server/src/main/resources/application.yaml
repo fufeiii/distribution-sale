@@ -45,13 +45,10 @@ mybatis-plus:
   global-config:
     banner: false
 
-
-logging:
-  config: classpath:logback-spring.xml
-  level:
-    cn.fufeii.ds.repository.dao: debug
-    cn.fufeii.ds: debug
-
+# 按需生成日志文件
+#logging:
+#  file:
+#    path: ./app_server_log
 
 ds:
   server:

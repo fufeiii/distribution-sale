@@ -39,5 +39,5 @@ _dockerCerts/
 
 .factorypath
 transaction-logs
-admin-app-log
-server-app-log
+app_admin_log/
+app_server_log/

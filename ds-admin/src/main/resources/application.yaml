@@ -42,11 +42,10 @@ mybatis-plus:
   global-config:
     banner: false
 
-# 日志
-logging:
-  config: classpath:logback-spring.xml
-  level:
-    cn.fufeii.ds: debug
+# 按需生成日志文件
+#logging:
+#  file:
+#    path: ./app_admin_log
 
 # admin配置
 ds:

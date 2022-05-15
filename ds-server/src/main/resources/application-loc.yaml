@@ -1,16 +1,22 @@
 spring:
 
   datasource:
-    url: jdbc:mysql://localhost:3306/ds?characterEncoding=UTF-8&useSSL=false&useUnicode=true&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false
+    url: jdbc:mysql://172.29.208.1:3306/ds?characterEncoding=UTF-8&useSSL=false&useUnicode=true&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false
     username: root
     password: 123456
 
   redis:
-    host: localhost
+    host: 172.29.208.1
     password: 123456
 
-#  liquibase:
-#    enabled: true
+# 日志配置
+logging:
+  # 不要日志文件
+  file:
+    path: null
+  level:
+    cn.fufeii.ds.repository.dao: debug
+    cn.fufeii.ds: debug
 
 ds:
   server:
