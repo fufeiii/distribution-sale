@@ -25,7 +25,7 @@ public class AllotProfitApiController {
     @Autowired
     private AllotProfitService allotProfitService;
 
-    @ApiOperation("发起金钱交易分润")
+    @ApiOperation("发起金钱交易")
     @PostMapping("/trade")
     public CommonResult<ProfitTradeResponse> trade(@RequestBody ProfitTradeRequest request) {
         return CommonResult.success(allotProfitService.trade(request));

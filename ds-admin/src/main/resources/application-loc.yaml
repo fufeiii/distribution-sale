@@ -1,12 +1,12 @@
 spring:
 
   datasource:
-    url: jdbc:mysql://localhost:3306/ds?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false
+    url: jdbc:mysql://172.29.208.1:3306/ds?characterEncoding=UTF-8&useSSL=false&useUnicode=true&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false
     username: root
     password: 123456
 
   redis:
-    host: localhost
+    host: 172.29.208.1
     password: 123456
 
 # 日志配置

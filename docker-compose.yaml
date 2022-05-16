@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+
+  admin:
+    build:
+      context: ./
+      dockerfile: dockerfile-admin
+    container_name: "ds-admin"
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./logs:/runtime/app_admin_log"
+    depends_on:
+      - mysql
+      - redis
+    environment:
+      - ACTIVE=dc
+
+  server:
+    build:
+      context: ./
+      dockerfile: dockerfile-server
+    container_name: "ds-server"
+    restart: always
+    ports:
+      - "8081:8081"
+    volumes:
+      - "./logs:/runtime/app_server_log"
+    depends_on:
+      - mysql
+      - redis
+    environment:
+      - ACTIVE=dc
+
+  redis:
+    image: redis:6.2.6-alpine
+    container_name: "ds-redis"
+    ports:
+      - "6379:6379"
+    restart: always
+    command: redis-server --requirepass 123456
+
+  mysql:
+    image: mysql:8.0.25
+    container_name: "ds-mysql"
+    restart: always
+    volumes:
+      - "./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql"
+      - "./mysql-data:/var/lib/mysql"
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
