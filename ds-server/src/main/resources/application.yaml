@@ -11,7 +11,7 @@ spring:
 
   mvc:
     locale-resolver: fixed
-    locale: zh_CN
+    locale: en_US
 
   jackson:
     time-zone: GMT+8

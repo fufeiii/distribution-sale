@@ -11,7 +11,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - "./logs:/runtime/app_admin_log"
+      - "./logs/admin:/runtime/app_admin_log"
     depends_on:
       - mysql
       - redis
@@ -27,7 +27,7 @@ services:
     ports:
       - "8081:8081"
     volumes:
-      - "./logs:/runtime/app_server_log"
+      - "./logs/server:/runtime/app_server_log"
     depends_on:
       - mysql
       - redis
