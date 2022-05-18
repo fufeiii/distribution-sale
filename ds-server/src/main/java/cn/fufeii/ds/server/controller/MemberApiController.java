@@ -10,7 +10,9 @@ import cn.fufeii.ds.common.model.PageResult;
 import cn.fufeii.ds.server.model.api.request.MemberChangeStateRequest;
 import cn.fufeii.ds.server.model.api.request.MemberCreateRequest;
 import cn.fufeii.ds.server.model.api.request.MemberIdentityTypeRequest;
-import cn.fufeii.ds.server.model.api.response.*;
+import cn.fufeii.ds.server.model.api.response.MemberCreateResponse;
+import cn.fufeii.ds.server.model.api.response.MemberResponse;
+import cn.fufeii.ds.server.model.api.response.MemberTeamResponse;
 import cn.fufeii.ds.server.service.MemberService;
 import cn.hutool.core.util.BooleanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -62,28 +64,14 @@ public class MemberApiController {
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
     }
 
-    @ApiOperation("分页查询会员分润记录")
-    @GetMapping("/{username}/profit-income-record/page")
-    public PageResult<ProfitIncomeRecordResponse> profitIncomeRecordRecordPage(@PathVariable String username, PageRequest pageRequest) {
-        IPage<ProfitIncomeRecordResponse> pageResult = memberService.profitIncomeRecordRecordPage(username, pageRequest.getPage(), pageRequest.getSize());
-        return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
-    }
-
-    @ApiOperation("分页查询会员账户变动记录")
-    @GetMapping("/{username}/account-change-record/page")
-    public PageResult<AccountChangeRecordResponse> accountChangeRecordRecordPage(@PathVariable String username, PageRequest pageRequest) {
-        IPage<AccountChangeRecordResponse> pageResult = memberService.accountChangeRecordRecordPage(username, pageRequest.getPage(), pageRequest.getSize());
-        return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
-    }
-
-    @ApiOperation(value = "更新会员身份")
+    @ApiOperation("更新会员身份")
     @PutMapping("/identity-type")
     public CommonResult<Void> identityType(@RequestBody MemberIdentityTypeRequest request) {
         memberService.identityType(request);
         return CommonResult.success();
     }
 
-    @ApiOperation(value = "更新会员状态")
+    @ApiOperation("更新会员状态")
     @PutMapping("/change-state")
     public CommonResult<Void> changeState(@RequestBody MemberChangeStateRequest request) {
         memberService.changeState(request);

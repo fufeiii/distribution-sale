@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel
-public class AccountAlterRequest {
+public class AccountChangeRequest {
 
     @NotBlank
     @ApiModelProperty(value = "会员标识", required = true)

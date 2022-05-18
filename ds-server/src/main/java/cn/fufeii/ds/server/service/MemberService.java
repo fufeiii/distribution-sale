@@ -6,19 +6,18 @@ import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.*;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.util.PageUtil;
-import cn.fufeii.ds.repository.crud.CrudAccountChangeRecordService;
 import cn.fufeii.ds.repository.crud.CrudAccountService;
 import cn.fufeii.ds.repository.crud.CrudMemberService;
-import cn.fufeii.ds.repository.crud.CrudProfitIncomeRecordService;
 import cn.fufeii.ds.repository.entity.Account;
 import cn.fufeii.ds.repository.entity.Member;
 import cn.fufeii.ds.repository.entity.Platform;
-import cn.fufeii.ds.repository.entity.ProfitIncomeRecord;
 import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.model.api.request.MemberChangeStateRequest;
 import cn.fufeii.ds.server.model.api.request.MemberCreateRequest;
 import cn.fufeii.ds.server.model.api.request.MemberIdentityTypeRequest;
-import cn.fufeii.ds.server.model.api.response.*;
+import cn.fufeii.ds.server.model.api.response.MemberCreateResponse;
+import cn.fufeii.ds.server.model.api.response.MemberResponse;
+import cn.fufeii.ds.server.model.api.response.MemberTeamResponse;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.subscribe.event.InviteEvent;
 import cn.hutool.core.text.CharSequenceUtil;
@@ -53,10 +52,6 @@ public class MemberService {
     private CrudMemberService crudMemberService;
     @Autowired
     private CrudAccountService crudAccountService;
-    @Autowired
-    private CrudProfitIncomeRecordService crudProfitIncomeRecordService;
-    @Autowired
-    private CrudAccountChangeRecordService crudAccountChangeRecordService;
 
     @GlobalLock(key = DsServerConstant.CPUS + "#request.username")
     @Transactional
@@ -270,56 +265,4 @@ public class MemberService {
         });
     }
 
-
-    /**
-     * 查询分润记录
-     *
-     * @param memberUsername 会员标识
-     * @param page           *
-     * @param size           *
-     */
-    public IPage<ProfitIncomeRecordResponse> profitIncomeRecordRecordPage(String memberUsername, Integer page, Integer size) {
-        Member member = crudMemberService.selectByUsernameAndPlatformUsername(memberUsername, CurrentPlatformHelper.username());
-        LambdaQueryWrapper<ProfitIncomeRecord> lambdaQueryWrapper = Wrappers.<ProfitIncomeRecord>lambdaQuery().eq(ProfitIncomeRecord::getImpactMemberId, member.getId());
-        IPage<ProfitIncomeRecord> profitRecordIPage = crudProfitIncomeRecordService.selectPage(lambdaQueryWrapper, PageUtil.pageAndOrderByIdDesc(page, size));
-        return profitRecordIPage.convert(it -> {
-            ProfitIncomeRecordResponse response = new ProfitIncomeRecordResponse();
-            response.setId(it.getId());
-            response.setProfitEventId(it.getProfitEventId());
-            response.setAccountType(it.getAccountType());
-            response.setImpactMemberId(it.getImpactMemberId());
-            response.setImpactMemberUsername(memberUsername);
-            response.setIncomeCount(it.getIncomeCount());
-            response.setMemo(it.getMemo());
-            response.setCreateDateTime(it.getCreateDateTime());
-            return response;
-        });
-    }
-
-
-    /**
-     * @param memberUsername 会员标识
-     * @param page           *
-     * @param size           *
-     */
-    public IPage<AccountChangeRecordResponse> accountChangeRecordRecordPage(String memberUsername, Integer page, Integer size) {
-        Member member = crudMemberService.selectByUsernameAndPlatformUsername(memberUsername, CurrentPlatformHelper.username());
-        return crudAccountChangeRecordService.selectByMemberIdPage(member.getId(), PageUtil.pageAndOrderByIdDesc(page, size))
-                .convert(it -> {
-                    AccountChangeRecordResponse response = new AccountChangeRecordResponse();
-                    response.setId(it.getId());
-                    response.setMemberId(it.getMemberId());
-                    response.setAccountId(it.getAccountId());
-                    response.setMemberUsername(memberUsername);
-                    response.setAccountType(it.getAccountType().name());
-                    response.setBeforeAvailableCount(it.getBeforeAvailableCount());
-                    response.setAfterAvailableCount(it.getAfterAvailableCount());
-                    response.setChangeCount(it.getChangeCount());
-                    response.setChangeType(it.getChangeType().name());
-                    response.setChangeBizNumber(it.getChangeBizNumber());
-                    response.setMemo(it.getMemo());
-                    response.setCreateDateTime(it.getCreateDateTime());
-                    return response;
-                });
-    }
 }

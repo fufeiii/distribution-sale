@@ -6,6 +6,7 @@ import cn.fufeii.ds.common.enumerate.biz.AccountTypeEnum;
 import cn.fufeii.ds.common.enumerate.biz.ChangeTypeEnum;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.exception.BizException;
+import cn.fufeii.ds.common.util.PageUtil;
 import cn.fufeii.ds.repository.crud.CrudAccountChangeRecordService;
 import cn.fufeii.ds.repository.crud.CrudAccountService;
 import cn.fufeii.ds.repository.crud.CrudMemberService;
@@ -13,8 +14,10 @@ import cn.fufeii.ds.repository.entity.Account;
 import cn.fufeii.ds.repository.entity.AccountChangeRecord;
 import cn.fufeii.ds.repository.entity.Member;
 import cn.fufeii.ds.server.config.constant.DsServerConstant;
-import cn.fufeii.ds.server.model.api.request.AccountAlterRequest;
+import cn.fufeii.ds.server.model.api.request.AccountChangeRequest;
+import cn.fufeii.ds.server.model.api.response.AccountChangeRecordResponse;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +44,7 @@ public class AccountService {
      */
     @GlobalLock(key = DsServerConstant.CPUS + "#request.memberUsername")
     @Transactional
-    public void alter(AccountAlterRequest request) {
+    public void change(AccountChangeRequest request) {
         // 校验参数
         ChangeTypeEnum changeType = request.getChangeType();
         boolean isNegative = ChangeTypeEnum.DECREASE == changeType || ChangeTypeEnum.FREEZE == changeType;
@@ -111,6 +114,32 @@ public class AccountService {
         crudAccountChangeRecordService.insert(accountChangeRecord);
 
 
+    }
+
+    /**
+     * @param memberUsername 会员标识
+     * @param page           *
+     * @param size           *
+     */
+    public IPage<AccountChangeRecordResponse> accountChangeRecordRecordPage(String memberUsername, Integer page, Integer size) {
+        Member member = crudMemberService.selectByUsernameAndPlatformUsername(memberUsername, CurrentPlatformHelper.username());
+        return crudAccountChangeRecordService.selectByMemberIdPage(member.getId(), PageUtil.pageAndOrderByIdDesc(page, size))
+                .convert(it -> {
+                    AccountChangeRecordResponse response = new AccountChangeRecordResponse();
+                    response.setId(it.getId());
+                    response.setMemberId(it.getMemberId());
+                    response.setAccountId(it.getAccountId());
+                    response.setMemberUsername(memberUsername);
+                    response.setAccountType(it.getAccountType().name());
+                    response.setBeforeAvailableCount(it.getBeforeAvailableCount());
+                    response.setAfterAvailableCount(it.getAfterAvailableCount());
+                    response.setChangeCount(it.getChangeCount());
+                    response.setChangeType(it.getChangeType().name());
+                    response.setChangeBizNumber(it.getChangeBizNumber());
+                    response.setMemo(it.getMemo());
+                    response.setCreateDateTime(it.getCreateDateTime());
+                    return response;
+                });
     }
 
 }

@@ -11,9 +11,6 @@ spring:
 
 # 日志配置
 logging:
-  # 不要日志文件
-  file:
-    path: null
   level:
     cn.fufeii.ds: debug
 
