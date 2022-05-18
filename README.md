@@ -126,7 +126,7 @@ docker run -d -p 8081:8081 -e ACTIVE=loc --name ds-server ds-server:1.0
 将项目中的`docker-compose.yaml`和`dockerfile-server`以及`server服务jar`和`dockerfile-admin`以及`admin服务jar`和`initdb.sql`放在同一文件夹下
 
 ```sql
-# initdb.sql
+-- initdb.sql
 CREATE DATABASE `ds` DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_general_ci;
 ```
 
