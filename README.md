@@ -87,8 +87,7 @@
 确保redis可用，mysql可用
 
 ```sql
-CREATE
-DATABASE `ds` DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE `ds` DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_general_ci;
 ```
 
 ### 本地启动
