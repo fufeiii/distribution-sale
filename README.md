@@ -76,7 +76,7 @@
 注意：仅展示了核心API的交互流程图
 > **会员注册**![UML-时序-会员注册.jpg](https://cdn.nlark.com/yuque/0/2022/jpeg/633299/1652601570403-cab856e6-41a0-4014-9a4c-6097e4282ffe.jpeg#clientId=ua2e07002-5a45-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=914&id=u3fe99455&margin=%5Bobject%20Object%5D&name=UML-%E6%97%B6%E5%BA%8F-%E4%BC%9A%E5%91%98%E6%B3%A8%E5%86%8C.jpg&originHeight=914&originWidth=1134&originalType=binary&ratio=1&rotation=0&showTitle=false&size=109992&status=done&style=none&taskId=u820feb90-4a19-45dc-afa8-d3ff746ee4c&title=&width=1134)
 
-> 会员交易![UML-时序-会员交易.jpg](https://cdn.nlark.com/yuque/0/2022/jpeg/633299/1652601567352-d00e81ff-b762-4391-839d-c6f8dedab7a3.jpeg#clientId=ua2e07002-5a45-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=914&id=u8e56117f&margin=%5Bobject%20Object%5D&name=UML-%E6%97%B6%E5%BA%8F-%E4%BC%9A%E5%91%98%E4%BA%A4%E6%98%93.jpg&originHeight=914&originWidth=1114&originalType=binary&ratio=1&rotation=0&showTitle=false&size=92515&status=done&style=none&taskId=ua24fcef9-5d58-42df-9182-06d59bf90b1&title=&width=1114)
+> **会员交易**![UML-时序-会员交易.jpg](https://cdn.nlark.com/yuque/0/2022/jpeg/633299/1652601567352-d00e81ff-b762-4391-839d-c6f8dedab7a3.jpeg#clientId=ua2e07002-5a45-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=914&id=u8e56117f&margin=%5Bobject%20Object%5D&name=UML-%E6%97%B6%E5%BA%8F-%E4%BC%9A%E5%91%98%E4%BA%A4%E6%98%93.jpg&originHeight=914&originWidth=1114&originalType=binary&ratio=1&rotation=0&showTitle=false&size=92515&status=done&style=none&taskId=ua24fcef9-5d58-42df-9182-06d59bf90b1&title=&width=1114)
 
 # 快速开始
 
