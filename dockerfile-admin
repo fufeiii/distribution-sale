@@ -1,12 +1,16 @@
 FROM openjdk:8-jdk-alpine
+
 MAINTAINER FuFei
+
 WORKDIR /runtime
+
 COPY ds-admin-*.jar app.jar
 
 ENV ACTIVE=""
+ENV JVM_OPT="-XX:+PrintCommandLineFlags -XX:+UseContainerSupport -XX:MaxRAMPercentage=80.0 -XX:MinRAMPercentage=80.0 -XX:InitialRAMPercentage=80.0 -XX:+HeapDumpOnOutOfMemoryError"
+ENV JVM_OPT_EXT=""
 ENV TZ=Asia/Shanghai
-ENV JVM_OPTS="-XX:+PrintCommandLineFlags -XX:+UseContainerSupport -XX:MaxRAMPercentage=80.0 -XX:MinRAMPercentage=80.0 -XX:InitialRAMPercentage=80.0 -XX:+HeapDumpOnOutOfMemoryError"
-ENV JVM_OPTS_EXT=""
+ENV LANG=zh_CN.UTF-8
 
 RUN echo "http://mirrors.aliyun.com/alpine/v3.8/main/" > /etc/apk/repositories
 RUN echo "http://mirrors.aliyun.com/alpine/v3.8/community/" >> /etc/apk/repositories
@@ -15,4 +19,4 @@ RUN apk add --no-cache tzdata openssl wget ca-certificates
 RUN apk add --no-cache ttf-dejavu fontconfig && rm -rf /var/cache/apk/*
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-ENTRYPOINT ["/bin/sh", "-c", "java -Dspring.profiles.active=${ACTIVE} ${JVM_OPTS} ${JVM_OPTS_EXT} -jar /runtime/app.jar"]
+ENTRYPOINT ["/bin/sh", "-c", "java -Dspring.profiles.active=${ACTIVE} ${JVM_OPT} ${JVM_OPT_EXT} -jar /runtime/app.jar"]
