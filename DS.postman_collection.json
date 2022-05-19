@@ -1,0 +1,416 @@
+{
+  "info": {
+    "_postman_id": "44be4531-bebe-4a7d-a82c-2fa0df22f99d",
+    "name": "DS",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "ds-server",
+      "item": [
+        {
+          "name": "会员",
+          "item": [
+            {
+              "name": "创建会员 ok",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"avatar\": \"\",\r\n    \"inviteUsername\": \"du9211111\",\r\n    \"nickname\": \"\",\r\n    \"username\": \"dua1\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{ds}}/api/member/create",
+                  "host": [
+                    "{{ds}}"
+                  ],
+                  "path": [
+                    "api",
+                    "member",
+                    "create"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "更新会员身份 ok",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "pid=1523681894115016706",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"dua1\",\r\n    \"identityType\": \"GENERAL\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{ds}}/api/member/identity-type",
+                  "host": [
+                    "{{ds}}"
+                  ],
+                  "path": [
+                    "api",
+                    "member",
+                    "identity-type"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "更新会员状态 ok",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"dua1\",\r\n    \"state\": \"ENABLE\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{ds}}/api/member/change-state",
+                  "host": [
+                    "{{ds}}"
+                  ],
+                  "path": [
+                    "api",
+                    "member",
+                    "change-state"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "查询会员团队 ok",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{ds}}/api/member/du1/team/two/page?page=1&size=10",
+                  "host": [
+                    "{{ds}}"
+                  ],
+                  "path": [
+                    "api",
+                    "member",
+                    "du1",
+                    "team",
+                    "two",
+                    "page"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "查询会员详情 ok",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{ds}}/api/member/info/dua1?includeAccount=true",
+                  "host": [
+                    "{{ds}}"
+                  ],
+                  "path": [
+                    "api",
+                    "member",
+                    "info",
+                    "dua1"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeAccount",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "分润",
+          "item": [
+            {
+              "name": "分页查询会员分润记录 ok",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{ds}}/api/allot-profit/income-record/page?username=dua1&page=1&size=10",
+                  "host": [
+                    "{{ds}}"
+                  ],
+                  "path": [
+                    "api",
+                    "allot-profit",
+                    "income-record",
+                    "page"
+                  ],
+                  "query": [
+                    {
+                      "key": "username",
+                      "value": "dua1"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "查询分润事件 ok",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{ds}}/api/allot-profit//event/1524750041735716866",
+                  "host": [
+                    "{{ds}}"
+                  ],
+                  "path": [
+                    "api",
+                    "allot-profit",
+                    "",
+                    "event",
+                    "1524750041735716866"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "发起金钱交易 ok",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"tradeAmount\": 100,\r\n  \"tradeNumber\": \"TRdua122222\",\r\n  \"username\": \"dua1\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{ds}}/api/allot-profit/trade",
+                  "host": [
+                    "{{ds}}"
+                  ],
+                  "path": [
+                    "api",
+                    "allot-profit",
+                    "trade"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "账户",
+          "item": [
+            {
+              "name": "分页查询会员账户变动记录 ok",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{ds}}/api/account/change-record/page?username=dua1&page=1&size=10",
+                  "host": [
+                    "{{ds}}"
+                  ],
+                  "path": [
+                    "api",
+                    "account",
+                    "change-record",
+                    "page"
+                  ],
+                  "query": [
+                    {
+                      "key": "username",
+                      "value": "dua1"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "发起账户变动 ok",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"accountType\": \"MONEY\",\r\n  \"changeBizNumber\": \"TX202205012221-1\",\r\n  \"changeCount\": 1,\r\n  \"changeType\": \"DECREASE\",\r\n  \"memberUsername\": \"dua1\",\r\n  \"memo\": \"用户成功提现\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{ds}}/api/account/change",
+                  "host": [
+                    "{{ds}}"
+                  ],
+                  "path": [
+                    "api",
+                    "account",
+                    "change"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "pid=1523681894115016706",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

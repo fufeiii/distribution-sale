@@ -157,6 +157,6 @@ docker-compose up -d
 登录上一步设置的平台管理员账号 在 分润管理 => 分润配置 创建分润配置 在 分润管理 => 段位配置 创建段位配置 注：此模块可以根据业务场景设置不同的参数
 > 第三步：模拟后台交互调用
 
-~~选择一：将项目中的`postman.json`文件导入postman软件中，查看接口说明 选择二，访问ds-server服务的swagger文档，查看接口说明~~
+选择一：将项目中的`DS.postman_collection.json`文件导入postman软件中，查看接口说明 选择二，访问ds-server服务的swagger文档，查看接口说明
 
 选择二：访问`server`服务的接口文档，接口作用也可以参考[系统API](#系统API)章节
