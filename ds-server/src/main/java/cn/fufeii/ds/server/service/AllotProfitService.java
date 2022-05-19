@@ -16,6 +16,7 @@ import cn.fufeii.ds.server.model.api.request.ProfitTradeRequest;
 import cn.fufeii.ds.server.model.api.response.AllotProfitEventInfoResponse;
 import cn.fufeii.ds.server.model.api.response.ProfitIncomeRecordResponse;
 import cn.fufeii.ds.server.model.api.response.ProfitTradeResponse;
+import cn.fufeii.ds.server.push.PushService;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.subscribe.event.TradeEvent;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -44,6 +45,8 @@ public class AllotProfitService {
     private CrudProfitIncomeRecordService crudProfitIncomeRecordService;
     @Autowired
     private CrudAllotProfitEventService crudAllotProfitEventService;
+    @Autowired
+    private PushService pushService;
 
     /**
      * 金钱交易-分润请求
@@ -51,10 +54,10 @@ public class AllotProfitService {
     @GlobalLock(key = DsServerConstant.CPUS + "#request.tradeNumber")
     public ProfitTradeResponse trade(ProfitTradeRequest request) {
         // 检查是否已经存在了该事件
-        LambdaQueryWrapper<AllotProfitEvent> lambdaQueryWrapper = Wrappers.<AllotProfitEvent>lambdaQuery()
+        LambdaQueryWrapper<AllotProfitEvent> queryWrapper = Wrappers.<AllotProfitEvent>lambdaQuery()
                 .eq(AllotProfitEvent::getEventNumber, request.getTradeNumber())
                 .eq(AllotProfitEvent::getPlatformUsername, CurrentPlatformHelper.username());
-        if (crudAllotProfitEventService.exist(lambdaQueryWrapper)) {
+        if (crudAllotProfitEventService.exist(queryWrapper)) {
             throw new BizException(ExceptionEnum.PROFIT_EVENT_EXIST, request.getTradeNumber());
         }
         // 组装事件
@@ -66,10 +69,9 @@ public class AllotProfitService {
         // 发布事件
         applicationEventPublisher.publishEvent(new TradeEvent(ProfitTypeEnum.TRADE, source));
 
-        // FIXME 分润成功异步通知
-        // 这里是临时代码，任何分润成功后应该异步通知上游系统分润成功了，以便上游系统调用[分润事件查询]接口获取分润事件的详情
+        // 响应返回
         ProfitTradeResponse response = new ProfitTradeResponse();
-        AllotProfitEvent profitEvent = crudAllotProfitEventService.selectOne(lambdaQueryWrapper);
+        AllotProfitEvent profitEvent = crudAllotProfitEventService.selectOne(queryWrapper);
         response.setEventId(profitEvent.getId());
         return response;
     }
@@ -84,6 +86,7 @@ public class AllotProfitService {
         AllotProfitEvent profitEvent = crudAllotProfitEventService.selectByIdAndPlatformUsername(eventId, CurrentPlatformHelper.username());
         // 通用组装
         AllotProfitEventInfoResponse response = new AllotProfitEventInfoResponse();
+        response.setId(eventId);
         response.setProfitType(profitEvent.getProfitType());
         response.setTriggerMemberId(profitEvent.getTriggerMemberId());
         response.setEventNumber(profitEvent.getEventNumber());

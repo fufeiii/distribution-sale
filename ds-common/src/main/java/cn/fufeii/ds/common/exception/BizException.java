@@ -29,6 +29,11 @@ public class BizException extends RuntimeException {
         this.code = code;
     }
 
+    public BizException(String msg) {
+        super(msg);
+        this.code = ExceptionEnum.SERVER_ERROR.getCode();
+    }
+
     public static BizException serverError(String msg) {
         return new BizException(ExceptionEnum.SERVER_ERROR.getCode(), msg);
     }

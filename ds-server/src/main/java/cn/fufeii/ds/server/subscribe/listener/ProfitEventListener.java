@@ -45,6 +45,7 @@ public class ProfitEventListener {
 
     /**
      * 监听金钱交易事件
+     * 通过接口调用来的，这里是同步
      */
     @EventListener
     public void handle(TradeEvent tradeEvent) {

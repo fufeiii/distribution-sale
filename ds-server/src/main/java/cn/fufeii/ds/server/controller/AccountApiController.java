@@ -26,7 +26,7 @@ public class AccountApiController {
     @Autowired
     private AccountService accountService;
 
-    @ApiOperation("账户变动")
+    @ApiOperation("发起账户变动")
     @PostMapping("/change")
     public CommonResult<Void> change(@RequestBody AccountChangeRequest request) {
         accountService.change(request);

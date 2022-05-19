@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -33,6 +34,7 @@ public class AccountChangeRequest {
     private String changeBizNumber;
 
     @NotNull
+    @Min(1)
     @ApiModelProperty(value = "变动数", required = true)
     private Integer changeCount;
 

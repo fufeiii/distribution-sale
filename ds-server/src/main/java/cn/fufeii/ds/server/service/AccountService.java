@@ -17,7 +17,9 @@ import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.model.api.request.AccountChangeRequest;
 import cn.fufeii.ds.server.model.api.response.AccountChangeRecordResponse;
 import cn.fufeii.ds.server.security.CurrentPlatformHelper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,11 +49,19 @@ public class AccountService {
     public void change(AccountChangeRequest request) {
         // 校验参数
         ChangeTypeEnum changeType = request.getChangeType();
+        if (ChangeTypeEnum.PROFIT == changeType) {
+            throw new BizException("此类型不可用");
+        }
+
+        // 检查此标识是否已经被使用
+        String changeBizNumber = request.getChangeBizNumber();
+        LambdaQueryWrapper<AccountChangeRecord> queryWrapper = Wrappers.<AccountChangeRecord>lambdaQuery().eq(AccountChangeRecord::getChangeBizNumber, changeBizNumber);
+        if (crudAccountChangeRecordService.exist(queryWrapper)) {
+            throw new BizException(String.format("变动流水号[%s]已存在", changeBizNumber));
+        }
+
         boolean isNegative = ChangeTypeEnum.DECREASE == changeType || ChangeTypeEnum.FREEZE == changeType;
         Integer changeCount = request.getChangeCount();
-        if (ChangeTypeEnum.PROFIT == changeType) {
-            throw new BizException();
-        }
 
         // 执行业务
         Member member = crudMemberService.selectByUsernameAndPlatformUsername(request.getMemberUsername(), CurrentPlatformHelper.username());
@@ -69,9 +79,9 @@ public class AccountService {
         Integer moneyChangeCount = 0;
         Integer pointsChangeCount = 0;
         if (isMoneyAccount) {
-            moneyChangeCount = isNegative ? changeCount : -changeCount;
+            moneyChangeCount = isNegative ? -changeCount : changeCount;
         } else {
-            pointsChangeCount = isNegative ? changeCount : -changeCount;
+            pointsChangeCount = isNegative ? -changeCount : changeCount;
         }
 
         // 记录账户变动日志
@@ -106,7 +116,7 @@ public class AccountService {
         accountChangeRecord.setAccountId(account.getId());
         accountChangeRecord.setAccountType(accountType);
         accountChangeRecord.setChangeType(changeType);
-        accountChangeRecord.setChangeBizNumber(request.getChangeBizNumber());
+        accountChangeRecord.setChangeBizNumber(changeBizNumber);
         accountChangeRecord.setBeforeAvailableCount(beforeAvailableCount);
         accountChangeRecord.setAfterAvailableCount(isMoneyAccount ? account.getMoneyAvailable() : account.getPointsAvailable());
         accountChangeRecord.setChangeCount(changeCount);
