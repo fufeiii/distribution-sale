@@ -34,7 +34,7 @@ public class JwtLoginFilterHandler {
         @Override
         public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
             // 响应登录错误信息
-            ResponseUtil.write(response, CommonResult.fail(ExceptionEnum.LOGIN_ERROR, exception.getMessage()));
+            ResponseUtil.write(response, CommonResult.fail(ExceptionEnum.LOGIN_IN_ERROR.getCode(), exception.getMessage()));
         }
     }
 
