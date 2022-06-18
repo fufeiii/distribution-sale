@@ -5,7 +5,6 @@ import cn.fufeii.ds.admin.model.vo.request.SystemUserCreateRequest;
 import cn.fufeii.ds.admin.model.vo.request.SystemUserQueryRequest;
 import cn.fufeii.ds.admin.model.vo.response.SystemUserResponse;
 import cn.fufeii.ds.admin.security.CurrentUserHelper;
-import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.util.BeanCopierUtil;
@@ -67,7 +66,7 @@ public class SystemUserService {
     public void create(SystemUserCreateRequest request) {
         // 不能使用超管账号
         if (DsAdminConstant.ADMIN_USERNAME.equals(request.getUsername())) {
-            throw new BizException(ExceptionEnum.USER_CREATE_ERROR, "禁止使用系统预留登录名");
+            throw BizException.client("禁止使用系统预留登录名");
         }
         // 填充默认值
         if (CharSequenceUtil.isBlank(request.getNickname())) {
@@ -85,7 +84,7 @@ public class SystemUserService {
                 .eq(SystemUser::getPlatformUsername, request.getPlatformUsername())
                 .eq(SystemUser::getUsername, request.getUsername());
         if (crudSystemUserService.exist(queryWrapper)) {
-            throw new BizException(ExceptionEnum.USER_CREATE_ERROR, "用户已存在");
+            throw BizException.client("用户已存在");
         }
 
         // 创建用户

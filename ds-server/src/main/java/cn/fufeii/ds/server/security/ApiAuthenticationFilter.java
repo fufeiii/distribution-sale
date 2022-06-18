@@ -58,13 +58,14 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationStr = request.getHeader(DsConstant.HEADER_AUTHORIZATION);
         Boolean enableApiSignature = dsServerProperties.getEnableApiSignature();
+        int loginInErrorCode = ExceptionEnum.LOGIN_IN_ERROR.getCode();
         // 没传有效的签名
         if (CharSequenceUtil.isBlank(authorizationStr)) {
             // 即使关闭验签验证, 至少也需要有身份标识数据存在
             if (log.isDebugEnabled()) {
                 log.debug("请求头参数值不存在, {}", DsConstant.HEADER_AUTHORIZATION);
             }
-            ResponseUtil.write(response, CommonResult.fail(ExceptionEnum.SERVER_API_AUTH_ERROR, DsConstant.HEADER_AUTHORIZATION + "为空"));
+            ResponseUtil.write(response, CommonResult.fail(loginInErrorCode, DsConstant.HEADER_AUTHORIZATION + "请求头为空"));
             return;
         }
 
@@ -78,24 +79,24 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
         AuthorizationParam authorizationParam = ObjectMapperUtil.toObject(ObjectMapperUtil.toJsonString(authMap), AuthorizationParam.class);
         Long pid = authorizationParam.getPid();
         if (pid == null) {
-            ResponseUtil.write(response, CommonResult.fail(ExceptionEnum.SERVER_API_AUTH_ERROR, "pid为空"));
+            ResponseUtil.write(response, CommonResult.fail(loginInErrorCode, DsConstant.HEADER_AUTHORIZATION + "请求头中pid为空"));
             return;
         }
         String signature = authorizationParam.getSignature();
         if (enableApiSignature && StrUtil.isBlank(signature)) {
-            ResponseUtil.write(response, CommonResult.fail(ExceptionEnum.SERVER_API_AUTH_ERROR, "signature为空"));
+            ResponseUtil.write(response, CommonResult.fail(loginInErrorCode, DsConstant.HEADER_AUTHORIZATION + "请求头中signature为空"));
             return;
         }
 
         // 获取平台信息
         Optional<Platform> platformOptional = crudPlatformService.selectByIdOptional(pid);
         if (!platformOptional.isPresent()) {
-            ResponseUtil.write(response, CommonResult.fail(ExceptionEnum.SERVER_API_AUTH_ERROR, "平台未创建"));
+            ResponseUtil.write(response, CommonResult.fail(loginInErrorCode, "平台未创建"));
             return;
         }
         Platform platform = platformOptional.get();
         if (StateEnum.DISABLE == platform.getState()) {
-            ResponseUtil.write(response, CommonResult.fail(ExceptionEnum.SERVER_API_AUTH_ERROR, "平台被禁用"));
+            ResponseUtil.write(response, CommonResult.fail(loginInErrorCode, "平台被禁用"));
             return;
         }
 
@@ -112,13 +113,13 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
                 String waitSignStr = requestWrapper.getMethod() + "\n" + requestWrapper.getServletPath() + "\n" + requestBody + "\n";
                 boolean checkSignature = this.checkSignature(waitSignStr, authorizationParam.getSignature(), platform.getSk());
                 if (!checkSignature) {
-                    ResponseUtil.write(response, CommonResult.fail(ExceptionEnum.SERVER_API_AUTH_ERROR, "验签错误"));
+                    ResponseUtil.write(response, CommonResult.fail(loginInErrorCode, "验签错误"));
                     return;
                 }
             }
         } catch (RuntimeException e) {
             log.warn("执行错误：", e);
-            ResponseUtil.write(response, CommonResult.fail(ExceptionEnum.SERVER_API_AUTH_ERROR, "未知错误"));
+            ResponseUtil.write(response, CommonResult.fail(loginInErrorCode, "未知错误"));
             return;
         }
 

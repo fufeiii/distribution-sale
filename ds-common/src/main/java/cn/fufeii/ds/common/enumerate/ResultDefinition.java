@@ -22,6 +22,6 @@ public interface ResultDefinition {
      *
      * @return -
      */
-    String getMsg(String... params);
+    String getMsg();
 
 }

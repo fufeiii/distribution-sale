@@ -1,7 +1,6 @@
 package cn.fufeii.ds.server.service;
 
 import cn.fufeii.ds.common.annotation.GlobalLock;
-import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.AccountTypeEnum;
 import cn.fufeii.ds.common.enumerate.biz.ChangeTypeEnum;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
@@ -50,14 +49,14 @@ public class AccountService {
         // 校验参数
         ChangeTypeEnum changeType = request.getChangeType();
         if (ChangeTypeEnum.PROFIT == changeType) {
-            throw new BizException("此类型不可用");
+            throw BizException.server("此类型不可用");
         }
 
         // 检查此标识是否已经被使用
         String changeBizNumber = request.getChangeBizNumber();
         LambdaQueryWrapper<AccountChangeRecord> queryWrapper = Wrappers.<AccountChangeRecord>lambdaQuery().eq(AccountChangeRecord::getChangeBizNumber, changeBizNumber);
         if (crudAccountChangeRecordService.exist(queryWrapper)) {
-            throw new BizException(String.format("变动流水号[%s]已存在", changeBizNumber));
+            throw BizException.client(String.format("变动流水号[%s]已存在", changeBizNumber));
         }
 
         boolean isNegative = ChangeTypeEnum.DECREASE == changeType || ChangeTypeEnum.FREEZE == changeType;
@@ -66,7 +65,7 @@ public class AccountService {
         // 执行业务
         Member member = crudMemberService.selectByUsernameAndPlatformUsername(request.getMemberUsername(), CurrentPlatformHelper.username());
         if (StateEnum.DISABLE == member.getState()) {
-            throw new BizException(ExceptionEnum.MEMBER_DISABLED, request.getMemberUsername());
+            throw BizException.server(String.format("用户[%s]被禁用", request.getMemberUsername()));
         }
         Account account = crudAccountService.selectByMemberId(member.getId());
         AccountTypeEnum accountType = request.getAccountType();
@@ -74,7 +73,7 @@ public class AccountService {
 
         // 如果为消极的（针对可用余额做减法），则判断当前是否足够
         if (isNegative && ((isMoneyAccount && account.getMoneyAvailable() < changeCount) || (!isMoneyAccount && account.getPointsAvailable() < changeCount))) {
-            throw new BizException(ExceptionEnum.BIZ_COMMON_ERROR, "可用余额不足");
+            throw BizException.server("可用余额不足");
         }
         Integer moneyChangeCount = 0;
         Integer pointsChangeCount = 0;

@@ -65,7 +65,7 @@ public class PlatformService {
         boolean present = crudPlatformService.selectOneOptional(Wrappers.<Platform>lambdaQuery().eq(Platform::getUsername, request.getUsername()))
                 .isPresent();
         if (present) {
-            throw new BizException(ExceptionEnum.PLATFORM_CREATE_ERROR, "平台已存在");
+            throw BizException.client("平台已存在");
         }
 
         // 创建平台
@@ -102,7 +102,7 @@ public class PlatformService {
     public void changeState(Long id, StateEnum stateEnum) {
         Platform platform = crudPlatformService.selectById(id);
         if (stateEnum == platform.getState()) {
-            throw new BizException(ExceptionEnum.STATE_COMMON_ERROR);
+            throw new BizException(ExceptionEnum.UPDATE_STATE_REPEATEDLY);
         }
         platform.setState(stateEnum);
         crudPlatformService.updateById(platform);

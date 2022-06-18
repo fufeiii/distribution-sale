@@ -45,14 +45,6 @@ public class CurrentUserHelper {
         return DsAdminConstant.ADMIN_USERNAME.equals(systemUser.getUsername());
     }
 
-    /**
-     * 如果是超管就抛出异常
-     */
-    public static void isAdminThrow() {
-        if (CurrentUserHelper.isAdmin()) {
-            throw new BizException(ExceptionEnum.API_ADMIN_DENY_ERROR);
-        }
-    }
 
     /**
      * 当前用户的平台

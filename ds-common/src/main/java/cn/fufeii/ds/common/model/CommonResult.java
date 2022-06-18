@@ -39,8 +39,8 @@ public final class CommonResult<T> {
         return new CommonResult<>(code, msg, null);
     }
 
-    public static CommonResult<Void> fail(ResultDefinition rd, String... params) {
-        return fail(rd.getCode(), rd.getMsg(params));
+    public static CommonResult<Void> fail(ResultDefinition rd) {
+        return fail(rd.getCode(), rd.getMsg());
     }
 
 }

@@ -50,7 +50,7 @@ public class CrudAccountService {
      * 通过ID获取一个存在的实体
      */
     public Account selectById(Long id) {
-        return this.selectByIdOptional(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "id(" + id + ")"));
+        return this.selectByIdOptional(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST));
     }
 
     /**
@@ -64,7 +64,7 @@ public class CrudAccountService {
      * 通过条件获取一个存在的实体
      */
     public Account selectOne(Wrapper<Account> queryWrapper) {
-        return this.selectOneOptional(queryWrapper).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "Account"));
+        return this.selectOneOptional(queryWrapper).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST));
     }
 
     /**
@@ -95,7 +95,7 @@ public class CrudAccountService {
     public Account updateById(Account entity) {
         int row = accountDao.updateById(entity);
         if (row == 0) {
-            throw new BizException(ExceptionEnum.SERVER_SQL_UPDATE_FAIL);
+            throw new BizException(ExceptionEnum.ENTITY_UPDATE_FAIL);
         }
         return entity;
     }

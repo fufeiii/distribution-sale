@@ -1,7 +1,6 @@
 package cn.fufeii.ds.server.strategy.impl;
 
 import cn.fufeii.ds.common.annotation.GlobalLock;
-import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.*;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.util.DsUtil;
@@ -60,7 +59,7 @@ public class BaseAllotProfit {
                 .eq(AllotProfitConfig::getState, StateEnum.ENABLE);
         List<AllotProfitConfig> profitParamList = crudAllotProfitConfigService.selectList(lambdaQueryWrapper);
         if (profitParamList.size() > 1) {
-            throw new BizException(ExceptionEnum.NO_SUITABLE_PARAM, ate.getMessage());
+            throw BizException.server(String.format("没有合适的%s类型分润参数", ate.getMessage()));
         }
         return profitParamList.isEmpty() ? null : profitParamList.get(0);
     }
@@ -75,7 +74,7 @@ public class BaseAllotProfit {
                 .eq(MemberRankConfig::getState, StateEnum.ENABLE);
         List<MemberRankConfig> rankParamList = crudMemberRankConfigService.selectList(lambdaQueryWrapper);
         if (rankParamList.size() > 1) {
-            throw new BizException(ExceptionEnum.NO_SUITABLE_PARAM, "段位");
+            throw BizException.server("没有合适的段位分润参数");
         }
         return rankParamList.isEmpty() ? null : rankParamList.get(0);
     }

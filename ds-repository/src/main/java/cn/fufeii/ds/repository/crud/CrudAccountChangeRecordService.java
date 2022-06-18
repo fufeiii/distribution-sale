@@ -95,7 +95,7 @@ public class CrudAccountChangeRecordService {
     public AccountChangeRecord updateById(AccountChangeRecord entity) {
         int row = accountChangeRecordDao.updateById(entity);
         if (row == 0) {
-            throw new BizException(ExceptionEnum.SERVER_SQL_UPDATE_FAIL);
+            throw new BizException(ExceptionEnum.ENTITY_UPDATE_FAIL);
         }
         return entity;
     }

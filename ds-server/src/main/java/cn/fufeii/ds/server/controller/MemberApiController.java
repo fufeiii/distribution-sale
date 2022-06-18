@@ -1,7 +1,6 @@
 package cn.fufeii.ds.server.controller;
 
 import cn.fufeii.ds.common.annotation.DataValid;
-import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitLevelEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.model.CommonResult;
@@ -54,11 +53,11 @@ public class MemberApiController {
     public PageResult<MemberTeamResponse> teamPage(@PathVariable String level, @PathVariable String username, PageRequest pageRequest) {
         Optional<ProfitLevelEnum> profitLevelEnumOptional = ProfitLevelEnum.getByNameOptional(level);
         if (!profitLevelEnumOptional.isPresent()) {
-            throw new BizException(ExceptionEnum.CLIENT_ERROR, "level参数错误");
+            throw BizException.client("level参数错误");
         }
         ProfitLevelEnum profitLevelEnum = profitLevelEnumOptional.get();
         if (ProfitLevelEnum.SELF == profitLevelEnum) {
-            throw new BizException(ExceptionEnum.CLIENT_ERROR, "level参数不能为self");
+            throw BizException.client("level参数不能为self");
         }
         IPage<MemberTeamResponse> pageResult = memberService.teamPage(profitLevelEnum, username, pageRequest.getPage(), pageRequest.getSize());
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());

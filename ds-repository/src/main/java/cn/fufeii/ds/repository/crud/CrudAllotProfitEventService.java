@@ -96,7 +96,7 @@ public class CrudAllotProfitEventService {
     public AllotProfitEvent updateById(AllotProfitEvent entity) {
         int row = AllotProfitEventDao.updateById(entity);
         if (row == 0) {
-            throw new BizException(ExceptionEnum.SERVER_SQL_UPDATE_FAIL);
+            throw new BizException(ExceptionEnum.ENTITY_UPDATE_FAIL);
         }
         return entity;
     }
@@ -118,7 +118,7 @@ public class CrudAllotProfitEventService {
         LambdaQueryWrapper<AllotProfitEvent> lambdaQueryWrapper = Wrappers.<AllotProfitEvent>lambdaQuery()
                 .eq(AllotProfitEvent::getId, id)
                 .eq(AllotProfitEvent::getPlatformUsername, platformUsername);
-        return this.selectOneOptional(lambdaQueryWrapper).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "id(" + id + ")"));
+        return this.selectOneOptional(lambdaQueryWrapper).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST));
     }
 
 }

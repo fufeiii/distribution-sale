@@ -1,6 +1,5 @@
 package cn.fufeii.ds.server.strategy;
 
-import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.repository.entity.AllotProfitEvent;
@@ -27,7 +26,7 @@ public class AllotProfitStrategyServiceImpl implements AllotProfitStrategyServic
         ProfitTypeEnum profitType = profitEvent.getProfitType();
         AllotProfitStrategy allotProfitStrategy = allotProfitStrategyList.stream().filter(it -> it.support(profitType))
                 .findFirst()
-                .orElseThrow(() -> BizException.serverError(ExceptionEnum.UNKNOWN_STRATEGY, profitType.name()));
+                .orElseThrow(() -> BizException.server(String.format("未知的[%s]的分润策略", profitType.name())));
 
         // 2. 保存分润事件
         Object eventSource = profitEvent.getSource();

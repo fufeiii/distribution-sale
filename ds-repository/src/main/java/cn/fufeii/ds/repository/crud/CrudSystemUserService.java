@@ -94,7 +94,7 @@ public class CrudSystemUserService {
     public SystemUser updateById(SystemUser entity) {
         int row = systemUserDao.updateById(entity);
         if (row == 0) {
-            throw new BizException(ExceptionEnum.SERVER_SQL_UPDATE_FAIL);
+            throw new BizException(ExceptionEnum.ENTITY_UPDATE_FAIL);
         }
         return entity;
     }

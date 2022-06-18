@@ -51,7 +51,7 @@ public class CrudMemberService {
      * 通过ID获取一个存在的实体
      */
     public Member selectById(Long id) {
-        return this.selectByIdOptional(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "id(" + id + ")"));
+        return this.selectByIdOptional(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST));
     }
 
     /**
@@ -96,7 +96,7 @@ public class CrudMemberService {
     public Member updateById(Member entity) {
         int row = memberDao.updateById(entity);
         if (row == 0) {
-            throw new BizException(ExceptionEnum.SERVER_SQL_UPDATE_FAIL);
+            throw new BizException(ExceptionEnum.ENTITY_UPDATE_FAIL);
         }
         return entity;
     }
@@ -122,7 +122,7 @@ public class CrudMemberService {
     }
 
     public Member selectByUsernameAndPlatformUsername(String username, String platformUsername) {
-        return this.selectByUsernameAndPlatformUsernameOptional(username, platformUsername).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST, "username(" + username + ")"));
+        return this.selectByUsernameAndPlatformUsernameOptional(username, platformUsername).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST));
     }
 
 

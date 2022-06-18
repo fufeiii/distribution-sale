@@ -129,7 +129,7 @@ public class MemberService {
     public void changeState(Long id, StateEnum stateEnum) {
         Member member = crudMemberService.selectById(id);
         if (stateEnum == member.getState()) {
-            throw new BizException(ExceptionEnum.STATE_COMMON_ERROR);
+            throw new BizException(ExceptionEnum.UPDATE_STATE_REPEATEDLY);
         }
         member.setState(stateEnum);
         crudMemberService.updateById(member);

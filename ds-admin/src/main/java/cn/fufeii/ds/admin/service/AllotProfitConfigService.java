@@ -10,7 +10,6 @@ import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.util.BeanCopierUtil;
-import cn.fufeii.ds.common.util.LockTemplate;
 import cn.fufeii.ds.repository.crud.CrudAllotProfitConfigService;
 import cn.fufeii.ds.repository.entity.AllotProfitConfig;
 import cn.fufeii.ds.repository.entity.SystemUser;
@@ -32,8 +31,6 @@ public class AllotProfitConfigService {
 
     @Autowired
     private CrudAllotProfitConfigService crudAllotProfitConfigService;
-    @Autowired
-    private LockTemplate lockTemplate;
 
     /**
      * 分页查询
@@ -102,7 +99,7 @@ public class AllotProfitConfigService {
                 .eq(AllotProfitConfig::getMemberIdentityType, request.getMemberIdentityType())
                 .eq(AllotProfitConfig::getMemberRankType, request.getMemberRankType());
         if (crudAllotProfitConfigService.exist(queryWrapper)) {
-            throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "该参数已存在");
+            throw BizException.admin("该参数已存在");
         }
         AllotProfitConfig profitParam = new AllotProfitConfig();
         // 建议使用setter, 字段类型问题能在编译期发现
@@ -142,7 +139,7 @@ public class AllotProfitConfigService {
         AllotProfitConfig profitParam = crudAllotProfitConfigService.selectById(id);
         CurrentUserHelper.checkPlatformThrow(profitParam.getPlatformUsername());
         if (stateEnum == profitParam.getState()) {
-            throw new BizException(ExceptionEnum.STATE_COMMON_ERROR);
+            throw new BizException(ExceptionEnum.UPDATE_STATE_REPEATEDLY);
         }
         profitParam.setState(stateEnum);
         crudAllotProfitConfigService.updateById(profitParam);

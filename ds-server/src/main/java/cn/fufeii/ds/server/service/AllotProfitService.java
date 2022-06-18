@@ -1,7 +1,6 @@
 package cn.fufeii.ds.server.service;
 
 import cn.fufeii.ds.common.annotation.GlobalLock;
-import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.ProfitTypeEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.util.PageUtil;
@@ -58,7 +57,7 @@ public class AllotProfitService {
                 .eq(AllotProfitEvent::getEventNumber, request.getTradeNumber())
                 .eq(AllotProfitEvent::getPlatformUsername, CurrentPlatformHelper.username());
         if (crudAllotProfitEventService.exist(queryWrapper)) {
-            throw new BizException(ExceptionEnum.PROFIT_EVENT_EXIST, request.getTradeNumber());
+            throw BizException.client(String.format("分润事件编号[%s]已存在", request.getTradeNumber()));
         }
         // 组装事件
         Member member = crudMemberService.selectByUsernameAndPlatformUsername(request.getUsername(), CurrentPlatformHelper.username());

@@ -79,7 +79,7 @@ public class MemberRankConfigService {
     @GlobalLock(key = DsAdminConstant.CPUS + "':mrc-create'")
     public void create(MemberRankConfigUpsertRequest request) {
         if (request.getMemberRankType() == null) {
-            throw new BizException(ExceptionEnum.API_FIELD_ERROR, "memberRankType不能为空");
+            throw BizException.client("memberRankType不能为空");
         }
         this.checkPointsRange(request);
         SystemUser currentUser = CurrentUserHelper.self();
@@ -88,7 +88,7 @@ public class MemberRankConfigService {
                 .eq(MemberRankConfig::getPlatformUsername, currentUser.getPlatformUsername())
                 .eq(MemberRankConfig::getMemberRankType, request.getMemberRankType());
         if (crudMemberRankConfigService.exist(queryWrapper)) {
-            throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "该参数已存在");
+            throw BizException.client("该参数已存在");
         }
         MemberRankConfig rankParam = new MemberRankConfig();
         // 建议使用setter, 字段类型问题能在编译期发现
@@ -107,7 +107,7 @@ public class MemberRankConfigService {
         CurrentUserHelper.checkPlatformThrow(rankParam.getPlatformUsername());
         // 这个字段是不能改变的
         if (request.getMemberRankType() != null) {
-            throw new BizException(ExceptionEnum.API_FIELD_ERROR, "memberRankType不能修改");
+            throw BizException.admin("用户段位类型不能修改");
         }
         this.checkPointsRange(request);
         // 建议使用setter, 字段类型问题能在编译期发现
@@ -122,7 +122,7 @@ public class MemberRankConfigService {
         Integer begin = request.getBeginPoints();
         Integer end = request.getEndPoints();
         if (begin > end || begin.equals(end)) {
-            throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "起始分数必须大于结束分数");
+            throw BizException.client("起始分数必须大于结束分数");
         }
         // 需要检查begin和end没有占用其他配置的分段
         LambdaQueryWrapper<MemberRankConfig> queryWrapper = Wrappers.<MemberRankConfig>lambdaQuery()
@@ -131,7 +131,7 @@ public class MemberRankConfigService {
                 .and(it -> it.le(MemberRankConfig::getBeginPoints, begin).ge(MemberRankConfig::getEndPoints, begin)
                         .or().le(MemberRankConfig::getBeginPoints, end).ge(MemberRankConfig::getEndPoints, end));
         if (crudMemberRankConfigService.exist(queryWrapper)) {
-            throw new BizException(ExceptionEnum.RANK_PARAM_CREATE_ERROR, "此分段已被其他配置占用");
+            throw BizException.admin("此分段已被其他配置占用");
         }
     }
 
@@ -152,7 +152,7 @@ public class MemberRankConfigService {
         MemberRankConfig rankParam = crudMemberRankConfigService.selectById(id);
         CurrentUserHelper.checkPlatformThrow(rankParam.getPlatformUsername());
         if (stateEnum == rankParam.getState()) {
-            throw new BizException(ExceptionEnum.STATE_COMMON_ERROR);
+            throw new BizException(ExceptionEnum.UPDATE_STATE_REPEATEDLY);
         }
         rankParam.setState(stateEnum);
         crudMemberRankConfigService.updateById(rankParam);

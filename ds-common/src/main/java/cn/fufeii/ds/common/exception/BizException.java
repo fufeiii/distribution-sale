@@ -19,27 +19,25 @@ public class BizException extends RuntimeException {
 
     private Integer code;
 
-    public BizException(ResultDefinition resultDefinition, String... params) {
-        super(resultDefinition.getMsg(params));
-        code = resultDefinition.getCode();
-    }
-
     public BizException(Integer code, String msg) {
         super(msg);
         this.code = code;
     }
 
-    public BizException(String msg) {
-        super(msg);
-        this.code = ExceptionEnum.SERVER_ERROR.getCode();
+    public BizException(ResultDefinition resultDefinition) {
+        this(resultDefinition.getCode(), resultDefinition.getMsg());
     }
 
-    public static BizException serverError(String msg) {
+    public static BizException server(String msg) {
         return new BizException(ExceptionEnum.SERVER_ERROR.getCode(), msg);
     }
 
-    public static BizException serverError(ExceptionEnum exceptionEnum, String... params) {
-        return new BizException(exceptionEnum, params);
+    public static BizException client(String msg) {
+        return new BizException(ExceptionEnum.CLIENT_ERROR.getCode(), msg);
+    }
+
+    public static BizException admin(String msg) {
+        return new BizException(ExceptionEnum.ADMIN_ERROR.getCode(), msg);
     }
 
 }

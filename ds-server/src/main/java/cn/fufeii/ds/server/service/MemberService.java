@@ -2,7 +2,6 @@ package cn.fufeii.ds.server.service;
 
 import cn.fufeii.ds.common.annotation.GlobalLock;
 import cn.fufeii.ds.common.constant.DsConstant;
-import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.*;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.util.PageUtil;
@@ -61,7 +60,7 @@ public class MemberService {
         // 检查用户是否存在
         Optional<Member> memberOptional = crudMemberService.selectByUsernameAndPlatformUsernameOptional(request.getUsername(), platformUsername);
         if (memberOptional.isPresent()) {
-            throw BizException.serverError(String.format("会员[%s]已存在", request.getUsername()));
+            throw BizException.server(String.format("会员[%s]已存在", request.getUsername()));
         }
         // 如果被邀请加入的, 则检查邀请人
         boolean isJoinCreate = CharSequenceUtil.isNotBlank(request.getInviteUsername());
@@ -69,7 +68,7 @@ public class MemberService {
         if (isJoinCreate) {
             Optional<Member> inviteMemberOpt = crudMemberService.selectByUsernameAndPlatformUsernameOptional(request.getInviteUsername(), platformUsername);
             if (!inviteMemberOpt.isPresent()) {
-                throw BizException.serverError(String.format("邀请人[%s]不存在", request.getInviteUsername()));
+                throw BizException.server(String.format("邀请人[%s]不存在", request.getInviteUsername()));
             }
             inviterMember = inviteMemberOpt.get();
         }
@@ -160,7 +159,7 @@ public class MemberService {
         Member member = crudMemberService.selectByUsernameAndPlatformUsername(request.getUsername(), CurrentPlatformHelper.username());
         // 有必要告诉上有系统, 提交重复了或者不正确的更新
         if (request.getIdentityType() == member.getIdentityType()) {
-            throw new BizException(ExceptionEnum.BIZ_COMMON_ERROR, "重复更新会员身份");
+            throw BizException.client("重复更新会员身份");
         }
         member.setIdentityType(request.getIdentityType());
         crudMemberService.updateById(member);
