@@ -50,7 +50,9 @@ public class SystemUserService {
      */
     public IPage<SystemUserResponse> page(SystemUserQueryRequest pageParam, IPage<SystemUser> pageable) {
         LambdaQueryWrapper<SystemUser> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, SystemUser.class));
-        CurrentUserHelper.setPlatformIfPossible(queryWrapper);
+        if (CurrentUserHelper.isNotAdmin()) {
+            queryWrapper.eq(SystemUser::getPlatformUsername, CurrentUserHelper.platformUsername());
+        }
         IPage<SystemUser> selectPage = crudSystemUserService.selectPage(queryWrapper, pageable);
         // 组装response对象返回
         return selectPage.convert(it -> {

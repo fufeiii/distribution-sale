@@ -48,7 +48,6 @@ public class MemberService {
      */
     public IPage<MemberResponse> page(MemberQueryRequest pageParam, IPage<Member> pageable) {
         LambdaQueryWrapper<Member> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, Member.class));
-        CurrentUserHelper.setPlatformIfPossible(queryWrapper);
         IPage<Member> selectPage = crudMemberService.selectPage(queryWrapper, pageable);
         // 查询不到数据直接返回
         if (selectPage.getRecords().isEmpty()) {

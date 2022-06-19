@@ -41,7 +41,9 @@ public class PlatformService {
      */
     public IPage<PlatformResponse> page(PlatformQueryRequest pageParam, IPage<Platform> pageable) {
         LambdaQueryWrapper<Platform> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, Platform.class));
-        CurrentUserHelper.setPlatformIfPossible(queryWrapper);
+        if (CurrentUserHelper.isNotAdmin()) {
+            queryWrapper.eq(Platform::getUsername, CurrentUserHelper.platformUsername());
+        }
         IPage<Platform> selectPage = crudPlatformService.selectPage(queryWrapper, pageable);
         // 组装response对象返回
         return selectPage.convert(it -> {

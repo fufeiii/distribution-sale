@@ -37,7 +37,6 @@ public class MemberRankConfigService {
      */
     public IPage<MemberRankConfigResponse> page(MemberRankConfigQueryRequest pageParam, IPage<MemberRankConfig> pageable) {
         LambdaQueryWrapper<MemberRankConfig> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, MemberRankConfig.class));
-        CurrentUserHelper.setPlatformIfPossible(queryWrapper);
         IPage<MemberRankConfig> selectPage = crudMemberRankConfigService.selectPage(queryWrapper, pageable);
         // 组装response对象返回
         return selectPage.convert(it -> {
