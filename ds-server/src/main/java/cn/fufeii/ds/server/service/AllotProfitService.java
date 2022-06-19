@@ -15,8 +15,6 @@ import cn.fufeii.ds.server.model.api.request.ProfitTradeRequest;
 import cn.fufeii.ds.server.model.api.response.AllotProfitEventInfoResponse;
 import cn.fufeii.ds.server.model.api.response.ProfitIncomeRecordResponse;
 import cn.fufeii.ds.server.model.api.response.ProfitTradeResponse;
-import cn.fufeii.ds.server.push.PushService;
-import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import cn.fufeii.ds.server.subscribe.event.TradeEvent;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -44,8 +42,6 @@ public class AllotProfitService {
     private CrudProfitIncomeRecordService crudProfitIncomeRecordService;
     @Autowired
     private CrudAllotProfitEventService crudAllotProfitEventService;
-    @Autowired
-    private PushService pushService;
 
     /**
      * 金钱交易-分润请求
@@ -54,13 +50,12 @@ public class AllotProfitService {
     public ProfitTradeResponse trade(ProfitTradeRequest request) {
         // 检查是否已经存在了该事件
         LambdaQueryWrapper<AllotProfitEvent> queryWrapper = Wrappers.<AllotProfitEvent>lambdaQuery()
-                .eq(AllotProfitEvent::getEventNumber, request.getTradeNumber())
-                .eq(AllotProfitEvent::getPlatformUsername, CurrentPlatformHelper.username());
+                .eq(AllotProfitEvent::getEventNumber, request.getTradeNumber());
         if (crudAllotProfitEventService.exist(queryWrapper)) {
             throw BizException.client(String.format("分润事件编号[%s]已存在", request.getTradeNumber()));
         }
         // 组装事件
-        Member member = crudMemberService.selectByUsernameAndPlatformUsername(request.getUsername(), CurrentPlatformHelper.username());
+        Member member = crudMemberService.selectByUsername(request.getUsername());
         TradeEvent.Source source = new TradeEvent.Source();
         source.setMemberId(member.getId());
         source.setTradeAmount(request.getTradeAmount());
@@ -82,7 +77,7 @@ public class AllotProfitService {
      * @param eventId 事件主键
      */
     public AllotProfitEventInfoResponse event(Long eventId) {
-        AllotProfitEvent profitEvent = crudAllotProfitEventService.selectByIdAndPlatformUsername(eventId, CurrentPlatformHelper.username());
+        AllotProfitEvent profitEvent = crudAllotProfitEventService.selectById(eventId);
         // 通用组装
         AllotProfitEventInfoResponse response = new AllotProfitEventInfoResponse();
         response.setId(eventId);
@@ -118,7 +113,7 @@ public class AllotProfitService {
      * @param size           *
      */
     public IPage<ProfitIncomeRecordResponse> profitIncomeRecordRecordPage(String memberUsername, Integer page, Integer size) {
-        Member member = crudMemberService.selectByUsernameAndPlatformUsername(memberUsername, CurrentPlatformHelper.username());
+        Member member = crudMemberService.selectByUsername(memberUsername);
         LambdaQueryWrapper<ProfitIncomeRecord> lambdaQueryWrapper = Wrappers.<ProfitIncomeRecord>lambdaQuery().eq(ProfitIncomeRecord::getImpactMemberId, member.getId());
         IPage<ProfitIncomeRecord> profitRecordIPage = crudProfitIncomeRecordService.selectPage(lambdaQueryWrapper, PageUtil.pageAndOrderByIdDesc(page, size));
         return profitRecordIPage.convert(it -> {

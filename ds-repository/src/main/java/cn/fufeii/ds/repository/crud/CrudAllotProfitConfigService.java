@@ -63,7 +63,7 @@ public class CrudAllotProfitConfigService {
      * 通过条件获取一个存在的实体
      */
     public AllotProfitConfig selectOne(Wrapper<AllotProfitConfig> queryWrapper) {
-        return this.selectOneOptional(queryWrapper).orElseThrow(IllegalStateException::new);
+        return this.selectOneOptional(queryWrapper).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST));
     }
 
     /**

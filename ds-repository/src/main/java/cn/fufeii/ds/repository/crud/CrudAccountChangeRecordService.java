@@ -50,7 +50,7 @@ public class CrudAccountChangeRecordService {
      * 通过ID获取一个存在的实体
      */
     public AccountChangeRecord selectById(Long id) {
-        return this.selectByIdOptional(id).orElseThrow(IllegalStateException::new);
+        return this.selectByIdOptional(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST));
     }
 
     /**
@@ -64,7 +64,7 @@ public class CrudAccountChangeRecordService {
      * 通过条件获取一个存在的实体
      */
     public AccountChangeRecord selectOne(Wrapper<AccountChangeRecord> queryWrapper) {
-        return this.selectOneOptional(queryWrapper).orElseThrow(IllegalStateException::new);
+        return this.selectOneOptional(queryWrapper).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST));
     }
 
     /**

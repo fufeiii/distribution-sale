@@ -55,7 +55,6 @@ public class BaseAllotProfit {
                 .eq(AllotProfitConfig::getProfitLevel, ple)
                 .eq(AllotProfitConfig::getMemberIdentityType, mite)
                 .eq(AllotProfitConfig::getMemberRankType, mre)
-                .eq(AllotProfitConfig::getPlatformUsername, CurrentPlatformHelper.username())
                 .eq(AllotProfitConfig::getState, StateEnum.ENABLE);
         List<AllotProfitConfig> profitParamList = crudAllotProfitConfigService.selectList(lambdaQueryWrapper);
         if (profitParamList.size() > 1) {
@@ -70,7 +69,6 @@ public class BaseAllotProfit {
     private MemberRankConfig getRankParam(MemberRankTypeEnum mre) {
         LambdaQueryWrapper<MemberRankConfig> lambdaQueryWrapper = Wrappers.<MemberRankConfig>lambdaQuery()
                 .eq(MemberRankConfig::getMemberRankType, mre)
-                .eq(MemberRankConfig::getPlatformUsername, CurrentPlatformHelper.username())
                 .eq(MemberRankConfig::getState, StateEnum.ENABLE);
         List<MemberRankConfig> rankParamList = crudMemberRankConfigService.selectList(lambdaQueryWrapper);
         if (rankParamList.size() > 1) {

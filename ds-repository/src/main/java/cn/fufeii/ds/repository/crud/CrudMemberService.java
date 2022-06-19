@@ -114,15 +114,13 @@ public class CrudMemberService {
     // --------------------------------------------------------------------------------- //
 
 
-    public Optional<Member> selectByUsernameAndPlatformUsernameOptional(String username, String platformUsername) {
-        LambdaQueryWrapper<Member> lambdaQueryWrapper = Wrappers.<Member>lambdaQuery()
-                .eq(Member::getUsername, username)
-                .eq(Member::getPlatformUsername, platformUsername);
+    public Optional<Member> selectByUsernameOptional(String username) {
+        LambdaQueryWrapper<Member> lambdaQueryWrapper = Wrappers.<Member>lambdaQuery().eq(Member::getUsername, username);
         return this.selectOneOptional(lambdaQueryWrapper);
     }
 
-    public Member selectByUsernameAndPlatformUsername(String username, String platformUsername) {
-        return this.selectByUsernameAndPlatformUsernameOptional(username, platformUsername).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST));
+    public Member selectByUsername(String username) {
+        return this.selectByUsernameOptional(username).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST));
     }
 
 

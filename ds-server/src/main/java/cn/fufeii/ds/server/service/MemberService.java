@@ -58,7 +58,7 @@ public class MemberService {
         Platform currentPlatform = CurrentPlatformHelper.self();
         String platformUsername = currentPlatform.getUsername();
         // 检查用户是否存在
-        Optional<Member> memberOptional = crudMemberService.selectByUsernameAndPlatformUsernameOptional(request.getUsername(), platformUsername);
+        Optional<Member> memberOptional = crudMemberService.selectByUsernameOptional(request.getUsername());
         if (memberOptional.isPresent()) {
             throw BizException.server(String.format("会员[%s]已存在", request.getUsername()));
         }
@@ -66,7 +66,7 @@ public class MemberService {
         boolean isJoinCreate = CharSequenceUtil.isNotBlank(request.getInviteUsername());
         Member inviterMember = null;
         if (isJoinCreate) {
-            Optional<Member> inviteMemberOpt = crudMemberService.selectByUsernameAndPlatformUsernameOptional(request.getInviteUsername(), platformUsername);
+            Optional<Member> inviteMemberOpt = crudMemberService.selectByUsernameOptional(request.getInviteUsername());
             if (!inviteMemberOpt.isPresent()) {
                 throw BizException.server(String.format("邀请人[%s]不存在", request.getInviteUsername()));
             }
@@ -140,8 +140,7 @@ public class MemberService {
      */
     @GlobalLock(key = DsServerConstant.CPUS + "#request.username")
     public void changeState(MemberChangeStateRequest request) {
-        String platformUsername = CurrentPlatformHelper.username();
-        Member member = crudMemberService.selectByUsernameAndPlatformUsername(request.getUsername(), platformUsername);
+        Member member = crudMemberService.selectByUsername(request.getUsername());
         StateEnum state = request.getState();
         if (state != member.getState()) {
             member.setState(state);
@@ -156,7 +155,7 @@ public class MemberService {
      */
     @GlobalLock(key = DsServerConstant.CPUS + "#request.username")
     public void identityType(MemberIdentityTypeRequest request) {
-        Member member = crudMemberService.selectByUsernameAndPlatformUsername(request.getUsername(), CurrentPlatformHelper.username());
+        Member member = crudMemberService.selectByUsername(request.getUsername());
         // 有必要告诉上有系统, 提交重复了或者不正确的更新
         if (request.getIdentityType() == member.getIdentityType()) {
             throw BizException.client("重复更新会员身份");
@@ -173,7 +172,7 @@ public class MemberService {
      * @param includeAccount *
      */
     public MemberResponse info(String username, Boolean includeAccount) {
-        Member member = crudMemberService.selectByUsernameAndPlatformUsername(username, CurrentPlatformHelper.username());
+        Member member = crudMemberService.selectByUsername(username);
         MemberResponse response = new MemberResponse();
         response.setId(member.getId());
         response.setPlatformUsername(member.getPlatformUsername());
@@ -236,7 +235,7 @@ public class MemberService {
      * @param size     *
      */
     public IPage<MemberTeamResponse> teamPage(ProfitLevelEnum level, String username, Integer page, Integer size) {
-        Member member = crudMemberService.selectByUsernameAndPlatformUsername(username, CurrentPlatformHelper.username());
+        Member member = crudMemberService.selectByUsername(username);
         Long inviterId = member.getId();
         LambdaQueryWrapper<Member> lambdaQueryWrapper = Wrappers.lambdaQuery();
         if (ProfitLevelEnum.ONE == level) {
