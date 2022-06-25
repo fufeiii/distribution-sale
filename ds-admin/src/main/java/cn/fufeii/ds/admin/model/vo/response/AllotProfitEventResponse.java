@@ -30,6 +30,9 @@ public class AllotProfitEventResponse {
     @ApiModelProperty(value = "事件金额")
     private Integer eventAmount;
 
+    @ApiModelProperty(value = "通知状态")
+    private String notifyState;
+
     @ApiModelProperty(value = "备注")
     private String memo;
 
