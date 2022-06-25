@@ -37,6 +37,7 @@ public class AllotProfitEventService {
             response.setEventNumber(it.getEventNumber());
             response.setEventAmount(it.getEventAmount());
             response.setMemo(it.getMemo());
+            response.setNotifyState(it.getNotifyState().getMsg());
             response.setCreateDateTime(it.getCreateDateTime());
             return response;
         });

@@ -14,7 +14,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum NotifyStateEnum {
 
-    INIT(1, "初始化"),
+    INIT(1, "未通知"),
     SUCCESS(2, "成功"),
     FAIL(3, "失败");
 

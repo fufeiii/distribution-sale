@@ -15,25 +15,25 @@ import java.util.Date;
 @ApiModel
 public class PlatformResponse {
 
-    @ApiModelProperty("主键")
+    @ApiModelProperty(value = "主键")
     private Long id;
 
-    @ApiModelProperty("平台标识")
+    @ApiModelProperty(value = "平台标识")
     private String username;
 
-    @ApiModelProperty("平台名称")
+    @ApiModelProperty(value = "平台名称")
     private String nickname;
 
-    @ApiModelProperty("签名密钥")
+    @ApiModelProperty(value = "签名密钥")
     private String sk;
 
-    @ApiModelProperty("通知地址")
+    @ApiModelProperty(value = "通知地址")
     private String notifyUrl;
 
     @ApiModelProperty("状态")
     private String state;
 
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间")
     private Date createDateTime;
 
 }

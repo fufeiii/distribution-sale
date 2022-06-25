@@ -40,6 +40,11 @@ layui.use(['table', 'form'], function () {
                     align: 'center'
                 },
                 {
+                    title: '通知状态',
+                    field: 'notifyState',
+                    align: 'center'
+                },
+                {
                     title: '创建日期',
                     field: 'createDateTime',
                     align: 'center'
