@@ -3,7 +3,6 @@ package cn.fufeii.ds.admin.service;
 import cn.fufeii.ds.admin.model.vo.request.MemberQueryRequest;
 import cn.fufeii.ds.admin.model.vo.response.MemberAccountResponse;
 import cn.fufeii.ds.admin.model.vo.response.MemberResponse;
-import cn.fufeii.ds.admin.security.CurrentUserHelper;
 import cn.fufeii.ds.common.constant.DsConstant;
 import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
@@ -99,8 +98,6 @@ public class MemberService {
      */
     public MemberAccountResponse account(Long memberId) {
         Member member = crudMemberService.selectById(memberId);
-        // 数据检查
-        CurrentUserHelper.checkPlatformThrow(member.getPlatformUsername());
         Account account = crudAccountService.selectByMemberId(memberId);
 
         // 组装响应

@@ -51,7 +51,6 @@ public class MemberRankConfigService {
      */
     public MemberRankConfigResponse get(Long id) {
         MemberRankConfig rankParam = crudMemberRankConfigService.selectById(id);
-        CurrentUserHelper.checkPlatformThrow(rankParam.getPlatformUsername());
         MemberRankConfigResponse response = new MemberRankConfigResponse();
         this.setResponse(rankParam, response);
         return response;
@@ -103,7 +102,6 @@ public class MemberRankConfigService {
      */
     public void modify(MemberRankConfigUpsertRequest request) {
         MemberRankConfig rankParam = crudMemberRankConfigService.selectById(request.getId());
-        CurrentUserHelper.checkPlatformThrow(rankParam.getPlatformUsername());
         // 这个字段是不能改变的
         if (request.getMemberRankType() != null) {
             throw BizException.admin("用户段位类型不能修改");
@@ -139,7 +137,6 @@ public class MemberRankConfigService {
      */
     public void remove(Long id) {
         MemberRankConfig rankParam = crudMemberRankConfigService.selectById(id);
-        CurrentUserHelper.checkPlatformThrow(rankParam.getPlatformUsername());
         crudMemberRankConfigService.deleteById(id);
     }
 
@@ -149,7 +146,6 @@ public class MemberRankConfigService {
      */
     public void changeState(Long id, StateEnum stateEnum) {
         MemberRankConfig rankParam = crudMemberRankConfigService.selectById(id);
-        CurrentUserHelper.checkPlatformThrow(rankParam.getPlatformUsername());
         if (stateEnum == rankParam.getState()) {
             throw new BizException(ExceptionEnum.UPDATE_STATE_REPEATEDLY);
         }

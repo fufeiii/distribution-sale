@@ -63,8 +63,6 @@ public class AllotProfitConfigService {
      */
     public AllotProfitConfigResponse get(Long id) {
         AllotProfitConfig profitParam = crudAllotProfitConfigService.selectById(id);
-        // 数据权限
-        CurrentUserHelper.checkPlatformThrow(profitParam.getPlatformUsername());
         // 响应
         AllotProfitConfigResponse response = new AllotProfitConfigResponse();
         response.setId(profitParam.getId());
@@ -114,8 +112,6 @@ public class AllotProfitConfigService {
      */
     public void modify(AllotProfitConfigUpsertRequest request) {
         AllotProfitConfig profitParam = crudAllotProfitConfigService.selectById(request.getId());
-        // 数据权限
-        CurrentUserHelper.checkPlatformThrow(profitParam.getPlatformUsername());
         // 建议使用setter, 字段类型问题能在编译期发现
         BeanCopierUtil.copy(request, profitParam);
         crudAllotProfitConfigService.updateById(profitParam);
@@ -126,8 +122,6 @@ public class AllotProfitConfigService {
      */
     public void remove(Long id) {
         AllotProfitConfig profitParam = crudAllotProfitConfigService.selectById(id);
-        // 数据权限
-        CurrentUserHelper.checkPlatformThrow(profitParam.getPlatformUsername());
         crudAllotProfitConfigService.deleteById(id);
     }
 
@@ -136,7 +130,6 @@ public class AllotProfitConfigService {
      */
     public void changeState(Long id, StateEnum stateEnum) {
         AllotProfitConfig profitParam = crudAllotProfitConfigService.selectById(id);
-        CurrentUserHelper.checkPlatformThrow(profitParam.getPlatformUsername());
         if (stateEnum == profitParam.getState()) {
             throw new BizException(ExceptionEnum.UPDATE_STATE_REPEATEDLY);
         }

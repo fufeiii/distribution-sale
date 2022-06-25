@@ -1,12 +1,8 @@
 package cn.fufeii.ds.admin.security;
 
 import cn.fufeii.ds.admin.config.constant.DsAdminConstant;
-import cn.fufeii.ds.common.enumerate.ExceptionEnum;
-import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.repository.entity.SystemUser;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.Objects;
 
 /**
  * 当前用户 Helper
@@ -59,15 +55,6 @@ public final class CurrentUserHelper {
      */
     public static String platformUsername() {
         return self().getPlatformUsername();
-    }
-
-    /**
-     * 检查数据权限
-     */
-    public static void checkPlatformThrow(String dataPlatformUsername) {
-        if (!Objects.equals(platformUsername(), dataPlatformUsername)) {
-            throw new BizException(ExceptionEnum.NO_DATA_PERMISSION);
-        }
     }
 
 }
