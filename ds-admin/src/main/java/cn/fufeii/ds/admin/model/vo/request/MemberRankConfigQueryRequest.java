@@ -1,22 +1,20 @@
 package cn.fufeii.ds.admin.model.vo.request;
 
+import cn.fufeii.ds.common.model.PageRequest;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * 等级参数 Request
  *
  * @author FuFei
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
+@ToString(callSuper = true)
 @ApiModel
-public class MemberRankConfigQueryRequest {
-
-    @ApiModelProperty(value = "页码")
-    private Integer page = 1;
-
-    @ApiModelProperty(value = "页数")
-    private Integer size = 10;
+public class MemberRankConfigQueryRequest extends PageRequest {
 
 }
