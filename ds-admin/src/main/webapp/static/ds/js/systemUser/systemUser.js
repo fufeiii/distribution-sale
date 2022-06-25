@@ -1,6 +1,8 @@
-layui.use(['table', 'form'], function () {
+layui.use(['table', 'form', 'easyHttp', 'popup'], function () {
     let table = layui.table;
     let form = layui.form;
+    let easyHttp = layui.easyHttp;
+    let popup = layui.popup;
 
     /**
      * 页面实体对象
@@ -41,8 +43,8 @@ layui.use(['table', 'form'], function () {
                 },
                 {
                     title: '状态',
-                    field: 'state',
-                    align: 'center'
+                    align: 'center',
+                    templet: '#stateTpl'
                 },
                 {
                     title: '创建日期',
@@ -117,6 +119,24 @@ layui.use(['table', 'form'], function () {
         if (obj.event === 'add') {
             SystemUser.openAddDlg();
         }
+    });
+
+    /**
+     * 启用禁用点击事件
+     */
+    form.on('switch(stateBtn)', function (data) {
+        let tips = data.elem.checked ? '启用' : '禁用';
+        let path = data.elem.checked ? 'enable' : 'disable';
+        data.elem.checked = !data.elem.checked;
+        form.render('checkbox');
+        layer.confirm('确认' + tips, {icon: 3, title: '提示', closeBtn: 0}, function (index) {
+            easyHttp.execute({url: '/admin/system-user/' + path + '/' + data.value, method: 'PUT'}, function (resp) {
+                data.elem.checked = !data.elem.checked;
+                form.render('checkbox');
+                popup.success('操作成功');
+                layer.close(index);
+            });
+        });
     });
 
 });

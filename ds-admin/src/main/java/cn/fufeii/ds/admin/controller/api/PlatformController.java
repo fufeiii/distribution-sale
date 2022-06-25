@@ -17,6 +17,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 平台信息 API Controller
  *
@@ -37,11 +39,16 @@ public class PlatformController {
         return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
     }
 
-    @ApiOperation("列表查询")
-    @GetMapping("/list")
-    public PageResult<PlatformResponse> list() {
-        IPage<PlatformResponse> pageResult = platformService.page(new PlatformQueryRequest(), new Page<Platform>(1, 10000).addOrder(OrderItem.desc("id")));
-        return PageResult.success(pageResult.getTotal(), pageResult.getRecords());
+    @ApiOperation("列表查询(登录页)")
+    @GetMapping("/optional/list")
+    public CommonResult<List<PlatformResponse>> all() {
+        return CommonResult.success(platformService.list(true));
+    }
+
+    @ApiOperation("列表查询(脱敏)")
+    @GetMapping("/usable/list")
+    public CommonResult<List<PlatformResponse>> list() {
+        return CommonResult.success(platformService.list(true));
     }
 
     @ApiOperation("新增")

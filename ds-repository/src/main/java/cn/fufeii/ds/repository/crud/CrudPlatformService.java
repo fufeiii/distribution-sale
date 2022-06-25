@@ -116,4 +116,8 @@ public class CrudPlatformService {
         return this.selectOne(Wrappers.<Platform>lambdaQuery().eq(Platform::getUsername, username));
     }
 
+    public Optional<Platform> selectByUsernameOptional(String username) {
+        return this.selectOneOptional(Wrappers.<Platform>lambdaQuery().eq(Platform::getUsername, username));
+    }
+
 }

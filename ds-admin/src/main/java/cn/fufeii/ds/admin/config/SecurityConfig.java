@@ -103,6 +103,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         List<String> anonymousRequestPath = new ArrayList<>();
         // 登录/登出
         anonymousRequestPath.add(DsAdminConstant.LOGIN_URL);
+        // 登录页面平台列表查询
+        anonymousRequestPath.add(DsAdminConstant.LOGIN_PAGE_PLATFORM_LIST_URL);
         // 前端页面
         anonymousRequestPath.add(DsAdminConstant.ROOT_PATH);
         anonymousRequestPath.add(DsAdminConstant.VIEW_PATH_PREFIX + "/**");

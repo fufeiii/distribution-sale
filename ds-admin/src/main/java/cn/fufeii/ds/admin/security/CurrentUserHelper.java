@@ -14,13 +14,22 @@ import java.util.Objects;
  * @author FuFei
  * @date 2022/4/2
  */
-public class CurrentUserHelper {
+public final class CurrentUserHelper {
 
     /**
      * 当前用户
      */
     public static SystemUser self() {
         return (SystemUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    /**
+     * 存在人证信息
+     *
+     * @return *
+     */
+    public static boolean existAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication() != null;
     }
 
     /**

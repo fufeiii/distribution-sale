@@ -17,12 +17,11 @@ public abstract class MpAbstractTenantLineHandler implements TenantLineHandler {
 
     /**
      * 需要忽略的表，这些表中没有平台标识
-     * ds_system_user中用户标识全局唯一，所以不走多租户插件
      * ds_platform中租户字段是username，所以不走多租户插件
      * 上述两张表的，自行在service中增加租户字段
      */
     private static final List<String> IGNORE_TABLE = Arrays.asList("ds_account", "ds_account_change_record",
-            "ds_platform", "ds_profit_income_record", "ds_system_user", "liquibase_changelog", "liquibase_changelog_lock");
+            "ds_platform", "ds_profit_income_record", "liquibase_changelog", "liquibase_changelog_lock");
 
     @Override
     public final Expression getTenantId() {

@@ -8,6 +8,12 @@
         </div>
     </div>
     <div class="layui-form-item">
+        <select id="platformUsernameSelect" name="platformUsername">
+            <!-- 故意值写成了 空白字符串 这样select组件的字体颜色才是黑色 -->
+            <option value=" ">平 台</option>
+        </select>
+    </div>
+    <div class="layui-form-item">
         <input name="username" placeholder="账 户" lay-verify="required" hover class="layui-input"/>
     </div>
     <div class="layui-form-item">
@@ -31,6 +37,18 @@
         let form = layui.form;
         let popup = layui.popup;
         let easyHttp = layui.easyHttp;
+        let $ = layui.$;
+
+        // 所有平台
+        easyHttp.execute({url: '/admin/platform/optional/list', method: 'GET'}, function (resp) {
+            let $platformUsernameSelect = $('#platformUsernameSelect');
+            for (let i = 0; i < resp.data.length; i++) {
+                let p = resp.data[i];
+                $platformUsernameSelect.append("<option value='" + p.username + "'>" + p.nickname + "</option>");
+            }
+            form.render('select');
+        });
+
         // 登 录 提 交
         form.on('submit(*)', function (data) {
             easyHttp.execute({url: '/admin/login', method: 'POST', data: JSON.stringify(data.field)}, function (resp) {
@@ -38,7 +56,7 @@
                 popup.success('登录成功', function () {
                     window.location.href = '/';
                 });
-            }, undefined);
+            });
             return false;
         });
 

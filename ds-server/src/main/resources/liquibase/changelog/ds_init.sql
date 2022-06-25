@@ -156,7 +156,7 @@ create table ds_system_user
     version           int          not null comment '乐观锁',
     update_date_time  datetime     not null comment '更新时间',
     create_date_time  datetime     not null comment '创建时间',
-    constraint uq_username unique (username)
+    constraint uq_PlatformUsername_Username unique (platform_username, username)
 ) comment '系统用户';
 
 

@@ -28,6 +28,7 @@ public enum ExceptionEnum implements ResultDefinition {
 
     /* ========================= 管理台异常枚举 ========================= */
     ADMIN_ERROR(6000, "管理台错误"),
+    NO_AUTH(6001, "无权限"),
 
     /* ========================= 通用枚举 ========================= */
     NO_DATA_PERMISSION(7011, "无数据权限");

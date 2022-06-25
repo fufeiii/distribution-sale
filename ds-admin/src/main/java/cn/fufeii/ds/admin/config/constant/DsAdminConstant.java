@@ -13,6 +13,7 @@ public final class DsAdminConstant {
     public static final String API_PATH_PREFIX = "/admin";
     public static final String LOGIN_URL = API_PATH_PREFIX + "/login";
     public static final String LOGOUT_URL = API_PATH_PREFIX + "/logout";
+    public static final String LOGIN_PAGE_PLATFORM_LIST_URL = API_PATH_PREFIX + "/platform/optional/list";
 
     public static final String REDIS_PREFIX = "ds:";
     public static final String REDIS_JWT_PREFIX = REDIS_PREFIX + "jwt:";
