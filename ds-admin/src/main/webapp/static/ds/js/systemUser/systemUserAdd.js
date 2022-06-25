@@ -4,7 +4,7 @@ layui.use(['form', 'layer', 'easyHttp', 'popup'], function () {
     let form = layui.form;
     let popup = layui.popup;
 
-    easyHttp.execute({url: '/admin/platform/list', method: 'GET'}, function (resp) {
+    easyHttp.execute({url: '/admin/platform/usable/list', method: 'GET'}, function (resp) {
         let $platformUsernameSelect = $('#platformUsernameSelect');
         for (let i = 0; i < resp.data.length; i++) {
             let p = resp.data[i];

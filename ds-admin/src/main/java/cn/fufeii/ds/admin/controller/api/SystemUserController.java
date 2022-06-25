@@ -6,6 +6,7 @@ import cn.fufeii.ds.admin.model.vo.request.SystemUserQueryRequest;
 import cn.fufeii.ds.admin.model.vo.response.SystemUserResponse;
 import cn.fufeii.ds.admin.service.SystemUserService;
 import cn.fufeii.ds.common.annotation.DataValid;
+import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.model.CommonResult;
 import cn.fufeii.ds.common.model.PageResult;
 import cn.fufeii.ds.repository.entity.SystemUser;
@@ -51,5 +52,18 @@ public class SystemUserController {
         return CommonResult.success();
     }
 
+    @ApiOperation("启用")
+    @PutMapping("/enable/{id}")
+    public CommonResult<Void> enable(@PathVariable Long id) {
+        systemUserService.changeState(id, StateEnum.ENABLE);
+        return CommonResult.success();
+    }
+
+    @ApiOperation("禁用")
+    @PutMapping("/disable/{id}")
+    public CommonResult<Void> disable(@PathVariable Long id) {
+        systemUserService.changeState(id, StateEnum.DISABLE);
+        return CommonResult.success();
+    }
 
 }

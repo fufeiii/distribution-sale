@@ -64,7 +64,7 @@ public class CrudPlatformService {
      * 通过条件获取一个存在的实体
      */
     public Platform selectOne(Wrapper<Platform> queryWrapper) {
-        return this.selectOneOptional(queryWrapper).orElseThrow(IllegalStateException::new);
+        return this.selectOneOptional(queryWrapper).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST));
     }
 
     /**
@@ -114,6 +114,10 @@ public class CrudPlatformService {
 
     public Platform selectByUsername(String username) {
         return this.selectOne(Wrappers.<Platform>lambdaQuery().eq(Platform::getUsername, username));
+    }
+
+    public Optional<Platform> selectByUsernameOptional(String username) {
+        return this.selectOneOptional(Wrappers.<Platform>lambdaQuery().eq(Platform::getUsername, username));
     }
 
 }

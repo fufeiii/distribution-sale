@@ -22,6 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * 平台信息 Service
  *
@@ -41,7 +44,9 @@ public class PlatformService {
      */
     public IPage<PlatformResponse> page(PlatformQueryRequest pageParam, IPage<Platform> pageable) {
         LambdaQueryWrapper<Platform> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, Platform.class));
-        CurrentUserHelper.setPlatformIfPossible(queryWrapper);
+        if (CurrentUserHelper.isNotAdmin()) {
+            queryWrapper.eq(Platform::getUsername, CurrentUserHelper.platformUsername());
+        }
         IPage<Platform> selectPage = crudPlatformService.selectPage(queryWrapper, pageable);
         // 组装response对象返回
         return selectPage.convert(it -> {
@@ -50,10 +55,35 @@ public class PlatformService {
             response.setUsername(it.getUsername());
             response.setNickname(it.getNickname());
             response.setSk(it.getSk());
+            response.setNotifyUrl(it.getNotifyUrl());
             response.setState(it.getState().getMessage());
             response.setCreateDateTime(it.getCreateDateTime());
             return response;
         });
+    }
+
+    /**
+     * 列表查询
+     *
+     * @param needDesensitized 需要脱敏
+     */
+    public List<PlatformResponse> list(boolean needDesensitized) {
+        LambdaQueryWrapper<Platform> queryWrapper = Wrappers.<Platform>lambdaQuery().eq(Platform::getState, StateEnum.ENABLE);
+        List<Platform> platformList = crudPlatformService.selectList(queryWrapper);
+        // 组装response对象返回
+        return platformList.stream().map(it -> {
+            PlatformResponse response = new PlatformResponse();
+            response.setId(it.getId());
+            response.setUsername(it.getUsername());
+            response.setNickname(it.getNickname());
+            if (!needDesensitized) {
+                response.setSk(it.getSk());
+                response.setNotifyUrl(it.getNotifyUrl());
+                response.setState(it.getState().getMessage());
+                response.setCreateDateTime(it.getCreateDateTime());
+            }
+            return response;
+        }).collect(Collectors.toList());
     }
 
     /**

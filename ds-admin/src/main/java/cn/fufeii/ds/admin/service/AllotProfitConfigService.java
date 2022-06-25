@@ -37,7 +37,6 @@ public class AllotProfitConfigService {
      */
     public IPage<AllotProfitConfigResponse> page(AllotProfitConfigQueryRequest pageParam, IPage<AllotProfitConfig> pageable) {
         LambdaQueryWrapper<AllotProfitConfig> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, AllotProfitConfig.class));
-        CurrentUserHelper.setPlatformIfPossible(queryWrapper);
         IPage<AllotProfitConfig> selectPage = crudAllotProfitConfigService.selectPage(queryWrapper, pageable);
         // 组装response对象返回
         return selectPage.convert(it -> {

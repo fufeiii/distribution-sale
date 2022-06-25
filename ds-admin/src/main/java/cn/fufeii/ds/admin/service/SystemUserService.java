@@ -5,6 +5,8 @@ import cn.fufeii.ds.admin.model.vo.request.SystemUserCreateRequest;
 import cn.fufeii.ds.admin.model.vo.request.SystemUserQueryRequest;
 import cn.fufeii.ds.admin.model.vo.response.SystemUserResponse;
 import cn.fufeii.ds.admin.security.CurrentUserHelper;
+import cn.fufeii.ds.common.annotation.GlobalLock;
+import cn.fufeii.ds.common.enumerate.ExceptionEnum;
 import cn.fufeii.ds.common.enumerate.biz.StateEnum;
 import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.common.util.BeanCopierUtil;
@@ -50,7 +52,6 @@ public class SystemUserService {
      */
     public IPage<SystemUserResponse> page(SystemUserQueryRequest pageParam, IPage<SystemUser> pageable) {
         LambdaQueryWrapper<SystemUser> queryWrapper = Wrappers.lambdaQuery(BeanCopierUtil.copy(pageParam, SystemUser.class));
-        CurrentUserHelper.setPlatformIfPossible(queryWrapper);
         IPage<SystemUser> selectPage = crudSystemUserService.selectPage(queryWrapper, pageable);
         // 组装response对象返回
         return selectPage.convert(it -> {
@@ -63,6 +64,7 @@ public class SystemUserService {
     /**
      * 创建用户
      */
+    @GlobalLock(key = "#request.platformUsername + ':' + #request.username")
     public void create(SystemUserCreateRequest request) {
         // 不能使用超管账号
         if (DsAdminConstant.ADMIN_USERNAME.equals(request.getUsername())) {
@@ -79,7 +81,7 @@ public class SystemUserService {
         // 查询出平台（需要校验平台的状态吗？）
         Platform platform = crudPlatformService.selectByUsername(request.getPlatformUsername());
 
-        // 查询用户是否已存在
+        // 查询用户是否已存在，比较特殊的接口，没办法走多租户插件
         LambdaQueryWrapper<SystemUser> queryWrapper = Wrappers.<SystemUser>lambdaQuery()
                 .eq(SystemUser::getPlatformUsername, request.getPlatformUsername())
                 .eq(SystemUser::getUsername, request.getUsername());
@@ -117,5 +119,20 @@ public class SystemUserService {
         response.setIsAdmin(CurrentUserHelper.isAdmin(systemUser));
     }
 
+
+    /**
+     * 修改状态
+     */
+    public void changeState(Long id, StateEnum stateEnum) {
+        SystemUser systemUser = crudSystemUserService.selectById(id);
+        if (DsAdminConstant.ADMIN_USERNAME.equals(systemUser.getUsername())) {
+            throw BizException.client("禁止修改超级管理员状态");
+        }
+        if (stateEnum == systemUser.getState()) {
+            throw new BizException(ExceptionEnum.UPDATE_STATE_REPEATEDLY);
+        }
+        systemUser.setState(stateEnum);
+        crudSystemUserService.updateById(systemUser);
+    }
 
 }

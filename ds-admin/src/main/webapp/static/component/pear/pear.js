@@ -65,7 +65,7 @@ layui.use(['layer', 'jquery'], function () {
     $(document).ajaxSuccess(function (event, jqXHR, ajaxOptions) {
         let data = jqXHR.responseJSON;
         // 这个范围是权限问题，jwt问题
-        if (ajaxOptions.url !== JwtVerify.loginUrl && (data.code > 6100 && data.code < 6110)) {
+        if (ajaxOptions.url !== JwtVerify.loginUrl && (data.code === 5101)) {
             JwtOperator.clearJwt();
             layer.alert('身份信息错误，请重新登录', function (index) {
                 layer.close(index);

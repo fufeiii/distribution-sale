@@ -15,7 +15,6 @@ import cn.fufeii.ds.repository.entity.Member;
 import cn.fufeii.ds.server.config.constant.DsServerConstant;
 import cn.fufeii.ds.server.model.api.request.AccountChangeRequest;
 import cn.fufeii.ds.server.model.api.response.AccountChangeRecordResponse;
-import cn.fufeii.ds.server.security.CurrentPlatformHelper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -63,7 +62,7 @@ public class AccountService {
         Integer changeCount = request.getChangeCount();
 
         // 执行业务
-        Member member = crudMemberService.selectByUsernameAndPlatformUsername(request.getMemberUsername(), CurrentPlatformHelper.username());
+        Member member = crudMemberService.selectByUsername(request.getMemberUsername());
         if (StateEnum.DISABLE == member.getState()) {
             throw BizException.server(String.format("用户[%s]被禁用", request.getMemberUsername()));
         }
@@ -131,7 +130,7 @@ public class AccountService {
      * @param size           *
      */
     public IPage<AccountChangeRecordResponse> accountChangeRecordRecordPage(String memberUsername, Integer page, Integer size) {
-        Member member = crudMemberService.selectByUsernameAndPlatformUsername(memberUsername, CurrentPlatformHelper.username());
+        Member member = crudMemberService.selectByUsername(memberUsername);
         return crudAccountChangeRecordService.selectByMemberIdPage(member.getId(), PageUtil.pageAndOrderByIdDesc(page, size))
                 .convert(it -> {
                     AccountChangeRecordResponse response = new AccountChangeRecordResponse();

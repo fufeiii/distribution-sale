@@ -5,9 +5,7 @@ import cn.fufeii.ds.common.exception.BizException;
 import cn.fufeii.ds.repository.dao.AllotProfitEventDao;
 import cn.fufeii.ds.repository.entity.AllotProfitEvent;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -112,13 +110,5 @@ public class CrudAllotProfitEventService {
     // --------------------------------------------------------------------------------- //
     // ---------------------------- 下面基础CRUD的扩展 ----------------------------------- //
     // --------------------------------------------------------------------------------- //
-
-
-    public AllotProfitEvent selectByIdAndPlatformUsername(Long id, String platformUsername) {
-        LambdaQueryWrapper<AllotProfitEvent> lambdaQueryWrapper = Wrappers.<AllotProfitEvent>lambdaQuery()
-                .eq(AllotProfitEvent::getId, id)
-                .eq(AllotProfitEvent::getPlatformUsername, platformUsername);
-        return this.selectOneOptional(lambdaQueryWrapper).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST));
-    }
 
 }

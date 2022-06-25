@@ -37,7 +37,7 @@ public class JwtLogoutHandler implements LogoutHandler {
                 .orElse(null);
         log.info("logout current jwt is {}", jwtStr);
         if (jwtStr == null) {
-            log.error("缺少jwt信息：请求IP为{}", request.getRemoteAddr());
+            log.error("缺少jwt信息: 请求IP为{}", request.getRemoteAddr());
             return;
         }
         // 制作token黑名单
