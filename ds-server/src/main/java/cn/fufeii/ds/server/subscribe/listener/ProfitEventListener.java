@@ -4,6 +4,7 @@ import cn.fufeii.ds.server.strategy.AllotProfitStrategyService;
 import cn.fufeii.ds.server.subscribe.event.InviteEvent;
 import cn.fufeii.ds.server.subscribe.event.TradeEvent;
 import cn.fufeii.ds.server.subscribe.event.UpgradeEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -16,6 +17,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
  * @author FuFei
  * @date 2022/3/20
  */
+@Slf4j
 @Component
 public class ProfitEventListener {
 
@@ -28,7 +30,7 @@ public class ProfitEventListener {
     @Async
     @TransactionalEventListener
     public void handle(InviteEvent inviteEvent) {
-        // 执行邀请分润机制
+        log.info("执行邀请分润机制");
         allotProfitStrategyService.startAllotProfit(inviteEvent);
     }
 
@@ -38,7 +40,7 @@ public class ProfitEventListener {
     @Async
     @TransactionalEventListener
     public void handle(UpgradeEvent upgradeEvent) {
-        // 执行邀请分润机制
+        log.info("执行邀请分润机制");
         allotProfitStrategyService.startAllotProfit(upgradeEvent);
     }
 
@@ -49,7 +51,7 @@ public class ProfitEventListener {
      */
     @EventListener
     public void handle(TradeEvent tradeEvent) {
-        // 执行交易分润机制
+        log.info("执行交易分润机制");
         allotProfitStrategyService.startAllotProfit(tradeEvent);
     }
 

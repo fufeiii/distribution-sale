@@ -1,7 +1,6 @@
 package cn.fufeii.ds.server.push;
 
 import cn.fufeii.ds.common.enumerate.biz.NotifyStateEnum;
-import cn.fufeii.ds.server.model.api.request.AllotEventNotifyRequest;
 
 /**
  * 推送处理器
@@ -11,12 +10,13 @@ import cn.fufeii.ds.server.model.api.request.AllotEventNotifyRequest;
 public interface PushHandler {
 
     /**
-     * 执行推送动作
+     * 推送消息
      *
-     * @param notifyUrl -
-     * @param request   -
-     * @return
+     * @param notifyUrl   地址
+     * @param sk          密钥
+     * @param jsonMessage 消息(json格式)
+     * @return *
      */
-    NotifyStateEnum push(String notifyUrl, AllotEventNotifyRequest request);
+    NotifyStateEnum push(String notifyUrl, String sk, String jsonMessage);
 
 }

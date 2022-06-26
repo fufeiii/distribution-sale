@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -54,6 +53,29 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
         return Arrays.stream(DsConstant.KNIFE4J_URL).anyMatch(it -> matcher.match(it, request.getServletPath()));
     }
 
+    /**
+     * 生成签字符串
+     *
+     * @param sk               密钥
+     * @param waitSignatureStr 待签名串
+     * @return *
+     */
+    public static String generateSignature(String sk, String waitSignatureStr) {
+        return SecureUtil.hmacSha256(sk).digestHex(waitSignatureStr);
+    }
+
+    /**
+     * 生成待签名字符串
+     *
+     * @param requestMethod 请求方法
+     * @param requestPath   请求路径
+     * @param requestBody   请求体
+     * @return *
+     */
+    public static String generateWaitSignatureStr(String requestMethod, String requestPath, String requestBody) {
+        return requestMethod + "\n" + requestPath + "\n" + requestBody + "\n";
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationStr = request.getHeader(DsConstant.HEADER_AUTHORIZATION);
@@ -70,7 +92,7 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
         }
 
         // 准备参数
-        authorizationStr = authorizationStr.trim().replaceFirst(DsConstant.HEADER_AUTHORIZATION_PREFIX, CharSequenceUtil.EMPTY);
+        authorizationStr = authorizationStr.trim();
         Map<String, String> authMap = Arrays.stream(authorizationStr.split(StrPool.COMMA)).collect(Collectors.toMap(
                 itKey -> itKey.split(StringPool.EQUALS)[0]
                 , itValue -> itValue.substring(itValue.indexOf(StringPool.EQUALS) + 1)
@@ -110,9 +132,13 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
                 requestWrapper = reuseRequestWrapper;
                 String requestBody = StrUtil.utf8Str(reuseRequestWrapper.getContent());
                 // 执行验签逻辑
-                String waitSignStr = requestWrapper.getMethod() + "\n" + requestWrapper.getServletPath() + "\n" + requestBody + "\n";
-                boolean checkSignature = this.checkSignature(waitSignStr, authorizationParam.getSignature(), platform.getSk());
+                String waitSignatureStr = generateWaitSignatureStr(requestWrapper.getMethod(), requestWrapper.getServletPath(), requestBody);
+                String signatureStr = generateSignature(platform.getSk(), waitSignatureStr);
+                boolean checkSignature = StrUtil.equals(authorizationParam.getSignature(), signatureStr);
                 if (!checkSignature) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("验签失败：待签名字符串[{}],签名[{}],原签名[{}]", waitSignatureStr, signatureStr, signature);
+                    }
                     ResponseUtil.write(response, CommonResult.fail(loginInErrorCode, "验签错误"));
                     return;
                 }
@@ -131,22 +157,6 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
             PlatformContextHolder.remove();
         }
 
-    }
-
-    /**
-     * 验签
-     * hmacSha256
-     */
-    private boolean checkSignature(String waitSignStr, String signature, String sk) {
-        // 获取请求体并比较签名
-        String digestBase64 = SecureUtil.hmacSha256(sk).digestHex(waitSignStr);
-        if (!Objects.equals(digestBase64, signature)) {
-            if (log.isDebugEnabled()) {
-                log.debug("验签失败：待签名字符串[{}], 签名[{}],原签名[{}]", waitSignStr, digestBase64, signature);
-            }
-            return false;
-        }
-        return true;
     }
 
 

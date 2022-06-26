@@ -1,6 +1,7 @@
 package cn.fufeii.ds.server.push;
 
 import cn.fufeii.ds.common.enumerate.biz.NotifyStateEnum;
+import cn.fufeii.ds.common.util.ObjectMapperUtil;
 import cn.fufeii.ds.repository.crud.CrudAllotProfitEventService;
 import cn.fufeii.ds.repository.entity.AllotProfitEvent;
 import cn.fufeii.ds.repository.entity.Platform;
@@ -35,30 +36,32 @@ public class PushService {
     @Async
     public void pushAllotProfitEvent(Long eventId) {
         AllotProfitEvent ape = crudAllotProfitEventService.selectById(eventId);
-        Platform selfPlatform = CurrentPlatformHelper.self();
-        String notifyUrl = selfPlatform.getNotifyUrl();
+        Platform platform = CurrentPlatformHelper.self();
+        String notifyUrl = platform.getNotifyUrl();
         if (CharSequenceUtil.isBlank(notifyUrl)) {
-            log.warn("平台[{}]未设置分润通知地址", selfPlatform.getUsername());
+            log.warn("平台[{}]未设置分润通知地址", platform.getUsername());
             return;
         }
 
         // 组装参数
         AllotEventNotifyRequest allotEventNotifyRequest = new AllotEventNotifyRequest();
         allotEventNotifyRequest.setProfitType(ape.getProfitType());
-        allotEventNotifyRequest.setTriggerMemberId(allotEventNotifyRequest.getTriggerMemberId());
-        allotEventNotifyRequest.setEventNumber(allotEventNotifyRequest.getEventNumber());
+        allotEventNotifyRequest.setTriggerMemberId(ape.getTriggerMemberId());
+        allotEventNotifyRequest.setEventNumber(ape.getEventNumber());
         allotEventNotifyRequest.setEventAmount(ape.getEventAmount());
-        allotEventNotifyRequest.setMemo(allotEventNotifyRequest.getMemo());
+        allotEventNotifyRequest.setMemo(ape.getMemo());
 
         // 发送数据
         NotifyStateEnum notifyStateEnum = NotifyStateEnum.FAIL;
         try {
-            notifyStateEnum = pushHandler.push(notifyUrl, allotEventNotifyRequest);
+            log.info("分销事件推送地址为[{}],内容为[{}]", notifyUrl, allotEventNotifyRequest);
+            notifyStateEnum = pushHandler.push(notifyUrl, platform.getSk(), ObjectMapperUtil.toJsonString(allotEventNotifyRequest));
         } catch (Exception e) {
             log.warn("分润事件推送失败", e);
         }
 
         // 更新通知状态
+        log.info("推送分销事件结果为{}", notifyStateEnum.name());
         ape.setNotifyState(notifyStateEnum);
         crudAllotProfitEventService.updateById(ape);
     }
