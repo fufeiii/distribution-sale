@@ -61,7 +61,7 @@ public class AllotProfitConfigService {
     /**
      * 获取
      */
-    public AllotProfitConfigResponse get(Long id) {
+    public AllotProfitConfigResponse info(Long id) {
         AllotProfitConfig profitParam = crudAllotProfitConfigService.selectById(id);
         // 响应
         AllotProfitConfigResponse response = new AllotProfitConfigResponse();

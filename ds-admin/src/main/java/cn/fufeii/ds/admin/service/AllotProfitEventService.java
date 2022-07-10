@@ -126,7 +126,6 @@ public class AllotProfitEventService {
             response.setCreateDateTime(record.getCreateDateTime());
             responseList.add(response);
         }
-        responseList.addAll(responseList);
         return responseList;
     }
 }

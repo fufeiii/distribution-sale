@@ -25,7 +25,6 @@ layui.use(['form', 'table', 'easyHttp', 'popup'], function () {
         url: '/admin/allot-profit-event/profit-income-record/list/' + easyHttp.getQueryVariable('id'),
         method: 'GET',
         page: false,
-        defaultToolbar: ['filter', 'print', 'exports'],
         cols: [
             [
                 {

@@ -5,7 +5,7 @@ layui.use(['form', 'layer', 'easyHttp', 'popup'], function () {
 
     //获取详情信息，填充表单
     easyHttp.execute({
-        url: '/admin/allot-profit-config/get/' + easyHttp.getQueryVariable('id'),
+        url: '/admin/allot-profit-config/info/' + easyHttp.getQueryVariable('id'),
         method: 'GET'
     }, function (resp) {
         form.val(easyHttp.getQueryVariable('tableId'), resp.data);

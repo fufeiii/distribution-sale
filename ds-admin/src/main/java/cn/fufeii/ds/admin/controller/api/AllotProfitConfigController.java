@@ -40,9 +40,9 @@ public class AllotProfitConfigController {
     }
 
     @ApiOperation("详情查询")
-    @GetMapping("/get/{id}")
-    public CommonResult<AllotProfitConfigResponse> get(@PathVariable Long id) {
-        return CommonResult.success(allotProfitConfigService.get(id));
+    @GetMapping("/info/{id}")
+    public CommonResult<AllotProfitConfigResponse> info(@PathVariable Long id) {
+        return CommonResult.success(allotProfitConfigService.info(id));
     }
 
     @ApiOperation("新增")

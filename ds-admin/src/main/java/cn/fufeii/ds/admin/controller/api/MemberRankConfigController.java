@@ -37,9 +37,9 @@ public class MemberRankConfigController {
     }
 
     @ApiOperation("详情查询")
-    @GetMapping("/get/{id}")
+    @GetMapping("/info/{id}")
     public CommonResult<MemberRankConfigResponse> get(@PathVariable Long id) {
-        return CommonResult.success(memberRankConfigService.get(id));
+        return CommonResult.success(memberRankConfigService.info(id));
     }
 
     @ApiOperation("新增")

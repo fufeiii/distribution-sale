@@ -49,7 +49,7 @@ public class MemberRankConfigService {
     /**
      * 获取
      */
-    public MemberRankConfigResponse get(Long id) {
+    public MemberRankConfigResponse info(Long id) {
         MemberRankConfig rankParam = crudMemberRankConfigService.selectById(id);
         MemberRankConfigResponse response = new MemberRankConfigResponse();
         this.setResponse(rankParam, response);
