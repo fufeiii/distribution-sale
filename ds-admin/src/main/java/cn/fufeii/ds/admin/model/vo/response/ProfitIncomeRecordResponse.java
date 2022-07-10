@@ -24,11 +24,11 @@ public class ProfitIncomeRecordResponse {
     @ApiModelProperty(value = "账户类型")
     private String accountType;
 
-    @ApiModelProperty(value = "获利会员主键")
-    private Long impactMemberId;
+    @ApiModelProperty(value = "获利会员")
+    private String impactMember;
 
     @ApiModelProperty(value = "获利数")
-    private Integer incomeCount;
+    private String incomeCount;
 
     @ApiModelProperty(value = "备注")
     private String memo;

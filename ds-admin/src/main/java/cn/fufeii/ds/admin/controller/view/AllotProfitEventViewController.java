@@ -19,4 +19,9 @@ public class AllotProfitEventViewController {
         return "/allotProfitEvent/allotProfitEvent.html";
     }
 
+    @GetMapping("/info")
+    public String info() {
+        return "/allotProfitEvent/allotProfitEventInfo.html";
+    }
+
 }

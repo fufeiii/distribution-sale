@@ -20,18 +20,19 @@ layui.use(['table', 'form'], function () {
                     type: 'numbers'
                 },
                 {
+                    title: '事件编号',
+                    field: 'eventNumber',
+                    align: 'center',
+                    minWidth: 280
+                },
+                {
                     title: '分润类型',
                     field: 'profitType',
                     align: 'center'
                 },
                 {
-                    title: '触发会员主键',
-                    field: 'triggerMemberId',
-                    align: 'center'
-                },
-                {
-                    title: '事件编号',
-                    field: 'eventNumber',
+                    title: '触发会员',
+                    field: 'triggerMember',
                     align: 'center'
                 },
                 {
@@ -53,6 +54,11 @@ layui.use(['table', 'form'], function () {
                     title: '备注',
                     field: 'memo',
                     align: 'center'
+                },
+                {
+                    title: '操作',
+                    toolbar: '#rowBar',
+                    align: 'center',
                 }
             ]
         ];
@@ -74,6 +80,19 @@ layui.use(['table', 'form'], function () {
             page: {curr: 1}
         });
     }
+
+    /**
+     * 打开账户信息窗口
+     */
+    ProfitEvent.openInfoDlg = function (id) {
+        layer.open({
+            type: 2,
+            title: '事件信息',
+            shade: 0.3,
+            area: ['700px', '800px'],
+            content: '/view/allot-profit-event/info?id=' + id,
+        });
+    };
 
     /**
      * 表格渲染配置
@@ -99,6 +118,15 @@ layui.use(['table', 'form'], function () {
     form.on('submit(profitEventQueryFormSubmit)', function (data) {
         ProfitEvent.onSearch(data);
         return false;
+    });
+
+    /**
+     * 监听数据行末尾按钮 rowBar
+     */
+    table.on('tool(' + ProfitEvent.tableId + ')', function (obj) {
+        if (obj.event === 'info') {
+            ProfitEvent.openInfoDlg(obj.data.id);
+        }
     });
 
 });

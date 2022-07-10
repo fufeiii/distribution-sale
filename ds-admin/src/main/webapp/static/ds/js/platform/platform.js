@@ -27,6 +27,10 @@ layui.use(['table', 'form', 'layer', 'popup', 'easyHttp'], function () {
         return [
             [
                 {
+                    title: '序号',
+                    type: 'numbers'
+                },
+                {
                     title: '平台标识',
                     field: 'username',
                     align: 'center'

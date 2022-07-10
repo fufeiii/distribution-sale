@@ -18,9 +18,15 @@ layui.use(['table', 'form', 'easyHttp', 'popup'], function () {
         return [
             [
                 {
+                    title: '序号',
+                    type: 'numbers'
+                },
+                {
                     title: '头像',
-                    width: 70,
+                    minWidth: 40,
+                    align: 'center',
                     templet: '#avatarTpl'
+
                 },
                 {
                     title: '平台名称',
@@ -70,14 +76,14 @@ layui.use(['table', 'form', 'easyHttp', 'popup'], function () {
                 {
                     title: '创建日期',
                     field: 'createDateTime',
-                    width: 160,
+                    minWidth: 160,
                     align: 'center'
                 },
                 {
                     title: '操作',
                     toolbar: '#rowBar',
                     align: 'center',
-                    width: 130
+                    minWidth: 130
                 }
             ]
         ];

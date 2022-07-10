@@ -21,8 +21,8 @@ public class AllotProfitEventResponse {
     @ApiModelProperty(value = "分润类型")
     private String profitType;
 
-    @ApiModelProperty(value = "事件触发会员主键")
-    private Long triggerMemberId;
+    @ApiModelProperty(value = "事件触发会员")
+    private String triggerMember;
 
     @ApiModelProperty(value = "事件编号")
     private String eventNumber;

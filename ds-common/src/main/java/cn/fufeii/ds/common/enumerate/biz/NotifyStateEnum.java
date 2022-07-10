@@ -20,6 +20,6 @@ public enum NotifyStateEnum {
 
     @EnumValue
     private final Integer code;
-    private final String msg;
+    private final String message;
 
 }

@@ -24,7 +24,7 @@ layui.use(['table', 'form', 'easyHttp', 'popup'], function () {
                             img = Constant.defaultAvatar;
                         }
                         return '<img class="tb-img-circle" alt=""  src="' + img + '" />';
-                    }, align: 'center', width: 90, unresize: true
+                    }, align: 'center', minWidth: 90, unresize: true
                 },
                 {
                     title: '平台名称',

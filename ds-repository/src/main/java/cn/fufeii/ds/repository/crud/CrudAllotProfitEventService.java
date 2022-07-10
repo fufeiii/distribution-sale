@@ -49,7 +49,7 @@ public class CrudAllotProfitEventService {
      * 通过ID获取一个存在的实体
      */
     public AllotProfitEvent selectById(Long id) {
-        return this.selectByIdOptional(id).orElseThrow(IllegalStateException::new);
+        return this.selectByIdOptional(id).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST));
     }
 
     /**
@@ -63,7 +63,7 @@ public class CrudAllotProfitEventService {
      * 通过条件获取一个存在的实体
      */
     public AllotProfitEvent selectOne(Wrapper<AllotProfitEvent> queryWrapper) {
-        return this.selectOneOptional(queryWrapper).orElseThrow(IllegalStateException::new);
+        return this.selectOneOptional(queryWrapper).orElseThrow(() -> new BizException(ExceptionEnum.ENTITY_NOT_EXIST));
     }
 
     /**

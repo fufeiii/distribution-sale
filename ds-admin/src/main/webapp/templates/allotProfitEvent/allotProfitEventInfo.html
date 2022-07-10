@@ -1,0 +1,54 @@
+@layout("/common/container.html", {js:["/ds/js/allotProfitEvent/allotProfitEventInfo.js"]}) {
+<form action="" class="layui-form" lay-filter="allotProfitEventInfoForm">
+    <div class="main-container">
+        <div class="layui-form-item">
+            <blockquote class="layui-elem-quote">事件信息</blockquote>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">事件编号</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="eventNumber" readonly/>
+            </div>
+            <label class="layui-form-label layui-form-required">分润类型</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="profitType" readonly/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">触发会员</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="triggerMember" readonly/>
+            </div>
+            <label class="layui-form-label layui-form-required">事件金额</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="eventAmount" readonly/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">创建日期</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="createDateTime" readonly/>
+            </div>
+            <label class="layui-form-label layui-form-required">通知状态</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="notifyState" readonly/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">事件备注</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" name="memo" placeholder="请输入内容" readonly></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <blockquote class="layui-elem-quote">分润信息</blockquote>
+        </div>
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <table id="profitIncomeRecordTable" lay-filter="profitIncomeRecordTable"></table>
+            </div>
+        </div>
+
+    </div>
+</form>
+@}

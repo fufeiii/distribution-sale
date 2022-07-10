@@ -49,7 +49,7 @@ layui.use(['table', 'form', 'layer', 'easyHttp', 'popup'], function () {
                     title: '操作',
                     toolbar: '#rowBar',
                     align: 'center',
-                    width: 130
+                    minWidth: 130
                 }
             ]
         ];
